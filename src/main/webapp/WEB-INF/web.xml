@@ -58,7 +58,7 @@
     
     <!-- servlet 在向servlet或JSP页面制定初始化参数或定制URL时，必须首先命名servlet或JSP页面。Servlet元素就是用来完成此项任务的。 -->
     <servlet>
-    	<servlet-name>master</servlet-name>
+    	<servlet-name>springmvc</servlet-name>
     	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     	<!-- load-on-startup声明了Servlet加载顺序。 该值>=0时，值越小加载优先级越高。-->
     	<!-- 大于0表示在容器启动时就加载这个Servlet。 -->
