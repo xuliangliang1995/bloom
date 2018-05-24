@@ -6,6 +6,6 @@ package com.bloom.domain.gardener.meta;
  */
 public final class SessionConstantKey {
 	//Gardener
-	public final static String GARDENER_ENTIRY = "session_gardener_entiry";
+	public final static String GARDENER_ENTIRY_KEY = "session_gardener_entiry_key";
 
 }
