@@ -77,6 +77,31 @@
 	    <artifactId>mybatis-spring</artifactId>
 	    <version>${mybatis-spring.version}</version>
 	</dependency>
+	<dependency>
+	    <groupId>com.alibaba</groupId>
+	    <artifactId>fastjson</artifactId>
+	    <version>${fastjson.version}</version>
+	</dependency>
+	<dependency>
+    	<groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-core</artifactId>
+	    <version>${jackson.version}</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>${jackson.version}</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-annotations</artifactId>
+	    <version>${jackson.version}</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.codehaus.jackson</groupId>
+	    <artifactId>jackson-core-asl</artifactId>
+	    <version>1.9.13</version>
+	</dependency>
 	
 	
 	<dependency>
@@ -158,5 +183,7 @@
   	<aspectjweaver.version>1.9.1</aspectjweaver.version>
   	<jstl.version>1.2</jstl.version>
   	<testng.version>6.14.3</testng.version>
+  	<fastjson.version>1.2.47</fastjson.version>
+  	<jackson.version>2.9.5</jackson.version>
   </properties>
 </project>

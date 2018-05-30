@@ -1,6 +1,6 @@
 package com.bloom.domain.gardener;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 import com.bloom.dao.po.Gardener;
 /**
@@ -12,7 +12,7 @@ public interface SignService {
 	
 	void signUp(String originalUsername,String originalPassword);
 	
-	Gardener signIn(HttpSession session, String originalUsername, String originalPassword);
+	Gardener signIn(HttpServletRequest request, String originalUsername, String originalPassword);
 	
-	void signOut(HttpSession session);
+	void signOut(HttpServletRequest request);
 }

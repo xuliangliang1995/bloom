@@ -4,10 +4,12 @@ import java.util.Date;
 import java.util.Optional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.WebUtils;
 
 import com.bloom.dao.GardenerMapper;
 import com.bloom.dao.po.Gardener;
@@ -57,7 +59,7 @@ public class SignServiceImpl implements SignService{
 	 * @param originalPassword
 	 */
 	@Override
-	public Gardener signIn(HttpSession session,String originalUsername,String originalPassword) {
+	public Gardener signIn(HttpServletRequest request,String originalUsername,String originalPassword) {
 		Optional<Integer> keyOpt = Optional.ofNullable(
 				gardenerMapper.selectKeyByUsername(GardenerEncrypt.encryptUsername(originalUsername))
 				);
@@ -67,7 +69,7 @@ public class SignServiceImpl implements SignService{
 		Gardener gardener = gardenerMapper.selectByPrimaryKey(keyOpt.get());
 		if(!password.equals(gardener.getPassword()))
 			throw new FlowBreakException("登录失败！密码有误！");
-		session.setAttribute(SessionConstantKey.GARDENER_ENTIRY_KEY, gardener.getId());
+		WebUtils.setSessionAttribute(request, SessionConstantKey.GARDENER_ENTIRY_KEY, gardener.getId());
 		return gardener;
 	}
 	/**
@@ -75,7 +77,8 @@ public class SignServiceImpl implements SignService{
 	 * @param session
 	 */
 	@Override
-	public void signOut(HttpSession session) {
+	public void signOut(HttpServletRequest request) {
+		HttpSession session = request.getSession();
 		session.removeAttribute(SessionConstantKey.GARDENER_ENTIRY_KEY);
 		session.invalidate();
 	}
