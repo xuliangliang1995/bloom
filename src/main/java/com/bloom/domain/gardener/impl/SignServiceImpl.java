@@ -17,6 +17,7 @@ import com.bloom.domain.gardener.SignService;
 import com.bloom.domain.gardener.meta.Gender;
 import com.bloom.domain.gardener.meta.SessionConstantKey;
 import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.UserNotFoundException;
 import com.bloom.util.encrypt.GardenerEncrypt;
 /**
  * SignUp、SignIn、SignOut
@@ -60,13 +61,12 @@ public class SignServiceImpl implements SignService{
 	 */
 	@Override
 	public Gardener signIn(HttpServletRequest request,String originalUsername,String originalPassword) {
-		Optional<Integer> keyOpt = Optional.ofNullable(
+		Integer key = Optional.ofNullable(
 				gardenerMapper.selectKeyByUsername(GardenerEncrypt.encryptUsername(originalUsername))
-				);
-		if(!keyOpt.isPresent())
-			throw new FlowBreakException("该用户名不存在");
-		String password = GardenerEncrypt.encryptPassword(keyOpt.get(), originalUsername, originalPassword);
-		Gardener gardener = gardenerMapper.selectByPrimaryKey(keyOpt.get());
+				)
+				.orElseThrow(() -> new FlowBreakException("该账户名不存在！"));
+		String password = GardenerEncrypt.encryptPassword(key, originalUsername, originalPassword);
+		Gardener gardener = gardenerMapper.selectByPrimaryKey(key);
 		if(!password.equals(gardener.getPassword()))
 			throw new FlowBreakException("登录失败！密码有误！");
 		WebUtils.setSessionAttribute(request, SessionConstantKey.GARDENER_ENTIRY_KEY, gardener.getId());

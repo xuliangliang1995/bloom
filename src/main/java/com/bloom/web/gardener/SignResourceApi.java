@@ -3,8 +3,11 @@ package com.bloom.web.gardener;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +28,7 @@ public class SignResourceApi {
 	 * SignUp
 	 * @return
 	 */
-	@RequestMapping(value = "/signUp", method = RequestMethod.GET)
+	@PutMapping
 	public Result signUp(
 			@RequestParam("username")String username,
 			@RequestParam("password")String password) {
@@ -38,13 +41,14 @@ public class SignResourceApi {
 	 * @param password
 	 * @return
 	 */
-	@RequestMapping(value = "/signIn", method = RequestMethod.GET,produces = "application/json; charset=utf-8")
-	public Result signIn(
+	@GetMapping
+	public ResponseEntity<Gardener> signIn(
 			@RequestParam("username")String username,
 			@RequestParam("password")String password,
 			HttpServletRequest request) {
 		Gardener gardener = signServiceImpl.signIn(request, username, password);
-		return Result.success(gardener);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(gardener);
 	}
 
 }
