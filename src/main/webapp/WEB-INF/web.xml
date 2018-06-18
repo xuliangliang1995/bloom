@@ -55,6 +55,15 @@
     	<filter-name>CharacterEncoding</filter-name>
     	<url-pattern>/*</url-pattern>
     </filter-mapping>
+    <!-- 用来解决无法接收PUT请求参数的问题 -->
+    <filter>  
+        <filter-name>HttpMethodFilter</filter-name>  
+        <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>  
+    </filter>  
+    <filter-mapping>  
+        <filter-name>HttpMethodFilter</filter-name>  
+        <url-pattern>/*</url-pattern>  
+    </filter-mapping> 
     
     <!-- servlet 在向servlet或JSP页面制定初始化参数或定制URL时，必须首先命名servlet或JSP页面。Servlet元素就是用来完成此项任务的。 -->
     <servlet>
@@ -63,13 +72,13 @@
     	<!-- load-on-startup声明了Servlet加载顺序。 该值>=0时，值越小加载优先级越高。-->
     	<!-- 大于0表示在容器启动时就加载这个Servlet。 -->
     	<!-- 小于0则表示在被选中时才进行加载。 -->
-    	<load-on-startup>1</load-on-startup>
+    	<load-on-startup>1</load-on-startup> 
     </servlet>
     
     <!-- servlet-mapping 服务器一般为servlet提供一个缺省的URL：http://host/webAppPrefix/servlet/ServletName。但是，常常会更改这个URL，以便servlet可以访问初始化参数或更容易地处理相对URL。在更改缺省URL时，使用servlet-mapping元素。 -->
     <servlet-mapping>
     	<servlet-name>springmvc</servlet-name>
-    	<url-pattern>/*</url-pattern>
+    	<url-pattern>/</url-pattern>
     </servlet-mapping>
     
     <!-- session-config 如果某个会话在一定时间内未被访问，服务器可以抛弃它以节省内存。可通过使用HttpSession的setMaxInactiveInterval方法明确设置单个会话对象的超时值，或者可利用session-config元素制定缺省超时值。 -->
@@ -77,6 +86,9 @@
     	<session-timeout>180</session-timeout>
     </session-config>
     
+    <welcome-file-list>
+    	<welcome-file>/index.html</welcome-file>
+    </welcome-file-list>
     <!-- mime-mapping 如果Web应用具有想到特殊的文件，希望能保证给他们分配特定的MIME类型，则mime-mapping元素提供这种保证。 -->
     <!-- MIME(多用途互联网邮件扩展类型):	Multipurpose Internet Mail Extensions -->
     <!-- 是设定某种扩展名的文件用一种应用程序来打开的方式类型，当该扩展名文件被访问的时候，浏览器会自动使用指定应用程序来打开。多用于指定一些客户端自定义的文件名，以及一些媒体文件打开方式。
