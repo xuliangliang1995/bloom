@@ -69,7 +69,7 @@ public class SignServiceImpl implements SignService{
 		Gardener gardener = gardenerMapper.selectByPrimaryKey(key);
 		if(!password.equals(gardener.getPassword()))
 			throw new FlowBreakException("登录失败！密码有误！");
-		WebUtils.setSessionAttribute(request, SessionConstantKey.GARDENER_ENTIRY_KEY, gardener.getId());
+		WebUtils.setSessionAttribute(request, SessionConstantKey.GARDENER_ID_KEY, gardener.getId());
 		return gardener;
 	}
 	/**
@@ -79,7 +79,7 @@ public class SignServiceImpl implements SignService{
 	@Override
 	public void signOut(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		session.removeAttribute(SessionConstantKey.GARDENER_ENTIRY_KEY);
+		session.removeAttribute(SessionConstantKey.GARDENER_ID_KEY);
 		session.invalidate();
 	}
 }
