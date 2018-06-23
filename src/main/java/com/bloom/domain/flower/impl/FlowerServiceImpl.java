@@ -54,7 +54,7 @@ public class FlowerServiceImpl implements FlowerService {
 
 	@Override
 	@Transactional
-	public void edit(HttpServletRequest request, Flower flower) {
+	public Flower edit(HttpServletRequest request, Flower flower) {
 		Assert.assertNotNull(flower.getId(),"资源指定不明确！");
 		
 		Flower targetFlower = this.findById(flower.getId())
@@ -65,6 +65,8 @@ public class FlowerServiceImpl implements FlowerService {
 		
 		flower.setGardenerId(targetFlower.getGardenerId());
 		flowerMapper.updateByPrimaryKeySelective(flower);
+		
+		return this.findById(flower.getId()).get();
 	}
 
 	@Override

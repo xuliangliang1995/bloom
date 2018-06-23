@@ -13,7 +13,7 @@ public interface FlowerService {
 	
 	void deleteById(HttpServletRequest request,Integer id);
 	
-	void edit(HttpServletRequest request,Flower flower);
+	Flower edit(HttpServletRequest request,Flower flower);
 	
 	Optional<Flower> findById(Integer id);
 	
