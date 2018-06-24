@@ -9,13 +9,13 @@ public interface GardenerMapper {
 
     int insert(Gardener record);
 
+    int insertSelective(Gardener record);
+
     List<Gardener> selectByExample(GardenerExample example);
 
     Gardener selectByPrimaryKey(Integer id);
 
-    Integer selectKeyByUsername(String username);
-    
+    int updateByPrimaryKeySelective(Gardener record);
+
     int updateByPrimaryKey(Gardener record);
-    
-    int updateByPrimaryKeySelective(Gardener gardener);
 }

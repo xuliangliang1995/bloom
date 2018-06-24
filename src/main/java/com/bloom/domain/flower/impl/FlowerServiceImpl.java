@@ -12,21 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.util.WebUtils;
 import org.testng.Assert;
 
-import com.bloom.dao.FlowerMapper;
+import com.bloom.dao.ext.FlowerExtDao;
 import com.bloom.dao.po.Flower;
 import com.bloom.dao.po.FlowerExample;
 import com.bloom.domain.flower.FlowerService;
 import com.bloom.domain.flower.meta.FlowerStar;
 import com.bloom.domain.gardener.general.LoginCheckUtil;
-import com.bloom.domain.gardener.meta.SessionConstantKey;
 import com.bloom.exception.FlowBreakException;
 @Service
 public class FlowerServiceImpl implements FlowerService {
 	@Resource
-	private FlowerMapper flowerMapper;
+	private FlowerExtDao flowerExtDao;
 
 	@Override
 	@Transactional
@@ -38,7 +36,7 @@ public class FlowerServiceImpl implements FlowerService {
 		flower.setStar(FlowerStar.Star_1.value());
 		flower.setCt(now);
 		flower.setUt(now);
-		flowerMapper.insert(flower);
+		flowerExtDao.insert(flower);
 		return flower;
 	}
 
@@ -49,7 +47,7 @@ public class FlowerServiceImpl implements FlowerService {
 		Flower flower = this.findById(id)
 				.orElseThrow(() -> new FlowBreakException("您要操作的资源不存在或已被删除！"));
 		Assert.assertEquals(flower.getGardenerId().intValue(), gardenerId,"操作权限不足！");
-		flowerMapper.deleteByPrimaryKey(id);
+		flowerExtDao.deleteByPrimaryKey(id);
 	}
 
 	@Override
@@ -64,7 +62,7 @@ public class FlowerServiceImpl implements FlowerService {
 		Assert.assertEquals(targetFlower.getGardenerId().intValue(), gardenerId, "操作权限不足！");
 		
 		flower.setGardenerId(targetFlower.getGardenerId());
-		flowerMapper.updateByPrimaryKeySelective(flower);
+		flowerExtDao.updateByPrimaryKeySelective(flower);
 		
 		return this.findById(flower.getId()).get();
 	}
@@ -73,7 +71,7 @@ public class FlowerServiceImpl implements FlowerService {
 	public Optional<Flower> findById(Integer id) {
 		Assert.assertNotNull(id,"资源指定不明确");
 		return Optional.ofNullable(
-				flowerMapper.selectByPrimaryKey(id)
+				flowerExtDao.selectByPrimaryKey(id)
 				);
 	}
 
@@ -82,7 +80,7 @@ public class FlowerServiceImpl implements FlowerService {
 		Assert.assertNotNull(gardenerId,"资源指定不明确");
 		FlowerExample example = new FlowerExample();
 		example.createCriteria().andGardenerIdEqualTo(gardenerId);
-		return flowerMapper.selectByExample(example);
+		return flowerExtDao.selectByExample(example);
 	}
 
 }

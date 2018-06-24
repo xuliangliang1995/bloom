@@ -3,6 +3,7 @@
 <mapper namespace="com.bloom.dao.GardenerMapper">
   <resultMap id="BaseResultMap" type="com.bloom.dao.po.Gardener">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
@@ -42,7 +43,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, username, password, nick_name, gender, birthday, email, ct, ut
+    id, role_id, username, password, nick_name, gender, birthday, email, ct, ut
   </sql>
   <select id="selectByExample" parameterType="com.bloom.dao.po.GardenerExample" resultMap="BaseResultMap">
     select
@@ -65,38 +66,91 @@
     from gardener
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectKeyByUsername" parameterType="java.lang.String" resultType="java.lang.Integer">
-  	select id
-  	from gardener
-    where username = #{username,jdbcType=VARCHAR}
-  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from gardener
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.bloom.dao.po.Gardener" useGeneratedKeys="true" keyProperty="id">
-    insert into gardener (id, username, password, 
+  <insert id="insert" parameterType="com.bloom.dao.po.Gardener">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into gardener (role_id, username, password, 
       nick_name, gender, birthday, 
       email, ct, ut)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+    values (#{roleId,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{nickName,jdbcType=VARCHAR}, #{gender,jdbcType=CHAR}, #{birthday,jdbcType=TIMESTAMP}, 
       #{email,jdbcType=VARCHAR}, #{ct,jdbcType=TIMESTAMP}, #{ut,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.bloom.dao.po.Gardener">
-    update gardener
-    set username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      nick_name = #{nickName,jdbcType=VARCHAR},
-      gender = #{gender,jdbcType=CHAR},
-      birthday = #{birthday,jdbcType=TIMESTAMP},
-      email = #{email,jdbcType=VARCHAR},
-      ct = #{ct,jdbcType=TIMESTAMP},
-      ut = #{ut,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+  <insert id="insertSelective" parameterType="com.bloom.dao.po.Gardener">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into gardener
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="nickName != null">
+        nick_name,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="ct != null">
+        ct,
+      </if>
+      <if test="ut != null">
+        ut,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=CHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="ct != null">
+        #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ut != null">
+        #{ut,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.bloom.dao.po.Gardener">
     update gardener
     <set>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
       <if test="username != null">
         username = #{username,jdbcType=VARCHAR},
       </if>
@@ -122,6 +176,19 @@
         ut = #{ut,jdbcType=TIMESTAMP},
       </if>
     </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bloom.dao.po.Gardener">
+    update gardener
+    set role_id = #{roleId,jdbcType=INTEGER},
+      username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=CHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      email = #{email,jdbcType=VARCHAR},
+      ct = #{ct,jdbcType=TIMESTAMP},
+      ut = #{ut,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

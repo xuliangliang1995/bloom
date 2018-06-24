@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bloom.dao.ext.RoleExtDao">
+	<select id = "defaultRole" resultType = "com.bloom.dao.po.Role">
+		select * from role where ordinary = 1
+	</select>
+	
+	<select id = "getGardenerRoleId" resultType = "java.lang.Integer">
+		select role_id from gardener where id = #{gardenerId}
+	</select>
+
+</mapper>

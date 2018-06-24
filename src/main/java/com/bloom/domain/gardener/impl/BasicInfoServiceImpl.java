@@ -7,14 +7,14 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bloom.dao.GardenerMapper;
+import com.bloom.dao.ext.GardenerExtDao;
 import com.bloom.dao.po.Gardener;
 import com.bloom.domain.gardener.BasicInfoService;
 import com.bloom.domain.gardener.meta.Gender;
 @Service
 public class BasicInfoServiceImpl implements BasicInfoService {
 	@Resource
-	private GardenerMapper gardenerMapper;
+	private GardenerExtDao gardenerExtDao;
 
 	@Override
 	@Transactional
@@ -26,7 +26,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 		gardener.setGender(gender.name());
 		gardener.setBirthday(birthday);
 		gardener.setUt(now);
-		gardenerMapper.updateByPrimaryKeySelective(gardener);
+		gardenerExtDao.updateByPrimaryKeySelective(gardener);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 		gardener.setId(gardenerKey);
 		gardener.setEmail(email);
 		gardener.setUt(now);
-		gardenerMapper.updateByPrimaryKeySelective(gardener);
+		gardenerExtDao.updateByPrimaryKeySelective(gardener);
 	}
 
 }

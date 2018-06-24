@@ -20,15 +20,22 @@ body{
     overflow: hidden;
     height: 100%;
 }
+.ivu-layout-header[data-v-7cbbe74f]{
+	background:white
+}
 .layout-logo[data-v-7cbbe74f]{
     width: 100px;
     height: 30px;
-    background: #5b6270;
+    /*background: #5b6270;*/
     border-radius: 3px;
     float: left;
     position: relative;
     top: 15px;
     left: 20px;
+}
+.logo[data-v-7cbbe74f]{
+	width: 100%;
+	width: 100%;
 }
 .layout-nav[data-v-7cbbe74f]{
     width: 420px;

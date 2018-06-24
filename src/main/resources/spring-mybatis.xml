@@ -16,6 +16,7 @@
        		<property name="mapperLocations">
        			<list>
        				<value>classpath*:com/bloom/dao/impl/*.xml</value>
+       				<value>classpath*:com/bloom/dao/ext/impl/*.xml</value>
        			</list>
        		</property>
        </bean>

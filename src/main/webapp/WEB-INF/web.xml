@@ -11,7 +11,7 @@
          
 	<!-- icon元素指出IDE和GUI工具用来表示Web应用的一个和两个图像文件的位置。 -->
 	<!-- <icon>
-		<small-icon></small-icon>
+		<small-icon>classpath:logo/logo.jpg</small-icon>
 		<large-icon></large-icon>
 	</icon> -->
 	<!-- 应用名称 -->

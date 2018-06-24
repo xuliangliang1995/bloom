@@ -2,14 +2,13 @@ package com.bloom.dao.po;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class Gardener {
     private Integer id;
-    @JsonIgnore
+
+    private Integer roleId;
+
     private String username;
-    @JsonIgnore
+
     private String password;
 
     private String nickName;
@@ -19,9 +18,9 @@ public class Gardener {
     private Date birthday;
 
     private String email;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+
     private Date ct;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+
     private Date ut;
 
     public Integer getId() {
@@ -30,6 +29,14 @@ public class Gardener {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     public String getUsername() {

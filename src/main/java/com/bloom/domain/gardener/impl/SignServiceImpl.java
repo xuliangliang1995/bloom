@@ -4,20 +4,26 @@ import java.util.Date;
 import java.util.Optional;
 
 import javax.annotation.Resource;
+import javax.management.ConstructorParameters;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.jmx.export.annotation.ManagedOperationParameter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.WebUtils;
 
-import com.bloom.dao.GardenerMapper;
+import com.beust.jcommander.Parameters;
+import com.beust.jcommander.SubParameter;
+import com.bloom.annotation.RoleCheck;
+import com.bloom.dao.ext.GardenerExtDao;
 import com.bloom.dao.po.Gardener;
+import com.bloom.domain.gardener.RoleService;
 import com.bloom.domain.gardener.SignService;
 import com.bloom.domain.gardener.meta.Gender;
+import com.bloom.domain.gardener.meta.HighGradeRole;
 import com.bloom.domain.gardener.meta.SessionConstantKey;
 import com.bloom.exception.FlowBreakException;
-import com.bloom.exception.UserNotFoundException;
 import com.bloom.util.encrypt.GardenerEncrypt;
 /**
  * SignUp、SignIn、SignOut
@@ -28,9 +34,11 @@ import com.bloom.util.encrypt.GardenerEncrypt;
 @Service
 public class SignServiceImpl implements SignService{
 	@Resource
-	private GardenerMapper gardenerMapper;
+	private RoleService roleService;
+	@Resource
+	private GardenerExtDao gardenerExtDao;
 	/**
-	 * SignOut
+	 * SignUp
 	 * @param originalUsername
 	 * @param originalPassword
 	 */
@@ -39,7 +47,7 @@ public class SignServiceImpl implements SignService{
 	public void signUp(String originalUsername,String originalPassword) {
 		Date now = new Date();
 		Optional<Integer> keyOpt = Optional.ofNullable(
-				gardenerMapper.selectKeyByUsername(GardenerEncrypt.encryptUsername(originalUsername))
+				gardenerExtDao.selectKeyByUsername(GardenerEncrypt.encryptUsername(originalUsername))
 				);
 		if(keyOpt.isPresent()) 
 			throw new FlowBreakException("该用户名已存在！");
@@ -48,11 +56,12 @@ public class SignServiceImpl implements SignService{
 		gardener.setUsername(GardenerEncrypt.encryptUsername(originalUsername));
 		gardener.setPassword(originalPassword);
 		gardener.setGender(Gender.保密.name());
-		gardenerMapper.insert(gardener);
+		gardener.setRoleId(roleService.defaultRole().getId());
+		gardenerExtDao.insert(gardener);
 		gardener.setPassword(GardenerEncrypt.encryptPassword(gardener.getId(), originalUsername, originalPassword));
 		gardener.setCt(now);
 		gardener.setUt(now);
-		gardenerMapper.updateByPrimaryKeySelective(gardener);
+		gardenerExtDao.updateByPrimaryKeySelective(gardener);
 	}
 	/**
 	 * SignIn
@@ -62,14 +71,15 @@ public class SignServiceImpl implements SignService{
 	@Override
 	public Gardener signIn(HttpServletRequest request,String originalUsername,String originalPassword) {
 		Integer key = Optional.ofNullable(
-				gardenerMapper.selectKeyByUsername(GardenerEncrypt.encryptUsername(originalUsername))
+				gardenerExtDao.selectKeyByUsername(GardenerEncrypt.encryptUsername(originalUsername))
 				)
 				.orElseThrow(() -> new FlowBreakException("该账户名不存在！"));
 		String password = GardenerEncrypt.encryptPassword(key, originalUsername, originalPassword);
-		Gardener gardener = gardenerMapper.selectByPrimaryKey(key);
+		Gardener gardener = gardenerExtDao.selectByPrimaryKey(key);
 		if(!password.equals(gardener.getPassword()))
 			throw new FlowBreakException("登录失败！密码有误！");
 		WebUtils.setSessionAttribute(request, SessionConstantKey.GARDENER_ID_KEY, gardener.getId());
+		WebUtils.setSessionAttribute(request, SessionConstantKey.ROLE_ID_KEY, gardener.getRoleId());
 		return gardener;
 	}
 	/**
@@ -80,6 +90,7 @@ public class SignServiceImpl implements SignService{
 	public void signOut(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		session.removeAttribute(SessionConstantKey.GARDENER_ID_KEY);
+		session.removeAttribute(SessionConstantKey.ROLE_ID_KEY);
 		session.invalidate();
 	}
 }

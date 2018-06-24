@@ -17,8 +17,8 @@ public class LoginCheckUtil {
 	 * @return
 	 */
 	public static int loginGardenerId(HttpServletRequest request) {
-		return Optional.ofNullable(
-				(int)WebUtils.getSessionAttribute(request, SessionConstantKey.GARDENER_ID_KEY)
+		return (int)Optional.ofNullable(
+				WebUtils.getSessionAttribute(request, SessionConstantKey.GARDENER_ID_KEY)
 				)
 				.orElseThrow(() -> new FlowBreakException("您还没有登录！"));
 	}
@@ -30,8 +30,19 @@ public class LoginCheckUtil {
 	 */
 	public static boolean loginCheck(HttpServletRequest request) {
 		return Optional.ofNullable(
-				(int)WebUtils.getSessionAttribute(request, SessionConstantKey.GARDENER_ID_KEY)
+				WebUtils.getSessionAttribute(request, SessionConstantKey.GARDENER_ID_KEY)
 				).isPresent();
 	}
-
+	
+	/**
+	 * 获取登录者的roleId
+	 * @param request
+	 * @return
+	 */
+	public static int loginRoleId(HttpServletRequest request) {
+		return (int)Optional.ofNullable(
+				WebUtils.getSessionAttribute(request, SessionConstantKey.ROLE_ID_KEY)
+				)
+				.orElseThrow(() -> new FlowBreakException("您还没有登录！"));
+	}
 }
