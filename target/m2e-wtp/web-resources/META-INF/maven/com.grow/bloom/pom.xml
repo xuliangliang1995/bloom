@@ -192,4 +192,18 @@
   	<fastjson.version>1.2.47</fastjson.version>
   	<jackson.version>2.9.5</jackson.version>
   </properties>
+  <profiles>  
+    <profile>  
+        <id>jdk-10</id>  
+        <activation>  
+            <activeByDefault>true</activeByDefault>  
+            <jdk>10</jdk>  
+        </activation>  
+        <properties>  
+            <maven.compiler.source>10</maven.compiler.source>  
+            <maven.compiler.target>10</maven.compiler.target>  
+            <maven.compiler.compilerVersion>10</maven.compiler.compilerVersion>  
+        </properties>  
+    </profile>  
+   </profiles> 
 </project>
