@@ -7,12 +7,14 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.WebUtils;
 
 import com.bloom.dao.ext.GardenerExtDao;
 import com.bloom.dao.po.Gardener;
+import com.bloom.domain.CachedName;
 import com.bloom.domain.gardener.RoleService;
 import com.bloom.domain.gardener.SignService;
 import com.bloom.domain.gardener.meta.Gender;
@@ -31,6 +33,7 @@ public class SignServiceImpl implements SignService{
 	private RoleService roleService;
 	@Resource
 	private GardenerExtDao gardenerExtDao;
+
 	
 	/**
 	 * SignUp
@@ -64,6 +67,7 @@ public class SignServiceImpl implements SignService{
 	 * @param originalPassword
 	 */
 	@Override
+	@CachePut(cacheNames = CachedName.gardeners, key = "#result.id")
 	public Gardener signIn(HttpServletRequest request,String originalUsername,String originalPassword) {
 		Integer key = Optional.ofNullable(
 				gardenerExtDao.selectKeyByUsername(GardenerEncrypt.encryptUsername(originalUsername))

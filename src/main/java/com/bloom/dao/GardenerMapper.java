@@ -1,8 +1,9 @@
 package com.bloom.dao;
 
+import java.util.List;
+
 import com.bloom.dao.po.Gardener;
 import com.bloom.dao.po.GardenerExample;
-import java.util.List;
 
 public interface GardenerMapper {
     int deleteByPrimaryKey(Integer id);
