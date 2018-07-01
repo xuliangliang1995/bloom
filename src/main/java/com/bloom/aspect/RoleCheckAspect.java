@@ -28,7 +28,7 @@ public class RoleCheckAspect {
 		Signature signature = jp.getSignature();
 		MethodSignature methodSignature = (MethodSignature)signature;    
 		Method targetMethod = methodSignature.getMethod();
-		Method realMethod = jp.getTarget().getClass().getDeclaredMethod(signature.getName(), targetMethod.getParameterTypes());
+		Method realMethod = jp.getTarget().getClass().getMethod(signature.getName(), targetMethod.getParameterTypes());
 		RoleCheck rc = realMethod.getAnnotation(RoleCheck.class);
 		Arrays.stream(rc.value())
 			.filter(role -> role.value() == LoginCheckUtil.loginRoleId(request))

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Role {
     private Integer id;
-
+    
     private String name;
 
     private Boolean ordinary;

@@ -1,16 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:cache = "http://www.springframework.org/schema/cache"
     xsi:schemaLocation="http://www.springframework.org/schema/beans  
     http://www.springframework.org/schema/beans/spring-beans-4.0.xsd   
     http://www.springframework.org/schema/context   
-    http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/cache 
+    http://www.springframework.org/schema/cache/spring-cache.xsd"
     default-lazy-init="false">
-    
+    <!-- 开启缓存注解 -->
+    <cache:annotation-driven />
+    <bean id = "cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+    	<constructor-arg index = "0" type="org.springframework.data.redis.cache.RedisCacheWriter">
+    		<bean class="org.springframework.data.redis.cache.DefaultRedisCacheWriter">
+    			<constructor-arg index = "0" ref="jedisConnectionFactory"></constructor-arg>
+    		</bean>
+        </constructor-arg>
+        <constructor-arg index = "1" type="org.springframework.data.redis.cache.RedisCacheConfiguration">
+        	<bean class="org.springframework.data.redis.cache.RedisCacheConfiguration" factory-method="defaultCacheConfig">
+        	</bean>
+        </constructor-arg>
+        <!--    支持事务 -->
+        <property name="transactionAware" value = "true"/>
+    </bean>
     <!-- 加载配置文件 -->  
     <context:property-placeholder location="classpath:redis/redis.properties" ignore-unresolvable="true"/>  
     <!-- redis数据源 -->
-    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <!-- 最大空闲数 -->
         <property name="maxIdle" value="${redis.maxIdle}" />
         <!-- 最大空连接数 -->
@@ -32,13 +50,13 @@
         <!-- 超时时间 默认2000-->
         <property name="timeout" value="${redis.timeout}" />
         <!-- 连接池配置引用 -->
-        <property name="poolConfig" ref="poolConfig" />
+        <property name="poolConfig" ref="jedisPoolConfig" />
         <!-- usePool：是否使用连接池 -->
         <property name="usePool" value="true"/>
     </bean>
 
-    <!-- redis template definition -->
-    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+    <!-- Spring提供的访问redis类 -->
+    <bean id="jedisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
         <property name="connectionFactory" ref="jedisConnectionFactory" />
         <property name="keySerializer">
             <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
@@ -55,4 +73,5 @@
          <!--开启事务  -->  
         <property name="enableTransactionSupport" value="true"></property>  
     </bean>
+    
 </beans>

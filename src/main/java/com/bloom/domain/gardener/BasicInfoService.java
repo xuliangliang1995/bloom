@@ -2,6 +2,7 @@ package com.bloom.domain.gardener;
 
 import java.util.Date;
 
+import com.bloom.dao.po.Gardener;
 import com.bloom.domain.gardener.meta.Gender;
 
 /**
@@ -11,7 +12,7 @@ import com.bloom.domain.gardener.meta.Gender;
  */
 public interface BasicInfoService {
 	
-	void basicInfo(Integer gardenerKey,String nickName,Gender gender,Date birthday);
+	Gardener basicInfo(Integer gardenerKey,String nickName,Gender gender,Date birthday);
 
-	void setEmail(Integer gardenerKey,String email);
+	Gardener setEmail(Integer gardenerKey,String email);
 }

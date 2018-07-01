@@ -1,5 +1,8 @@
 package com.bloom.web.flower;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,8 @@ import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,9 +27,6 @@ import com.bloom.web.flower.dto.CreateFlowerCommand;
 import com.bloom.web.flower.dto.EditFlowerCommand;
 import com.bloom.web.flower.resource.FlowerResource;
 import com.bloom.web.flower.resource.FlowerResourceAssembler;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 /**
  * 花儿er
  * @author 83554
@@ -50,8 +52,8 @@ public class FlowerResourceApi {
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> createFlower(@PathVariable Integer gardenerId, CreateFlowerCommand createFlowerCommand,
-			HttpServletRequest request) {
+	public ResponseEntity<?> createFlower(@PathVariable Integer gardenerId, @Validated CreateFlowerCommand createFlowerCommand,
+			BindingResult result, HttpServletRequest request) {
 		Flower flower = new Flower();
 		flower.setGardenerId(gardenerId);
 		flower.setName(createFlowerCommand.getName());
