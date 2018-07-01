@@ -4,24 +4,18 @@ import java.util.Date;
 import java.util.Optional;
 
 import javax.annotation.Resource;
-import javax.management.ConstructorParameters;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.jmx.export.annotation.ManagedOperationParameter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.WebUtils;
 
-import com.beust.jcommander.Parameters;
-import com.beust.jcommander.SubParameter;
-import com.bloom.annotation.RoleCheck;
 import com.bloom.dao.ext.GardenerExtDao;
 import com.bloom.dao.po.Gardener;
 import com.bloom.domain.gardener.RoleService;
 import com.bloom.domain.gardener.SignService;
 import com.bloom.domain.gardener.meta.Gender;
-import com.bloom.domain.gardener.meta.HighGradeRole;
 import com.bloom.domain.gardener.meta.SessionConstantKey;
 import com.bloom.exception.FlowBreakException;
 import com.bloom.util.encrypt.GardenerEncrypt;
@@ -37,6 +31,7 @@ public class SignServiceImpl implements SignService{
 	private RoleService roleService;
 	@Resource
 	private GardenerExtDao gardenerExtDao;
+	
 	/**
 	 * SignUp
 	 * @param originalUsername

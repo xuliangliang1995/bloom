@@ -18,16 +18,14 @@
 	<context:component-scan base-package="com.bloom.advice"/> 
 	<context:component-scan base-package="com.bloom.aspect"/> 
 	<context:component-scan base-package="com.bloom.config"/> 
-	<context:component-scan base-package="com.bloom.domain"> 
-	<!-- 不扫描Controller注解的包 --> 
-	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/> 
-	</context:component-scan>
+	<context:component-scan base-package="com.bloom.domain"/> 
 	
 	<!-- 开启aspect切面 -->
 	<aop:aspectj-autoproxy/>
 	
 	<!-- 引入外部properties文件 -->
-	<context:property-placeholder location="classpath:dbcp/jdbc.properties"/>
+	<context:property-placeholder location="classpath:dbcp/jdbc.properties" ignore-unresolvable="true"/>
+	<context:property-placeholder location="classpath:dbcp/druid.properties" ignore-unresolvable="true"/>
 	
 	<!-- 配置数据源 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
@@ -35,28 +33,25 @@
 		<property name="url" value="${jdbc.url}"/>
 		<property name="username" value="${jdbc.username}"/>
 		<property name="password" value="${jdbc.password}"/>
-		<property name="filters" value="stat" />
+		<property name="filters" value="${filters}" />
 
-	     <property name="maxActive" value="20" />
-	     <property name="initialSize" value="1" />
-	     <property name="maxWait" value="60000" />
-	     <property name="minIdle" value="1" />
+	     <property name="maxActive" value="${maxActive}" />
+	     <property name="initialSize" value="${initialSize}" />
+	     <property name="maxWait" value="${maxWait}" />
+	     <property name="minIdle" value="${minIdle}" />
 	
-	     <property name="timeBetweenEvictionRunsMillis" value="60000" />
-	     <property name="minEvictableIdleTimeMillis" value="300000" />
+	     <property name="timeBetweenEvictionRunsMillis" value="${timeBetweenEvictionRunsMillis}" />
+	     <property name="minEvictableIdleTimeMillis" value="${minEvictableIdleTimeMillis}" />
 	
-	     <property name="testWhileIdle" value="true" />
-	     <property name="testOnBorrow" value="false" />
-	     <property name="testOnReturn" value="false" />
+	     <property name="testWhileIdle" value="${testWhileIdle}" />
+	     <property name="testOnBorrow" value="${testOnBorrow}" />
+	     <property name="testOnReturn" value="${testOnReturn}" />
 	
-	     <property name="poolPreparedStatements" value="true" />
-	     <property name="maxOpenPreparedStatements" value="20" />
+	     <property name="poolPreparedStatements" value="${poolPreparedStatements}" />
+	     <property name="maxOpenPreparedStatements" value="${maxOpenPreparedStatements}" />
 	
-	     <property name="asyncInit" value="true" />
+	     <property name="asyncInit" value="${asyncInit}" />
 	</bean> 
-	
-	<!-- 导入mybatis配置文件 -->
-	<import resource="classpath:spring-mybatis.xml"/>
 	
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
@@ -64,4 +59,9 @@
 	
 	<!-- 开启事务注解驱动 -->
 	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- 导入mybatis配置文件 -->
+	<import resource="classpath:spring-mybatis.xml"/>
+	<!-- 导入redi配置文件 -->
+	<import resource="classpath:spring-redis.xml"/>
 </beans>
