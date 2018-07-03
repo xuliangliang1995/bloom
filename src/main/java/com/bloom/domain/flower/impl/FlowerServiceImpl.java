@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-import org.testng.Assert;
+import org.springframework.util.Assert;
 
 import com.bloom.dao.ext.FlowerExtDao;
 import com.bloom.dao.po.Flower;
@@ -31,7 +30,6 @@ public class FlowerServiceImpl implements FlowerService {
 	public Flower create(HttpServletRequest request, Flower flower) {
 		Date now = new Date();
 		int gardenerId = LoginCheckUtil.loginGardenerId(request);
-		Assert.assertTrue(StringUtils.hasText(flower.getName()),"花儿不能没有名字！");
 		flower.setGardenerId(gardenerId);
 		flower.setStar(FlowerStar.Star_1.value());
 		flower.setCt(now);
@@ -46,20 +44,21 @@ public class FlowerServiceImpl implements FlowerService {
 		int gardenerId = LoginCheckUtil.loginGardenerId(request);
 		Flower flower = this.findById(id)
 				.orElseThrow(() -> new FlowBreakException("您要操作的资源不存在或已被删除！"));
-		Assert.assertEquals(flower.getGardenerId().intValue(), gardenerId,"操作权限不足！");
+		Assert.isTrue(flower.getGardenerId().intValue()==gardenerId, "操作权限不足！");
 		flowerExtDao.deleteByPrimaryKey(id);
 	}
 
 	@Override
 	@Transactional
 	public Flower edit(HttpServletRequest request, Flower flower) {
-		Assert.assertNotNull(flower.getId(),"资源指定不明确！");
+		Assert.notNull(flower.getId(),"资源指定不明确！");
 		
 		Flower targetFlower = this.findById(flower.getId())
 				.orElseThrow(() -> new FlowBreakException("您要编辑的资源不存在或已被删除！"));
 		
 		int gardenerId = LoginCheckUtil.loginGardenerId(request);
-		Assert.assertEquals(targetFlower.getGardenerId().intValue(), gardenerId, "操作权限不足！");
+		
+		Assert.isTrue(targetFlower.getGardenerId().intValue()==gardenerId,"操作权限不足！");
 		
 		flower.setGardenerId(targetFlower.getGardenerId());
 		flowerExtDao.updateByPrimaryKeySelective(flower);
@@ -69,7 +68,7 @@ public class FlowerServiceImpl implements FlowerService {
 
 	@Override
 	public Optional<Flower> findById(Integer id) {
-		Assert.assertNotNull(id,"资源指定不明确");
+		Assert.notNull(id,"资源指定不明确");
 		return Optional.ofNullable(
 				flowerExtDao.selectByPrimaryKey(id)
 				);
@@ -77,7 +76,7 @@ public class FlowerServiceImpl implements FlowerService {
 
 	@Override
 	public List<Flower> findFlowerByGardener(Integer gardenerId) {
-		Assert.assertNotNull(gardenerId,"资源指定不明确");
+		Assert.notNull(gardenerId,"资源指定不明确");
 		FlowerExample example = new FlowerExample();
 		example.createCriteria().andGardenerIdEqualTo(gardenerId);
 		return flowerExtDao.selectByExample(example);

@@ -2,7 +2,9 @@ package com.bloom.dao.po;
 
 import java.util.Date;
 
-public class Flower {
+import org.springframework.hateoas.Identifiable;
+
+public class Flower implements Identifiable<Integer>{
     private Integer id;
 
     private Integer gardenerId;
