@@ -4,9 +4,9 @@ import org.springframework.hateoas.Resource;
 
 import com.bloom.dao.po.Flower;
 
-public class FlowerResource extends Resource{
+public class FlowerResource extends Resource<Flower>{
 
-	FlowerResource(Flower flower) {
+	public FlowerResource(Flower flower) {
 		super(flower);
 		// TODO Auto-generated constructor stub
 	}

@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.testng.Assert;
+import org.springframework.util.Assert;
 
 import com.bloom.annotation.RoleCheck;
 import com.bloom.dao.ext.MenuExtDao;
@@ -35,11 +35,11 @@ public class MenuServiceImpl implements MenuService {
 	@Transactional
 	public void createMenu(Menu menu) {
 		Date now = new Date();
-		Assert.assertTrue(StringUtils.hasText(menu.getName()),"菜单名称不能为空");
+		Assert.isTrue(StringUtils.hasText(menu.getName()),"菜单名称不能为空");
 		int parentId = of(menu.getParentId());
 		if(parentId > 0) {
 			Menu parent = menuExtDao.selectByPrimaryKey(parentId);
-			Assert.assertNotNull(parent,"创建失败：父菜单不存在或已被删除！");
+			Assert.notNull(parent,"创建失败：父菜单不存在或已被删除！");
 		}
 		menu.setCt(now);
 		menuExtDao.insert(menu);
@@ -54,7 +54,7 @@ public class MenuServiceImpl implements MenuService {
 				).orElseThrow(() -> new FlowBreakException("所选菜单不存在或已被删除！"));
 		int childMenuCount = menuExtDao.getChildMenuCount(menu.getId());
 		
-		Assert.assertTrue(childMenuCount == 0,"请先删除子菜单！");
+		Assert.isTrue(childMenuCount == 0,"请先删除子菜单！");
 		roleMenuExtDao.deleteByMenuId(menuId);
 		menuExtDao.deleteByPrimaryKey(menuId);
 	}

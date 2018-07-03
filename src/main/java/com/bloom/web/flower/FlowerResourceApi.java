@@ -1,11 +1,11 @@
 package com.bloom.web.flower;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityLinks;
+import org.springframework.hateoas.ExposesResourceFor;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,22 +33,26 @@ import com.bloom.web.flower.resource.FlowerResourceAssembler;
  *
  */
 @RestController
+@ExposesResourceFor(Flower.class)
 @RequestMapping("/gardener/{gardenerId}/flowers")
 public class FlowerResourceApi {
 	@Autowired
 	private FlowerService flowerServiceImpl;
+	@Autowired
+	private EntityLinks entityLinks;
 	
 	@GetMapping
 	public Resources<FlowerResource> readFlowers(@PathVariable Integer gardenerId){
-		return null;
+		return new Resources<FlowerResource>(
+				new FlowerResourceAssembler().toResources(flowerServiceImpl.findFlowerByGardener(gardenerId))
+				);
 	}
 	
 	@GetMapping("/{flowerId}")
 	public FlowerResource readFlower(@PathVariable Integer gardenerId, @PathVariable Integer flowerId) {
-		return new FlowerResourceAssembler().toResource(
-				flowerServiceImpl.findById(flowerId)
-				.orElseThrow(() -> new FlowBreakException("资源不存在！"))
-				);
+		Flower flower = flowerServiceImpl.findById(flowerId)
+				.orElseThrow(() -> new FlowBreakException("资源不存在！"));
+		return new FlowerResourceAssembler().toResource(flower);
 	}
 	
 	@PostMapping
@@ -60,14 +64,14 @@ public class FlowerResourceApi {
 		flower.setMoral(createFlowerCommand.getMoral());
 		flower = flowerServiceImpl.create(request, flower);
 		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.setLocation(linkTo(methodOn(this.getClass()).readFlower(gardenerId, flower.getId())).toUri());
+		responseHeaders.setLocation(entityLinks.linkFor(Flower.class,flower.getGardenerId(),flower.getId()).toUri());
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(responseHeaders);
 	}
 	
 	@PutMapping("/{flowerId}")
-	public ResponseEntity<?> editFlower(@PathVariable Integer gardenerId, @PathVariable Integer flowerId, EditFlowerCommand editFlowerCommand,
-			HttpServletRequest request){
+	public ResponseEntity<?> editFlower(@PathVariable Integer gardenerId, @PathVariable Integer flowerId,@Validated EditFlowerCommand editFlowerCommand,
+			BindingResult result,HttpServletRequest request){
 		Flower flower = new Flower();
 		flower.setId(flowerId);
 		flower.setName(editFlowerCommand.getName());
@@ -75,7 +79,7 @@ public class FlowerResourceApi {
 		flower.setGardenerId(gardenerId);
 		flower = flowerServiceImpl.edit(request, flower);
 		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.setLocation(linkTo(methodOn(this.getClass()).readFlower(gardenerId, flower.getId())).toUri());
+		responseHeaders.setLocation(entityLinks.linkFor(Flower.class,flower.getGardenerId(),flower.getId()).toUri());
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(responseHeaders);
 	}

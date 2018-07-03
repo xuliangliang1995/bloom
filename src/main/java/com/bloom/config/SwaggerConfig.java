@@ -3,6 +3,7 @@ package com.bloom.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.hateoas.config.EnableEntityLinks;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
@@ -15,6 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @EnableWebMvc
+@EnableEntityLinks
 @ComponentScan(basePackages = {"com.bloom.web"})
 public class SwaggerConfig extends WebMvcConfigurationSupport{
 

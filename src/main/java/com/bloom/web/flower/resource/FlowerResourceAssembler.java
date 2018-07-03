@@ -13,13 +13,13 @@ public class FlowerResourceAssembler extends ResourceAssemblerSupport<Flower, Fl
 
 	@Override
 	public FlowerResource toResource(Flower flower) {
-		return createResourceWithId(flower.getId(), flower);
+		return createResourceWithId(flower.getId(), flower,flower.getGardenerId());
 	}
 
 	@Override
 	protected FlowerResource instantiateResource(Flower flower) {
 		return new FlowerResource(flower);
 	}
-	
+
 	
 }
