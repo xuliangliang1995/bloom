@@ -7,8 +7,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import org.testng.Assert;
 
 import com.bloom.annotation.RoleCheck;
 import com.bloom.dao.ext.GardenerExtDao;
@@ -32,7 +32,7 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public Role defaultRole() {
 		Role role = roleExtDao.defaultRole();
-		Assert.assertNotNull(role,"没有设置默认角色！");
+		Assert.notNull(role,"没有设置默认角色！");
 		return role;
 	}
 
@@ -51,8 +51,8 @@ public class RoleServiceImpl implements RoleService {
 	@Transactional
 	public Role createRole(Role role) {
 		Date now =  new Date();
-		Assert.assertTrue(StringUtils.hasText(role.getName()),"角色名不能为空");
-		Assert.assertNull(role.getId(),"参数有误");
+		Assert.isTrue(StringUtils.hasText(role.getName()),"角色名不能为空");
+		Assert.isNull(role.getId(),"参数有误");
 		role.setCt(now);
 		role.setOrdinary(false);
 		roleExtDao.insert(role);

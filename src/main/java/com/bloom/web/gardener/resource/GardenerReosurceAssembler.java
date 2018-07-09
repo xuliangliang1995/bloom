@@ -7,11 +7,11 @@ import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
 import com.bloom.dao.po.Gardener;
 import com.bloom.web.flower.FlowerResourceApi;
-import com.bloom.web.gardener.SignResourceApi;
+import com.bloom.web.gardener.GardenerResourceApi;
 
 public class GardenerReosurceAssembler extends ResourceAssemblerSupport<Gardener, GardenerResource> {
 	public GardenerReosurceAssembler() {
-		super(SignResourceApi.class, GardenerResource.class);
+		super(GardenerResourceApi.class, GardenerResource.class);
 	}
 	@Override
 	public GardenerResource toResource(Gardener gardener) {

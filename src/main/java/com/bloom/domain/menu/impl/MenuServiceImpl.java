@@ -7,6 +7,11 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 /**
  * 菜单管理
  */
@@ -19,6 +24,7 @@ import com.bloom.annotation.RoleCheck;
 import com.bloom.dao.ext.MenuExtDao;
 import com.bloom.dao.ext.RoleMenuExtDao;
 import com.bloom.dao.po.Menu;
+import com.bloom.domain.CachedName;
 import com.bloom.domain.gardener.meta.HighGradeRole;
 import com.bloom.domain.menu.MenuService;
 import com.bloom.domain.menu.vo.MenuTree;
@@ -29,10 +35,13 @@ public class MenuServiceImpl implements MenuService {
 	private MenuExtDao menuExtDao;
 	@Resource
 	private RoleMenuExtDao roleMenuExtDao;
+	@Autowired
+	private RedisTemplate<String, List<MenuTree>> jedisTemplate;
 	
 	@Override
-	@RoleCheck(HighGradeRole.Administrator)
 	@Transactional
+	@RoleCheck(HighGradeRole.Administrator)
+	@CacheEvict(cacheNames = CachedName.menuTree,key = "0")
 	public void createMenu(Menu menu) {
 		Date now = new Date();
 		Assert.isTrue(StringUtils.hasText(menu.getName()),"菜单名称不能为空");
@@ -46,8 +55,9 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	@RoleCheck(HighGradeRole.Administrator)
 	@Transactional
+	@RoleCheck(HighGradeRole.Administrator)
+	@CacheEvict(cacheNames = CachedName.menuTree,allEntries = true)
 	public void deleteMenu(int menuId) {
 		Menu menu = Optional.ofNullable(
 				menuExtDao.selectByPrimaryKey(menuId)
@@ -60,6 +70,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = CachedName.menuTree, key = "#roleId")
 	public List<MenuTree> roleMenuTree(int roleId) {
 		List<MenuTree> tags = menuExtDao.getMenuList(0, roleId);
 		tags.stream().forEach(tag -> {
@@ -74,6 +85,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = CachedName.menuTree,key = "0")
 	public List<MenuTree> menuTree() {
 		List<MenuTree> tags = menuExtDao.getAllMenuList(0);
 		tags.stream().forEach(tag -> {
