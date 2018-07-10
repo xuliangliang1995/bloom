@@ -39,6 +39,8 @@
          <property name="blockWhenExhausted" value="${redis.blockWhenExhausted}" /> 
         <!-- 返回连接时，检测连接是否成功 -->
         <property name="testOnBorrow" value="${redis.testOnBorrow}" />
+        <!-- 空闲时间测试redis连接 -->
+        <property name="testWhileIdle" value="${redis.testWhileIdle}"></property>
     </bean>
 
     <!-- Spring-redis连接池管理工厂 -->

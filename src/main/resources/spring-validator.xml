@@ -11,6 +11,9 @@
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
     	<property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
     	<property name="validationMessageSource" ref="messageSource"/>
+    	<property name="validationPropertyMap">
+    		<map><entry key="hibernate.validator.fail_fast" value="true"></entry></map>
+    	</property>
     </bean>
     
     <!-- 国际化的消息资源文件（本系统中主要用于显示/错误消息定制） -->
