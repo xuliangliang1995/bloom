@@ -1,4 +1,4 @@
-package com.bloom.web.menu.dto;
+package com.bloom.web.menu.vo;
 
 import javax.validation.constraints.NotEmpty;
 

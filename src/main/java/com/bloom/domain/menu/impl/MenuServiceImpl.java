@@ -41,7 +41,7 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	@Transactional
 	@RoleCheck(HighGradeRole.Administrator)
-	@CacheEvict(cacheNames = CachedName.menuTree,key = "0")
+	@CacheEvict(cacheNames = CachedName.menuTree,allEntries = true)
 	public void createMenu(Menu menu) {
 		Date now = new Date();
 		Assert.isTrue(StringUtils.hasText(menu.getName()),"菜单名称不能为空");
@@ -85,7 +85,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = CachedName.menuTree,key = "0")
+	@Cacheable(cacheNames = CachedName.menuTree,key = "items")
 	public List<MenuTree> menuTree() {
 		List<MenuTree> tags = menuExtDao.getAllMenuList(0);
 		tags.stream().forEach(tag -> {

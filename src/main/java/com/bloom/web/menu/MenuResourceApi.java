@@ -20,7 +20,7 @@ import com.bloom.domain.gardener.RoleService;
 import com.bloom.domain.menu.MenuService;
 import com.bloom.domain.menu.vo.MenuTree;
 import com.bloom.util.general.NotNull;
-import com.bloom.web.menu.dto.CreateMenuDTO;
+import com.bloom.web.menu.vo.CreateMenuDTO;
 /**
  * 菜单
  * @author 83554
