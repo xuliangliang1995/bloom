@@ -1,16 +1,14 @@
 package com.bloom.web.flower.resource;
 
-import java.util.LinkedList;
-import java.util.List;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
 import com.bloom.dao.po.Flower;
 import com.bloom.web.flower.FlowerResourceApi;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import com.bloom.web.petal.PetalResourceApi;
+import com.bloom.web.petal.PetalVarietyResourceApi;
 
 public class FlowerResourceAssembler extends ResourceAssemblerSupport<Flower, FlowerResource> {
 
@@ -20,7 +18,12 @@ public class FlowerResourceAssembler extends ResourceAssemblerSupport<Flower, Fl
 
 	@Override
 	public FlowerResource toResource(Flower flower) {
-		return createResourceWithId(flower.getId(), flower,flower.getGardenerId());
+		FlowerResource flowerResource = createResourceWithId(flower.getId(), flower,flower.getGardenerId());
+		flowerResource.add(
+				linkTo(methodOn(PetalResourceApi.class).flowerPetals(flower.getId())).withRel("petals"),
+				linkTo(methodOn(PetalVarietyResourceApi.class).varieties()).withRel("petalVarieties")
+				);
+		return flowerResource;
 	}
 
 	@Override

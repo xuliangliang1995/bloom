@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bloom.dao.po.Flower;
 import com.bloom.domain.flower.FlowerService;
 import com.bloom.exception.FlowBreakException;
-import com.bloom.web.flower.dto.CreateFlowerCommand;
-import com.bloom.web.flower.dto.EditFlowerCommand;
 import com.bloom.web.flower.resource.FlowerResource;
 import com.bloom.web.flower.resource.FlowerResourceAssembler;
+import com.bloom.web.flower.vo.CreateFlowerCommand;
+import com.bloom.web.flower.vo.EditFlowerCommand;
 /**
  * 花儿er
  * @author 83554
@@ -50,6 +50,7 @@ public class FlowerResourceApi {
 	@GetMapping("/{flowerId}")
 	public FlowerResource readFlower(@PathVariable Integer gardenerId, @PathVariable Integer flowerId) {
 		Flower flower = flowerServiceImpl.findById(flowerId)
+				.filter(sflower -> sflower.getGardenerId().equals(gardenerId))
 				.orElseThrow(() -> new FlowBreakException("资源不存在！"));
 		return new FlowerResourceAssembler().toResource(flower);
 	}

@@ -7,18 +7,15 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.redis.core.RedisTemplate;
 /**
  * 菜单管理
  */
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import com.bloom.annotation.RoleCheck;
 import com.bloom.dao.ext.MenuExtDao;
@@ -35,8 +32,6 @@ public class MenuServiceImpl implements MenuService {
 	private MenuExtDao menuExtDao;
 	@Resource
 	private RoleMenuExtDao roleMenuExtDao;
-	@Autowired
-	private RedisTemplate<String, List<MenuTree>> jedisTemplate;
 	
 	@Override
 	@Transactional
@@ -85,7 +80,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = CachedName.menuTree,key = "items")
+	@Cacheable(cacheNames = CachedName.menuTree,key = "#root.methodName")
 	public List<MenuTree> menuTree() {
 		List<MenuTree> tags = menuExtDao.getAllMenuList(0);
 		tags.stream().forEach(tag -> {

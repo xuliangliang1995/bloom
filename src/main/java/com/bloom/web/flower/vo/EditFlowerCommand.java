@@ -1,4 +1,4 @@
-package com.bloom.web.flower.dto;
+package com.bloom.web.flower.vo;
 
 import javax.validation.constraints.NotEmpty;
 

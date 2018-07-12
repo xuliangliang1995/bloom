@@ -1,9 +1,13 @@
 package com.bloom.dao.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RetentionCurve {
-    private Integer id;
+public class RetentionCurve implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+
+	private Integer id;
 
     private Long intervalMinutes;
 

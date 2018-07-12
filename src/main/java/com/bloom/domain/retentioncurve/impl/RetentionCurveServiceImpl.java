@@ -54,6 +54,7 @@ public class RetentionCurveServiceImpl implements RetentionCurveService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = CachedName.retentionCurve, key = "#root.methodName")
 	public List<RetentionCurve> enabledRetentionCurves() {
 		RetentionCurveExample query = new RetentionCurveExample();
 		query.createCriteria().andEnabledEqualTo(true);
@@ -62,6 +63,7 @@ public class RetentionCurveServiceImpl implements RetentionCurveService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = CachedName.retentionCurve, key = "#root.methodName")
 	public List<RetentionCurve> retentionCurves() {
 		RetentionCurveExample query = new RetentionCurveExample();
 		query.setOrderByClause("interval_minutes asc");
