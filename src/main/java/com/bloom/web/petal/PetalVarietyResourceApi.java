@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bloom.dao.po.PetalVariety;
 import com.bloom.domain.petal.PetalVarietyService;
-import com.bloom.exception.FlowBreakException;
 import com.bloom.web.petal.resource.PetalVarietyResource;
 import com.bloom.web.petal.resource.PetalVarietyResourceAssembler;
 
@@ -33,10 +32,9 @@ public class PetalVarietyResourceApi {
 				);
 	}
 	
-	@GetMapping("/varietyId")
+	@GetMapping("/{varietyId}")
 	public PetalVarietyResource findById(@PathVariable Integer varietyId) {
-		PetalVariety variety = petalVarietyServiceImpl.findById(varietyId)
-				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
+		PetalVariety variety = petalVarietyServiceImpl.findById(varietyId);
 		return new PetalVarietyResourceAssembler().toResource(variety);
 	}
 

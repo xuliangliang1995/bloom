@@ -1,5 +1,9 @@
 package com.bloom.web.petal;
 
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.Resources;
@@ -16,7 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 
+import com.bloom.dao.po.Flower;
 import com.bloom.dao.po.Petal;
+import com.bloom.domain.flower.FlowerService;
+import com.bloom.domain.gardener.general.LoginCheckUtil;
 import com.bloom.domain.petal.PetalService;
 import com.bloom.exception.FlowBreakException;
 import com.bloom.web.petal.resource.PetalResource;
@@ -28,6 +35,10 @@ import com.bloom.web.petal.vo.CreatePetalForm;
 public class PetalResourceApi {
 	@Autowired
 	private PetalService petalServiceImpl;
+	@Autowired
+	private FlowerService flowerServiceImpl;
+	@Autowired
+	private HttpServletRequest request;
 	
 	@GetMapping
 	public Resources<PetalResource> flowerPetals(@PathVariable Integer flowerId){
@@ -38,7 +49,7 @@ public class PetalResourceApi {
 	
 	@GetMapping("/{petalId}")
 	public PetalResource findById(@PathVariable Integer flowerId,@PathVariable Integer petalId) {
-		Petal petal = petalServiceImpl.findByPetalId(petalId)
+		Petal petal = Optional.of(petalServiceImpl.findByPetalId(petalId))
 				.filter(spetal -> spetal.getFlowerId().equals(flowerId))
 				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
 		return new PetalResourceAssembler().toResource(petal);
@@ -46,12 +57,13 @@ public class PetalResourceApi {
 	
 	@PostMapping
 	public PetalResource create(@Validated CreatePetalForm createPetalForm,BindingResult result,@PathVariable Integer flowerId) {
-		Petal petal = new Petal();
-		petal.setFlowerId(flowerId);
-		petal.setName(createPetalForm.getName());
-		petal.setNote(createPetalForm.getNote());
-		petal.setPetalVarietyId(createPetalForm.getPetalVariety());
-		return new PetalResourceAssembler().toResource(petalServiceImpl.add(petal));
+		int gardenerId = LoginCheckUtil.loginGardenerId(request);
+		Flower flower = Optional.of(flowerServiceImpl.findById(flowerId))
+				.filter(sflower -> sflower.getGardenerId().equals(gardenerId))
+				.orElseThrow(() -> new FlowBreakException("操作权限不足！"));
+		return new PetalResourceAssembler().toResource(
+				petalServiceImpl.add(flower,createPetalForm)
+				);
 	}
 
 }

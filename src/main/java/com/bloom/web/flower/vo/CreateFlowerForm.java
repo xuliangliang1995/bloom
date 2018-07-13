@@ -4,7 +4,12 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
-public class EditFlowerCommand {
+/**
+ * 创建flower
+ * @author 83554
+ *
+ */
+public class CreateFlowerForm {
 	@NotEmpty(message = "{flower.name.empty}")
 	@Length(min = 2,max = 6,message = "{flower.name.length}")
 	private String name;
@@ -24,5 +29,4 @@ public class EditFlowerCommand {
 		this.moral = moral;
 	}
 	
-
 }

@@ -9,17 +9,18 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import com.bloom.dao.ext.PetalExtDao;
+import com.bloom.dao.po.Flower;
 import com.bloom.dao.po.Petal;
 import com.bloom.dao.po.PetalExample;
 import com.bloom.domain.CachedName;
 import com.bloom.domain.gardener.general.LoginCheckUtil;
 import com.bloom.domain.petal.PetalService;
+import com.bloom.exception.FlowBreakException;
+import com.bloom.web.petal.vo.CreatePetalForm;
 /**
  * petal
  * @author 83554
@@ -34,17 +35,23 @@ public class PetalServiceImpl implements PetalService {
 	
 	@Override
 	@Cacheable(cacheNames = CachedName.petal, key = "#petalId")
-	public Optional<Petal> findByPetalId(int petalId) {
-		return Optional.ofNullable(petalExtDao.selectByPrimaryKey(petalId));
+	public Petal findByPetalId(int petalId) {
+		return Optional.ofNullable(petalExtDao.selectByPrimaryKey(petalId))
+				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
 	}
 
 	@Override
 	@Transactional
 	@CachePut(cacheNames = CachedName.petal, key = "#result.id")
-	public Petal add(Petal petal) {
-		int gardenerId = LoginCheckUtil.loginGardenerId(request);
-		Assert.isTrue(gardenerId == petal.getFlowerId(),"操作异常！");
+	public Petal add(Flower flower,CreatePetalForm createPetalForm) {
 		Date now = new Date();
+		int gardenerId = LoginCheckUtil.loginGardenerId(request);
+		Petal petal = new Petal();
+		petal.setGardenerId(gardenerId);
+		petal.setFlowerId(flower.getId());
+		petal.setName(createPetalForm.getName());
+		petal.setNote(createPetalForm.getNote());
+		petal.setPetalVarietyId(createPetalForm.getPetalVariety());
 		petal.setCt(now);
 		petal.setUt(now);
 		petalExtDao.insert(petal);

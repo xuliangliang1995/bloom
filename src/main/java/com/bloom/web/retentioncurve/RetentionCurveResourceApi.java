@@ -46,8 +46,7 @@ public class RetentionCurveResourceApi {
 	
 	@GetMapping("/{curveId}")
 	public RetentionCurveResource getUnitCurve(@PathVariable Integer curveId) {
-		RetentionCurve curve = retentionCurveServiceImpl.findById(curveId)
-				.orElseThrow(() -> new FlowBreakException("指定資源不存在或已被刪除！"));
+		RetentionCurve curve = retentionCurveServiceImpl.findById(curveId);
 		return new RetentionCurveResourceAssembler().toResource(curve);
 	}
 	

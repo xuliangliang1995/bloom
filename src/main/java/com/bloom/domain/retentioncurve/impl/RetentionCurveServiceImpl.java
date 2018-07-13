@@ -1,8 +1,6 @@
 package com.bloom.domain.retentioncurve.impl;
 
-import java.lang.annotation.Retention;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +17,7 @@ import com.bloom.dao.po.RetentionCurveExample;
 import com.bloom.domain.CachedName;
 import com.bloom.domain.gardener.meta.HighGradeRole;
 import com.bloom.domain.retentioncurve.RetentionCurveService;
+import com.bloom.exception.FlowBreakException;
 /**
  * 记忆曲线实现类
  * @author 83554
@@ -31,8 +30,9 @@ public class RetentionCurveServiceImpl implements RetentionCurveService {
 
 	@Override
 	@Cacheable(cacheNames = CachedName.retentionCurve, key = "#curveId")
-	public Optional<RetentionCurve> findById(int curveId) {
-		return Optional.ofNullable(retentionCurveExtDao.selectByPrimaryKey(curveId));
+	public RetentionCurve findById(int curveId) {
+		return Optional.ofNullable(retentionCurveExtDao.selectByPrimaryKey(curveId))
+				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
 	}
 	
 	@Override

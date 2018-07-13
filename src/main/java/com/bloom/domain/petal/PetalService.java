@@ -1,15 +1,16 @@
 package com.bloom.domain.petal;
 
 import java.util.List;
-import java.util.Optional;
 
+import com.bloom.dao.po.Flower;
 import com.bloom.dao.po.Petal;
+import com.bloom.web.petal.vo.CreatePetalForm;
 
 public interface PetalService {
 	
-	Optional<Petal> findByPetalId(int petalId);
+	Petal findByPetalId(int petalId);
 	
-	Petal add(Petal petal);
+	Petal add(Flower flower,CreatePetalForm createPetalForm);
 	
 	List<Petal> flowerPetals(int flowerId);
 

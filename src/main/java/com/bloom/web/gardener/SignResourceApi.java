@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bloom.dao.po.Gardener;
 import com.bloom.domain.gardener.SignService;
 import com.bloom.response.Result;
-import com.bloom.web.gardener.dto.SignInDTO;
-import com.bloom.web.gardener.dto.SignUpDTO;
 import com.bloom.web.gardener.resource.GardenerReosurceAssembler;
 import com.bloom.web.gardener.resource.GardenerResource;
+import com.bloom.web.gardener.vo.SignInForm;
+import com.bloom.web.gardener.vo.SignUpForm;
 /**
  * 签入、签出
  * @author 83554
@@ -38,8 +38,8 @@ public class SignResourceApi {
 	 */
 	@PostMapping
 	@CrossOrigin
-	public Result signUp(@Validated SignUpDTO signUpDTO,BindingResult result) {
-		signServiceImpl.signUp(signUpDTO.getUsername(), signUpDTO.getPassword());
+	public Result signUp(@Validated SignUpForm signUpForm,BindingResult result) {
+		signServiceImpl.signUp(signUpForm.getUsername(), signUpForm.getPassword());
 		return Result.success();
 	}
 	/**
@@ -50,11 +50,12 @@ public class SignResourceApi {
 	 */
 	@GetMapping
 	@CrossOrigin
-	public ResponseEntity<GardenerResource> signIn(@Validated SignInDTO signInDTO,BindingResult result,
+	public ResponseEntity<GardenerResource> signIn(@Validated SignInForm signInForm,BindingResult result,
 			HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.OK).body(
-					new GardenerReosurceAssembler().toResource(signServiceImpl.signIn(request, signInDTO.getUsername(), signInDTO.getPassword()))
+					new GardenerReosurceAssembler().toResource(signServiceImpl.signIn(request, signInForm.getUsername(), signInForm.getPassword()))
 					);
 	}
-	
+
+
 }

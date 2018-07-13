@@ -6,13 +6,12 @@ package com.bloom.domain.retentioncurve;
  */
 
 import java.util.List;
-import java.util.Optional;
 
 import com.bloom.dao.po.RetentionCurve;
 
 public interface RetentionCurveService {
 	
-	Optional<RetentionCurve> findById(int curveId);
+	RetentionCurve findById(int curveId);
 	
 	RetentionCurve add(RetentionCurve curve);
 	

@@ -1,11 +1,15 @@
 package com.bloom.dao.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.springframework.hateoas.Identifiable;
 
-public class Flower implements Identifiable<Integer>{
-    private Integer id;
+public class Flower implements Identifiable<Integer>,Serializable{
+	
+	private static final long serialVersionUID = 1L;
+
+	private Integer id;
 
     private Integer gardenerId;
 
