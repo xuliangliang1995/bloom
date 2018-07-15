@@ -1,9 +1,12 @@
 package com.bloom.dao.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Petal {
-    private Integer id;
+public class Petal implements Serializable{
+	private static final long serialVersionUID = 1L;
+
+	private Integer id;
 
     private Integer gardenerId;
 

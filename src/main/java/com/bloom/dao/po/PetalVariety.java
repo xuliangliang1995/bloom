@@ -1,7 +1,11 @@
 package com.bloom.dao.po;
 
-public class PetalVariety {
-    private Integer id;
+import java.io.Serializable;
+
+public class PetalVariety implements Serializable{
+	private static final long serialVersionUID = 1L;
+
+	private Integer id;
 
     private String variety;
 

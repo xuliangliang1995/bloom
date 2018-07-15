@@ -6,20 +6,21 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bloom.dao.po.Gardener;
-import com.bloom.domain.gardener.BasicInfoService;
 import com.bloom.domain.gardener.SignService;
 import com.bloom.response.Result;
 import com.bloom.web.gardener.resource.GardenerReosurceAssembler;
 import com.bloom.web.gardener.resource.GardenerResource;
+import com.bloom.web.gardener.vo.SignInForm;
+import com.bloom.web.gardener.vo.SignUpForm;
 /**
  * 签入、签出
  * @author 83554
@@ -31,18 +32,14 @@ import com.bloom.web.gardener.resource.GardenerResource;
 public class SignResourceApi {
 	@Resource
 	private SignService signServiceImpl;
-	@Resource
-	private BasicInfoService basicInfoServiceImpl;
 	/**
 	 * SignUp
 	 * @return
 	 */
 	@PostMapping
 	@CrossOrigin
-	public Result signUp(
-			@RequestParam("username")String username,
-			@RequestParam("password")String password) {
-		signServiceImpl.signUp(username, password);
+	public Result signUp(@Validated SignUpForm signUpForm,BindingResult result) {
+		signServiceImpl.signUp(signUpForm.getUsername(), signUpForm.getPassword());
 		return Result.success();
 	}
 	/**
@@ -53,17 +50,12 @@ public class SignResourceApi {
 	 */
 	@GetMapping
 	@CrossOrigin
-	public ResponseEntity<GardenerResource> signIn(
-			@RequestParam("username")String username,
-			@RequestParam("password")String password,
+	public ResponseEntity<GardenerResource> signIn(@Validated SignInForm signInForm,BindingResult result,
 			HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.OK).body(
-					new GardenerReosurceAssembler().toResource(signServiceImpl.signIn(request, username, password))
+					new GardenerReosurceAssembler().toResource(signServiceImpl.signIn(request, signInForm.getUsername(), signInForm.getPassword()))
 					);
 	}
-	
-	@GetMapping("/{gardenerId}")
-	public GardenerResource getGardener(@PathVariable Integer gardenerId) {
-		return new GardenerReosurceAssembler().toResource(basicInfoServiceImpl.findGardenerById(gardenerId));
-	}
+
+
 }

@@ -68,7 +68,7 @@
     delete from petal
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.bloom.dao.po.Petal">
+  <insert id="insert" parameterType="com.bloom.dao.po.Petal" useGeneratedKeys="true" keyProperty="id">
     insert into petal (id, gardener_id, flower_id, 
       petal_variety_id, name, note, 
       ct, ut)

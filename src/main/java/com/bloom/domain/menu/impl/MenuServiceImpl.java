@@ -7,18 +7,21 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 /**
  * 菜单管理
  */
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import com.bloom.annotation.RoleCheck;
 import com.bloom.dao.ext.MenuExtDao;
 import com.bloom.dao.ext.RoleMenuExtDao;
 import com.bloom.dao.po.Menu;
+import com.bloom.domain.CachedName;
 import com.bloom.domain.gardener.meta.HighGradeRole;
 import com.bloom.domain.menu.MenuService;
 import com.bloom.domain.menu.vo.MenuTree;
@@ -31,8 +34,9 @@ public class MenuServiceImpl implements MenuService {
 	private RoleMenuExtDao roleMenuExtDao;
 	
 	@Override
-	@RoleCheck(HighGradeRole.Administrator)
 	@Transactional
+	@RoleCheck(HighGradeRole.Administrator)
+	@CacheEvict(cacheNames = CachedName.menuTree,allEntries = true)
 	public void createMenu(Menu menu) {
 		Date now = new Date();
 		Assert.isTrue(StringUtils.hasText(menu.getName()),"菜单名称不能为空");
@@ -46,8 +50,9 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	@RoleCheck(HighGradeRole.Administrator)
 	@Transactional
+	@RoleCheck(HighGradeRole.Administrator)
+	@CacheEvict(cacheNames = CachedName.menuTree,allEntries = true)
 	public void deleteMenu(int menuId) {
 		Menu menu = Optional.ofNullable(
 				menuExtDao.selectByPrimaryKey(menuId)
@@ -60,6 +65,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = CachedName.menuTree, key = "#roleId")
 	public List<MenuTree> roleMenuTree(int roleId) {
 		List<MenuTree> tags = menuExtDao.getMenuList(0, roleId);
 		tags.stream().forEach(tag -> {
@@ -74,6 +80,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
+	@Cacheable(cacheNames = CachedName.menuTree,key = "#root.methodName")
 	public List<MenuTree> menuTree() {
 		List<MenuTree> tags = menuExtDao.getAllMenuList(0);
 		tags.stream().forEach(tag -> {

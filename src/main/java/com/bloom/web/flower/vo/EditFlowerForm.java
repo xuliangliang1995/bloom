@@ -1,15 +1,10 @@
-package com.bloom.web.flower.dto;
+package com.bloom.web.flower.vo;
 
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
-/**
- * 创建flower
- * @author 83554
- *
- */
-public class CreateFlowerCommand {
+public class EditFlowerForm {
 	@NotEmpty(message = "{flower.name.empty}")
 	@Length(min = 2,max = 6,message = "{flower.name.length}")
 	private String name;
@@ -29,4 +24,5 @@ public class CreateFlowerCommand {
 		this.moral = moral;
 	}
 	
+
 }

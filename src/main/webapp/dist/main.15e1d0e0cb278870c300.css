@@ -24,14 +24,13 @@ body{
 	background:white
 }
 .layout-logo[data-v-7cbbe74f]{
-    width: 100px;
-    height: 30px;
+    width: 80px;
     /*background: #5b6270;*/
     border-radius: 3px;
     float: left;
     position: relative;
-    top: 15px;
-    left: 20px;
+    top: 8px;
+    left: 10px;
 }
 .logo[data-v-7cbbe74f]{
 	width: 100%;

@@ -7,17 +7,19 @@ import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
 import com.bloom.dao.po.Gardener;
 import com.bloom.web.flower.FlowerResourceApi;
-import com.bloom.web.gardener.SignResourceApi;
+import com.bloom.web.gardener.GardenerResourceApi;
+import com.bloom.web.retentioncurve.RetentionCurveResourceApi;
 
 public class GardenerReosurceAssembler extends ResourceAssemblerSupport<Gardener, GardenerResource> {
 	public GardenerReosurceAssembler() {
-		super(SignResourceApi.class, GardenerResource.class);
+		super(GardenerResourceApi.class, GardenerResource.class);
 	}
 	@Override
 	public GardenerResource toResource(Gardener gardener) {
 		GardenerResource gardenerResource = createResourceWithId(gardener.getId(), gardener);
 		gardenerResource.add(
-				linkTo(methodOn(FlowerResourceApi.class).readFlowers(gardener.getId())).withRel("flowers")
+				linkTo(methodOn(FlowerResourceApi.class).readFlowers(gardener.getId())).withRel("flowers"),
+				linkTo(methodOn(RetentionCurveResourceApi.class).enabledRetentionCurve()).withRel("retentionCurve")
 				);
 		return gardenerResource;
 	}
