@@ -170,6 +170,13 @@
 	    <artifactId>hibernate-validator</artifactId>
 	    <version>${hibernate.validator.version}</version>
 	</dependency>
+	
+	<!-- quartz -->
+	<dependency>
+         <groupId>org.quartz-scheduler</groupId>
+         <artifactId>quartz</artifactId>
+         <version>${quartz.version}</version>
+     </dependency>
     
   </dependencies>
   <build>
@@ -192,6 +199,7 @@
                     <overwrite>true</overwrite>
                  </configuration>
               </execution>
+              
            </executions>
            <dependencies>
               <dependency>
@@ -233,6 +241,7 @@
   	<spring.redis.version>2.0.8.RELEASE</spring.redis.version>
   	<junit.version>4.11</junit.version>
   	<hibernate.validator.version>6.0.10.Final</hibernate.validator.version>
+  	<quartz.version>2.2.3</quartz.version>
   </properties>
   <profiles>  
     <profile>  
