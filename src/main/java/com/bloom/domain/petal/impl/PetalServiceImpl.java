@@ -18,6 +18,7 @@ import com.bloom.dao.po.Petal;
 import com.bloom.dao.po.PetalExample;
 import com.bloom.domain.CachedName;
 import com.bloom.domain.gardener.general.LoginCheckUtil;
+import com.bloom.domain.petal.PetalProgressService;
 import com.bloom.domain.petal.PetalService;
 import com.bloom.exception.FlowBreakException;
 import com.bloom.web.petal.vo.CreatePetalForm;
@@ -32,6 +33,8 @@ public class PetalServiceImpl implements PetalService {
 	private PetalExtDao petalExtDao;
 	@Autowired
 	private HttpServletRequest request;
+	@Autowired
+	private PetalProgressService petalProgressServiceImpl;
 	
 	@Override
 	@Cacheable(cacheNames = CachedName.petal, key = "#petalId")
@@ -55,6 +58,7 @@ public class PetalServiceImpl implements PetalService {
 		petal.setCt(now);
 		petal.setUt(now);
 		petalExtDao.insert(petal);
+		petalProgressServiceImpl.initProgress(petal);
 		return petal;
 	}
 
