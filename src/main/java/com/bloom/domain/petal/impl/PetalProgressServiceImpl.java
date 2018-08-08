@@ -45,5 +45,5 @@ public class PetalProgressServiceImpl implements PetalProgressService {
 		petalProgressExtDao.insert(nextProgress);
 		return nextProgress;
 	}
-
+	
 }

@@ -185,6 +185,13 @@
 	    <version>${lombok.version}</version>
 	    <scope>provided</scope>
 	</dependency>
+	
+	<!-- 微信公众号框架 -->
+	<dependency>
+	  <groupId>com.github.binarywang</groupId>
+	  <artifactId>weixin-java-mp</artifactId>
+	  <version>${weixin-java.version}</version>
+	</dependency>
      
     
   </dependencies>
@@ -252,6 +259,7 @@
   	<hibernate.validator.version>6.0.10.Final</hibernate.validator.version>
   	<quartz.version>2.2.3</quartz.version>
   	<lombok.version>1.18.2</lombok.version>
+  	<weixin-java.version>3.1.0</weixin-java.version>
   </properties>
   <profiles>  
     <profile>  
