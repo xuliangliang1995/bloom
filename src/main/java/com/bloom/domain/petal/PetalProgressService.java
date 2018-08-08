@@ -1,7 +1,7 @@
 package com.bloom.domain.petal;
 
 import com.bloom.dao.po.Petal;
-import com.bloom.dao.po.RetentionCurve;
+import com.bloom.dao.po.PetalProgress;
 
 /**
  * 叶子-进展
@@ -12,6 +12,6 @@ public interface PetalProgressService {
 	
 	void initProgress(Petal petal);
 	
-	RetentionCurve createNextProgress(Petal petal);
+	PetalProgress createNextProgress(Petal petal);
 
 }

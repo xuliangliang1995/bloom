@@ -177,6 +177,15 @@
          <artifactId>quartz</artifactId>
          <version>${quartz.version}</version>
      </dependency>
+     
+     <!-- lombok -->
+     <dependency>
+	    <groupId>org.projectlombok</groupId>
+	    <artifactId>lombok</artifactId>
+	    <version>${lombok.version}</version>
+	    <scope>provided</scope>
+	</dependency>
+     
     
   </dependencies>
   <build>
@@ -242,6 +251,7 @@
   	<junit.version>4.11</junit.version>
   	<hibernate.validator.version>6.0.10.Final</hibernate.validator.version>
   	<quartz.version>2.2.3</quartz.version>
+  	<lombok.version>1.18.2</lombok.version>
   </properties>
   <profiles>  
     <profile>  

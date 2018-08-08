@@ -35,9 +35,15 @@ public class PetalProgressServiceImpl implements PetalProgressService {
 
 	@Override
 	@Transactional
-	public RetentionCurve createNextProgress(Petal petal) {
-		// TODO Auto-generated method stub
-		return null;
+	public PetalProgress createNextProgress(Petal petal) {
+		PetalProgress progress = petalProgressExtDao.currentProgress(petal.getId());
+		List<RetentionCurve> curves = retentionCurveServiceImpl.enabledRetentionCurves();
+		RetentionCurve nextCurve = curves.stream()
+				.filter(curve -> curve.getId()>progress.getRetentionCurveId()).findFirst()
+				.orElse(curves.get(curves.size()-1));
+		PetalProgress nextProgress = PetalProgressFactory.create(petal, nextCurve);
+		petalProgressExtDao.insert(nextProgress);
+		return nextProgress;
 	}
 
 }

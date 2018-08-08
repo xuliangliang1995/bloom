@@ -24,6 +24,10 @@
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="dataSource" ref="quartzDataSource" />
         <property name="configLocation" value="classpath:quartz/quartz-config.properties" />
+        <property name="jobDetails">
+        	<list>
+        	</list>
+        </property>
         <property name="triggers">
             <list>
             </list>
