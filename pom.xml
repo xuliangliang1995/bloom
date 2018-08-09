@@ -170,6 +170,29 @@
 	    <artifactId>hibernate-validator</artifactId>
 	    <version>${hibernate.validator.version}</version>
 	</dependency>
+	
+	<!-- quartz -->
+	<dependency>
+         <groupId>org.quartz-scheduler</groupId>
+         <artifactId>quartz</artifactId>
+         <version>${quartz.version}</version>
+     </dependency>
+     
+     <!-- lombok -->
+     <dependency>
+	    <groupId>org.projectlombok</groupId>
+	    <artifactId>lombok</artifactId>
+	    <version>${lombok.version}</version>
+	    <scope>provided</scope>
+	</dependency>
+	
+	<!-- 微信公众号框架 -->
+	<dependency>
+	  <groupId>com.github.binarywang</groupId>
+	  <artifactId>weixin-java-mp</artifactId>
+	  <version>${weixin-java.version}</version>
+	</dependency>
+     
     
   </dependencies>
   <build>
@@ -192,6 +215,7 @@
                     <overwrite>true</overwrite>
                  </configuration>
               </execution>
+              
            </executions>
            <dependencies>
               <dependency>
@@ -233,6 +257,9 @@
   	<spring.redis.version>2.0.8.RELEASE</spring.redis.version>
   	<junit.version>4.11</junit.version>
   	<hibernate.validator.version>6.0.10.Final</hibernate.validator.version>
+  	<quartz.version>2.2.3</quartz.version>
+  	<lombok.version>1.18.2</lombok.version>
+  	<weixin-java.version>3.1.0</weixin-java.version>
   </properties>
   <profiles>  
     <profile>  

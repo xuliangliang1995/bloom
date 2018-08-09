@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import com.bloom.dao.po.Petal;
 import com.bloom.domain.flower.FlowerService;
 import com.bloom.domain.gardener.general.LoginCheckUtil;
 import com.bloom.domain.petal.PetalService;
+import com.bloom.domain.petal.meta.PetalVarietyEnum;
 import com.bloom.exception.FlowBreakException;
 import com.bloom.web.petal.resource.PetalResource;
 import com.bloom.web.petal.resource.PetalResourceAssembler;
@@ -63,6 +66,28 @@ public class PetalResourceApi {
 				.orElseThrow(() -> new FlowBreakException("操作权限不足！"));
 		return new PetalResourceAssembler().toResource(
 				petalServiceImpl.add(flower,createPetalForm)
+				);
+	}
+	
+	@GetMapping("/{petalId}/link")
+	public ResponseEntity<?> petalLink(@PathVariable Integer flowerId,@PathVariable Integer petalId){
+		Petal petal = Optional.of(petalServiceImpl.findByPetalId(petalId))
+				.filter(spetal -> spetal.getFlowerId().equals(flowerId))
+				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
+		Assert.isTrue(PetalVarietyEnum.LINK.getId() == petal.getPetalVarietyId().intValue(),"请求错误！");
+		return ResponseEntity.ok(
+				petalServiceImpl.getPetalInnerLinkService().findByPetalId(petalId).getLink()
+				);
+	}
+	
+	@GetMapping("/{petalId}/text")
+	public ResponseEntity<?> petalText(@PathVariable Integer flowerId,@PathVariable Integer petalId){
+		Petal petal = Optional.of(petalServiceImpl.findByPetalId(petalId))
+				.filter(spetal -> spetal.getFlowerId().equals(flowerId))
+				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
+		Assert.isTrue(PetalVarietyEnum.RICH_TEXT.getId() == petal.getPetalVarietyId().intValue(),"请求错误！");
+		return ResponseEntity.ok(
+				petalServiceImpl.getPetalInnerTextService().findByPetalId(petalId).getText()
 				);
 	}
 

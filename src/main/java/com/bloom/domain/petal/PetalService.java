@@ -6,12 +6,12 @@ import com.bloom.dao.po.Flower;
 import com.bloom.dao.po.Petal;
 import com.bloom.web.petal.vo.CreatePetalForm;
 
-public interface PetalService {
+public interface PetalService extends PetalInnerGroupService{
 	
 	Petal findByPetalId(int petalId);
 	
 	Petal add(Flower flower,CreatePetalForm createPetalForm);
 	
 	List<Petal> flowerPetals(int flowerId);
-
+	
 }

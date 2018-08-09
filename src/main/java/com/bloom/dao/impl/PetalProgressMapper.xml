@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bloom.dao.PetalProgressMapper">
+  <resultMap id="BaseResultMap" type="com.bloom.dao.po.PetalProgress">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="petal_id" jdbcType="INTEGER" property="petalId" />
+    <result column="gardener_id" jdbcType="INTEGER" property="gardenerId" />
+    <result column="retention_curve_id" jdbcType="INTEGER" property="retentionCurveId" />
+    <result column="fire_time" jdbcType="TIMESTAMP" property="fireTime" />
+    <result column="ct" jdbcType="TIMESTAMP" property="ct" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, petal_id, gardener_id, retention_curve_id, fire_time, ct
+  </sql>
+  <select id="selectByExample" parameterType="com.bloom.dao.po.PetalProgressExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from petal_progress
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from petal_progress
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from petal_progress
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.bloom.dao.po.PetalProgress" useGeneratedKeys="true" keyProperty="id">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into petal_progress (petal_id, gardener_id, retention_curve_id, 
+      fire_time, ct)
+    values (#{petalId,jdbcType=INTEGER}, #{gardenerId,jdbcType=INTEGER}, #{retentionCurveId,jdbcType=INTEGER}, 
+      #{fireTime,jdbcType=TIMESTAMP}, #{ct,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bloom.dao.po.PetalProgress">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into petal_progress
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="petalId != null">
+        petal_id,
+      </if>
+      <if test="gardenerId != null">
+        gardener_id,
+      </if>
+      <if test="retentionCurveId != null">
+        retention_curve_id,
+      </if>
+      <if test="fireTime != null">
+        fire_time,
+      </if>
+      <if test="ct != null">
+        ct,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="petalId != null">
+        #{petalId,jdbcType=INTEGER},
+      </if>
+      <if test="gardenerId != null">
+        #{gardenerId,jdbcType=INTEGER},
+      </if>
+      <if test="retentionCurveId != null">
+        #{retentionCurveId,jdbcType=INTEGER},
+      </if>
+      <if test="fireTime != null">
+        #{fireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ct != null">
+        #{ct,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bloom.dao.po.PetalProgress">
+    update petal_progress
+    <set>
+      <if test="petalId != null">
+        petal_id = #{petalId,jdbcType=INTEGER},
+      </if>
+      <if test="gardenerId != null">
+        gardener_id = #{gardenerId,jdbcType=INTEGER},
+      </if>
+      <if test="retentionCurveId != null">
+        retention_curve_id = #{retentionCurveId,jdbcType=INTEGER},
+      </if>
+      <if test="fireTime != null">
+        fire_time = #{fireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ct != null">
+        ct = #{ct,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bloom.dao.po.PetalProgress">
+    update petal_progress
+    set petal_id = #{petalId,jdbcType=INTEGER},
+      gardener_id = #{gardenerId,jdbcType=INTEGER},
+      retention_curve_id = #{retentionCurveId,jdbcType=INTEGER},
+      fire_time = #{fireTime,jdbcType=TIMESTAMP},
+      ct = #{ct,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
