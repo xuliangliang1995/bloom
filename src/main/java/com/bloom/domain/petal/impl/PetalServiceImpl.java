@@ -1,5 +1,6 @@
 package com.bloom.domain.petal.impl;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -18,8 +19,11 @@ import com.bloom.dao.po.Petal;
 import com.bloom.dao.po.PetalExample;
 import com.bloom.domain.CachedName;
 import com.bloom.domain.gardener.general.LoginCheckUtil;
+import com.bloom.domain.petal.PetalInnerLinkService;
+import com.bloom.domain.petal.PetalInnerTextService;
 import com.bloom.domain.petal.PetalProgressService;
 import com.bloom.domain.petal.PetalService;
+import com.bloom.domain.petal.meta.PetalVarietyEnum;
 import com.bloom.exception.FlowBreakException;
 import com.bloom.web.petal.vo.CreatePetalForm;
 /**
@@ -30,11 +34,15 @@ import com.bloom.web.petal.vo.CreatePetalForm;
 @Service
 public class PetalServiceImpl implements PetalService {
 	@Autowired
-	private PetalExtDao petalExtDao;
-	@Autowired
 	private HttpServletRequest request;
 	@Autowired
+	private PetalExtDao petalExtDao;
+	@Autowired
 	private PetalProgressService petalProgressServiceImpl;
+	@Autowired
+	private PetalInnerLinkService petalInnerLinkServiceImpl;
+	@Autowired
+	private PetalInnerTextService petalInnerTextServiceImpl;
 	
 	@Override
 	@Cacheable(cacheNames = CachedName.petal, key = "#petalId")
@@ -47,6 +55,11 @@ public class PetalServiceImpl implements PetalService {
 	@Transactional
 	@CachePut(cacheNames = CachedName.petal, key = "#result.id")
 	public Petal add(Flower flower,CreatePetalForm createPetalForm) {
+		PetalVarietyEnum variety = Arrays.stream(PetalVarietyEnum.values())
+				.filter(vari -> vari.getId() == createPetalForm.getPetalVariety().intValue())
+				.findFirst()
+				.orElseThrow(() -> new FlowBreakException("叶子种类有误！"));
+		
 		Date now = new Date();
 		int gardenerId = LoginCheckUtil.loginGardenerId(request);
 		Petal petal = new Petal();
@@ -58,6 +71,16 @@ public class PetalServiceImpl implements PetalService {
 		petal.setCt(now);
 		petal.setUt(now);
 		petalExtDao.insert(petal);
+		
+		switch (variety) {
+		case LINK:
+			petalInnerLinkServiceImpl.addPetalLink(petal, createPetalForm.getLink());
+			break;
+		case RICH_TEXT:
+			petalInnerTextServiceImpl.addPetalText(petal, createPetalForm.getText());
+			break;
+		}
+		
 		petalProgressServiceImpl.initProgress(petal);
 		return petal;
 	}
@@ -68,6 +91,16 @@ public class PetalServiceImpl implements PetalService {
 		query.createCriteria().andFlowerIdEqualTo(flowerId);
 		query.setOrderByClause("id desc");
 		return petalExtDao.selectByExample(query);
+	}
+
+	@Override
+	public PetalInnerLinkService getPetalInnerLinkService() {
+		return this.petalInnerLinkServiceImpl;
+	}
+
+	@Override
+	public PetalInnerTextService getPetalInnerTextService() {
+		return this.petalInnerTextServiceImpl;
 	}
 
 }

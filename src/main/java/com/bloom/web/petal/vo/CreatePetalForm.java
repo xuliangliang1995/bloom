@@ -4,6 +4,10 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+import lombok.Getter;
+import lombok.Setter;
+@Setter
+@Getter
 public class CreatePetalForm {
 	@Length(min = 2,max = 10,message = "{petal.name.length}")
 	private String name;
@@ -11,31 +15,9 @@ public class CreatePetalForm {
 	private String note;
 	@NotNull(message = "{petal.variety.null}")
 	private Integer petalVariety;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
-
-	public Integer getPetalVariety() {
-		return petalVariety;
-	}
-
-	public void setPetalVariety(Integer petalVariety) {
-		this.petalVariety = petalVariety;
-	}
 	
+	private String link;
 	
+	private String text;
 
 }
