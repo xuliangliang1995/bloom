@@ -260,18 +260,19 @@
   	<quartz.version>2.2.3</quartz.version>
   	<lombok.version>1.18.2</lombok.version>
   	<weixin-java.version>3.1.0</weixin-java.version>
+  	<java.version>8</java.version>
   </properties>
   <profiles>  
     <profile>  
-        <id>jdk-10</id>  
+        <id>jdk-${java.version}</id>  
         <activation>  
             <activeByDefault>true</activeByDefault>  
-            <jdk>10</jdk>  
+            <jdk>${java.version}</jdk>  
         </activation>  
         <properties>  
-            <maven.compiler.source>10</maven.compiler.source>  
-            <maven.compiler.target>10</maven.compiler.target>  
-            <maven.compiler.compilerVersion>10</maven.compiler.compilerVersion>  
+            <maven.compiler.source>${java.version}</maven.compiler.source>  
+            <maven.compiler.target>${java.version}</maven.compiler.target>  
+            <maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>  
         </properties>  
     </profile>  
    </profiles> 
