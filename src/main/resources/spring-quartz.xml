@@ -26,11 +26,24 @@
         <property name="configLocation" value="classpath:quartz/quartz-config.properties" />
         <property name="jobDetails">
         	<list>
+        		<ref bean="flyleafJobDetail"/>
         	</list>
         </property>
         <property name="triggers">
             <list>
+            	<ref bean="flyleafTrigger"/>
             </list>
         </property>
+    </bean>
+    
+    <!-- 飞叶流 -->
+    <bean id="flyleafJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.bloom.task.Flyleaf"/>
+		<property name="durability" value="true" />	
+		<property name="requestsRecovery" value="true" />
+    </bean>
+    <bean id="flyleafTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    	<property name="jobDetail" ref="flyleafJobDetail" />
+		<property name="cronExpression" value="0/5 * * * * ?" />
     </bean>
 </beans>
