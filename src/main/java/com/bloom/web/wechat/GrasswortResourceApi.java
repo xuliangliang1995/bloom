@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bloom.util.general.NotNull;
+
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
@@ -57,7 +59,11 @@ public class GrasswortResourceApi {
 		     // 明文传输的消息
 		     WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(request.getInputStream());
 		     WxMpXmlOutMessage outMessage = wxMpMessageRouter.route(inMessage);
-		     response.getWriter().write(outMessage.toXml());
+		     if(null == outMessage) {
+		    	 response.getWriter().write("");
+		     }else {
+		    	 response.getWriter().write(outMessage.toXml());
+		     }
 		     return;
 		}
 
