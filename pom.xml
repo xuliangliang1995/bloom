@@ -260,7 +260,7 @@
   	<quartz.version>2.2.3</quartz.version>
   	<lombok.version>1.18.2</lombok.version>
   	<weixin-java.version>3.1.0</weixin-java.version>
-  	<java.version>8</java.version>
+  	<java.version>10</java.version>
   </properties>
   <profiles>  
     <profile>  
