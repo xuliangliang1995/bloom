@@ -35,7 +35,7 @@ public class MsgHandler extends AbstractHandler {
 	    }
 
 	    //TODO 组装回复消息
-	    String content = "回复信息内容";
+	    String content = "倘若终究要痴，为花而痴，不也很美么。";
 	    return new TextBuilder().build(content, wxMessage, wxMpService);
 
 	  }
