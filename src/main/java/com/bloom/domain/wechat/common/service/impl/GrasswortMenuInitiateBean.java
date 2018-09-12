@@ -32,14 +32,17 @@ public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 		button1.setType(MenuButtonType.VIEW);
 		button1.setName("搜索");
 		button1.setUrl("http://www.baidu.com/");
+		menu.getButtons().add(button1);
 		
 		WxMenuButton button2 = new WxMenuButton();
 		button2.setType(MenuButtonType.VIEW);
 		button2.setName("视频");
 		button2.setUrl("http://v.qq.com/");
+		menu.getButtons().add(button2);
 		
 		WxMenuButton button3 = new WxMenuButton();
 		button3.setName("功能测试");
+		menu.getButtons().add(button3);
 		
 			WxMenuButton button31 = new WxMenuButton();
 			button31.setType(MenuButtonType.CLICK);
