@@ -60,60 +60,62 @@ public class RouterGenerator {
 		String appId = wxMpService.getWxMpConfigStorage().getAppId();
 		if(!routers.containsKey(appId)) {
 			synchronized (this) {
-				final WxMpMessageRouter newRouter = new WxMpMessageRouter(wxMpService);
-				// 记录所有事件的日志
-			    newRouter.rule().handler(this.logHandler).next();
+				if(!routers.containsKey(appId)) {
+					final WxMpMessageRouter newRouter = new WxMpMessageRouter(wxMpService);
+					// 记录所有事件的日志
+				    newRouter.rule().handler(this.logHandler).next();
 
-			    // 接收客服会话管理事件
-			    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-			      .event(WxMpEventConstants.CustomerService.KF_CREATE_SESSION)
-			      .handler(this.kfSessionHandler).end();
-			    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-			      .event(WxMpEventConstants.CustomerService.KF_CLOSE_SESSION)
-			      .handler(this.kfSessionHandler).end();
-			    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-			      .event(WxMpEventConstants.CustomerService.KF_SWITCH_SESSION)
-			      .handler(this.kfSessionHandler).end();
+				    // 接收客服会话管理事件
+				    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+				      .event(WxMpEventConstants.CustomerService.KF_CREATE_SESSION)
+				      .handler(this.kfSessionHandler).end();
+				    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+				      .event(WxMpEventConstants.CustomerService.KF_CLOSE_SESSION)
+				      .handler(this.kfSessionHandler).end();
+				    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+				      .event(WxMpEventConstants.CustomerService.KF_SWITCH_SESSION)
+				      .handler(this.kfSessionHandler).end();
 
-			    // 门店审核事件
-			    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-			      .event(WxMpEventConstants.POI_CHECK_NOTIFY)
-			      .handler(this.storeCheckNotifyHandler)
-			      .end();
+				    // 门店审核事件
+				    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+				      .event(WxMpEventConstants.POI_CHECK_NOTIFY)
+				      .handler(this.storeCheckNotifyHandler)
+				      .end();
 
-			    // 自定义菜单事件
-			    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-			      .event(MenuButtonType.CLICK).handler(this.menuHandler).end();
+				    // 自定义菜单事件
+				    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+				      .event(MenuButtonType.CLICK).handler(this.menuHandler).end();
 
-			    // 点击菜单连接事件
-			    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-			      .event(MenuButtonType.VIEW).handler(this.nullHandler).end();
+				    // 点击菜单连接事件
+				    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+				      .event(MenuButtonType.VIEW).handler(this.nullHandler).end();
 
-			    // 关注事件
-			    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-			      .event(EventType.SUBSCRIBE).handler(this.subscribeHandler)
-			      .end();
+				    // 关注事件
+				    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+				      .event(EventType.SUBSCRIBE).handler(this.subscribeHandler)
+				      .end();
 
-			    // 取消关注事件
-			    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-			      .event(EventType.UNSUBSCRIBE).handler(this.unsubscribeHandler)
-			      .end();
+				    // 取消关注事件
+				    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+				      .event(EventType.UNSUBSCRIBE).handler(this.unsubscribeHandler)
+				      .end();
 
-			    // 上报地理位置事件
-			    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-			      .event(EventType.LOCATION).handler(this.locationHandler).end();
+				    // 上报地理位置事件
+				    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+				      .event(EventType.LOCATION).handler(this.locationHandler).end();
 
-			    // 接收地理位置消息
-			    newRouter.rule().async(false).msgType(XmlMsgType.LOCATION)
-			      .handler(this.locationHandler).end();
+				    // 接收地理位置消息
+				    newRouter.rule().async(false).msgType(XmlMsgType.LOCATION)
+				      .handler(this.locationHandler).end();
 
-			    // 扫码事件
-			    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
-			      .event(EventType.SCAN).handler(this.nullHandler).end();
+				    // 扫码事件
+				    newRouter.rule().async(false).msgType(XmlMsgType.EVENT)
+				      .event(EventType.SCAN).handler(this.nullHandler).end();
 
-			    // 默认
-			    newRouter.rule().async(false).handler(this.msgHandler).end();
-			    routers.put(appId, newRouter);
+				    // 默认
+				    newRouter.rule().async(false).handler(this.msgHandler).end();
+				    routers.put(appId, newRouter);
+				}
 			}
 		}
 		return routers.get(appId);
