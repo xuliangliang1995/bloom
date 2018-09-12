@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.bloom.domain.wechat.common.consumer.bean.KeFuMsgNewsTest;
 import com.bloom.domain.wechat.common.service.WxMpMenuInitService;
 
 import me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
@@ -41,13 +42,13 @@ public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 		menu.getButtons().add(button2);
 		
 		WxMenuButton button3 = new WxMenuButton();
-		button3.setName("功能测试");
+		button3.setName("功能");
 		menu.getButtons().add(button3);
 		
 			WxMenuButton button31 = new WxMenuButton();
 			button31.setType(MenuButtonType.CLICK);
 			button31.setName("图文消息");
-			button31.setKey("KEFU_MSG_NEWS_TEST");
+			button31.setKey(KeFuMsgNewsTest.KEY);
 			
 			WxMenuButton button32 = new WxMenuButton();
 			button32.setType(MenuButtonType.CLICK);
