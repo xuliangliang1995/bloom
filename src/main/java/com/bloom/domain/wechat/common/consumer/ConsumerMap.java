@@ -1,5 +1,6 @@
 package com.bloom.domain.wechat.common.consumer;
 
+import javax.annotation.PostConstruct; 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +25,10 @@ public class ConsumerMap implements ApplicationContextAware{
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
+		
+	}
+	@PostConstruct
+	public void gather(){
 		Collection<AbstractConsumerBean> consumerBeans = this.applicationContext.getBeansOfType(AbstractConsumerBean.class).values();
 		consumerBeans.forEach(bean -> {
 			consumers.put(bean.getKey(), bean.getConsumer());
