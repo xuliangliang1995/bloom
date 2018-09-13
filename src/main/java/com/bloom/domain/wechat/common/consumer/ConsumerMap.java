@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.annotation.PostConstruct;
+
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -17,25 +21,25 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ConsumerMap implements ApplicationContextAware{
-	private static ApplicationContext applicationContext;
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private ApplicationContext applicationContext;
 	//根据事件Key映射消费者
 	private static final Map<String,WxMsgConsumer> consumers = new HashMap<String,WxMsgConsumer>();
-	private static boolean gather = false;
 	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
-		
 	}
 	
-	private static void gather(){
-		if(gather)
-			return;
+	@PostConstruct
+	public void gather(){
 		Collection<AbstractConsumerBean> consumerBeans = applicationContext.getBeansOfType(AbstractConsumerBean.class).values();
+		
+		this.logger.info("\n搜集微信消息Consumer数量:{}",consumerBeans.size());
+		
 		consumerBeans.forEach(bean -> {
 			consumers.put(bean.getKey(), bean.getConsumer());
 		});
-		gather = true;
 	}
 	
 	/**
@@ -44,7 +48,6 @@ public class ConsumerMap implements ApplicationContextAware{
 	 * @return
 	 */
 	public static Optional<WxMsgConsumer> findConsumer(String key) {
-		gather();
 		return Optional.ofNullable(consumers.get(key));
 	}
 
