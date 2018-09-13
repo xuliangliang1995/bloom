@@ -20,7 +20,4 @@
     <bean id="grasswort" class="me.chanjar.weixin.mp.api.impl.WxMpServiceImpl">
         <property name="wxMpConfigStorage" ref="grasswortConfigStorage"></property>
     </bean>
-    <bean id="wxMpMessageRouter" class="me.chanjar.weixin.mp.api.WxMpMessageRouter">
-         <constructor-arg ref="grasswort"></constructor-arg>
-    </bean>
 </beans>
