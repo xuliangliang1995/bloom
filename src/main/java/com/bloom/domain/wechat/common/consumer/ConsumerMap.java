@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ConsumerMap implements ApplicationContextAware{
-	private ApplicationContext applicationContext;
+	private static ApplicationContext applicationContext;
 	//根据事件Key映射消费者
 	private static final Map<String,WxMsgConsumer> consumers = new HashMap<String,WxMsgConsumer>();
 	private static boolean gather = false;
@@ -28,7 +28,7 @@ public class ConsumerMap implements ApplicationContextAware{
 		
 	}
 	
-	private void gather(){
+	private static void gather(){
 		if(gather)
 			return;
 		Collection<AbstractConsumerBean> consumerBeans = this.applicationContext.getBeansOfType(AbstractConsumerBean.class).values();
