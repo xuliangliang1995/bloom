@@ -18,6 +18,7 @@ public class KeFuMsgNewsTest extends AbstractConsumerBean {
 			article.setDescription("我慢慢的溶化在泥土里,翅膀上仿若有你的鼻息...");
 			article.setUrl("https://music.163.com/#/song?id=29792835&market=baiduqk");
 			WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.NEWS()
+					.addArticle(article)
 					.fromUser(ctx.getWxMessage().getToUser())
 					.toUser(ctx.getWxMessage().getFromUser())
 					.build();
