@@ -31,7 +31,7 @@ public class ConsumerMap implements ApplicationContextAware{
 	private static void gather(){
 		if(gather)
 			return;
-		Collection<AbstractConsumerBean> consumerBeans = this.applicationContext.getBeansOfType(AbstractConsumerBean.class).values();
+		Collection<AbstractConsumerBean> consumerBeans = applicationContext.getBeansOfType(AbstractConsumerBean.class).values();
 		consumerBeans.forEach(bean -> {
 			consumers.put(bean.getKey(), bean.getConsumer());
 		});
