@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.bloom.domain.wechat.common.consumer.bean.KeFuMsgNewsTest;
+import com.bloom.domain.wechat.common.consumer.bean.TemplateMsgTest;
 import com.bloom.domain.wechat.common.service.WxMpMenuInitService;
 
 import me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
@@ -53,10 +54,16 @@ public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 			WxMenuButton button32 = new WxMenuButton();
 			button32.setType(MenuButtonType.CLICK);
 			button32.setName("模板消息");
-			button32.setKey("TEMPLATE_MSG_TEST");
+			button32.setKey(TemplateMsgTest.KEY);
+			
+			WxMenuButton button33 = new WxMenuButton();
+			button33.setType(MenuButtonType.VIEW);
+			button33.setName("源码仓库");
+			button33.setUrl("https://github.com/xuliangliang1995");
 		
 		button3.getSubButtons().add(button31);
 		button3.getSubButtons().add(button32);	
+		button3.getSubButtons().add(button33);
 		
 		try {
 			String result = grasswort.getMenuService().menuCreate(menu);

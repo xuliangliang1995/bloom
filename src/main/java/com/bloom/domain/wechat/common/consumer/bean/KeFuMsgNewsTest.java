@@ -11,7 +11,7 @@ public class KeFuMsgNewsTest extends AbstractConsumerBean {
 	public static final String KEY = "KEFU_MSG_NEWS_TEST";
 	
 	public KeFuMsgNewsTest() {
-		super(KEY, (ctx) -> {
+		super(KEY, ctx -> {
 			Item article = new Item();
 			article.setTitle("蜻蜓与狮");
 			article.setPicUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536778670264&di=07c7563309915c3a239345a3820d6f3b&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01cc13554242c80000019ae9e173e9.jpg%401280w_1l_2o_100sh.jpg");

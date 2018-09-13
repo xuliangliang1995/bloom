@@ -1,4 +1,4 @@
-# bloom 业余项目笔记
+# bloom 项目笔记
 
 1、ResponseBody注解没有生效的问题。
       原因:没有开启mvc注解驱动。
