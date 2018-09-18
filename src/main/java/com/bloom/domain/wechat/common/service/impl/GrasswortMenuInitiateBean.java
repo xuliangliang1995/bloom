@@ -8,8 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.bloom.domain.wechat.common.consumer.bean.KeFuMsgNewsTest;
-import com.bloom.domain.wechat.common.consumer.bean.TemplateMsgTest;
+import com.bloom.domain.wechat.common.consumer.bean.bind.BindGardener;
+import com.bloom.domain.wechat.common.consumer.bean.test.KeFuMsgNewsTest;
+import com.bloom.domain.wechat.common.consumer.bean.test.TemplateMsgTest;
 import com.bloom.domain.wechat.common.service.WxMpMenuInitService;
 
 import me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
@@ -31,15 +32,20 @@ public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 		WxMenu menu = new WxMenu();
 		
 		WxMenuButton button1 = new WxMenuButton();
-		button1.setType(MenuButtonType.VIEW);
-		button1.setName("搜索");
-		button1.setUrl("http://www.baidu.com/");
+		button1.setName("菜单");
 		menu.getButtons().add(button1);
+			
+			WxMenuButton button11 = new WxMenuButton();
+			button11.setType(MenuButtonType.CLICK);
+			button11.setName("账号绑定");
+			button11.setKey(BindGardener.KEY);
+			
+		button1.getSubButtons().add(button11);
 		
 		WxMenuButton button2 = new WxMenuButton();
 		button2.setType(MenuButtonType.VIEW);
-		button2.setName("视频");
-		button2.setUrl("http://v.qq.com/");
+		button2.setName("搜索");
+		button2.setUrl("http://www.baidu.com/");
 		menu.getButtons().add(button2);
 		
 		WxMenuButton button3 = new WxMenuButton();
@@ -66,8 +72,8 @@ public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 		button3.getSubButtons().add(button33);
 		
 		try {
-			String result = grasswort.getMenuService().menuCreate(menu);
-			this.logger.info("\n微信公众号【{}】菜单初始化成功！\n{}","grasswort",result);
+			grasswort.getMenuService().menuCreate(menu);
+			this.logger.info("\n微信公众号【{}】菜单初始化成功！","grasswort");
 		} catch (WxErrorException e) {
 			this.logger.error("\n微信公众号【{}】菜单初始化失败！","grasswort");
 			e.printStackTrace();

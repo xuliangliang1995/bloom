@@ -1,4 +1,4 @@
-package com.bloom.domain.wechat.common.consumer.bean;
+package com.bloom.domain.wechat.common.consumer.bean.test;
 
 import java.util.Date;
 
