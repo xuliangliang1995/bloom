@@ -1,9 +1,9 @@
 package com.bloom.domain.wechat.common.consumer;
 
 public abstract class AbstractTextConsumerBean {
-	private int command;
+	private String command;
 	private WxMsgConsumer consumer;
-	public AbstractTextConsumerBean(int command,WxMsgConsumer consumer) {
+	public AbstractTextConsumerBean(String command,WxMsgConsumer consumer) {
 		super();
 		this.command = command;
 		this.consumer = consumer;
@@ -13,15 +13,15 @@ public abstract class AbstractTextConsumerBean {
 	 * @param command
 	 * @return
 	 */
-	public static final String prefix(int command) {
+	public static final String prefix(String command) {
 		return command + ":";
 	}
 	
-	public int getCommand() {
+	public String getCommand() {
 		return command;
 	}
 
-	public void setCommand(int command) {
+	public void setCommand(String command) {
 		this.command = command;
 	}
 

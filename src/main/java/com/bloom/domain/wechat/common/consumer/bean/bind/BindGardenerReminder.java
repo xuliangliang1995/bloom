@@ -34,7 +34,7 @@ public class BindGardenerReminder extends AbstractEventConsumerBean {
 	//绑定账号消息模版
 	private static final String TEMPLATE = "001:%s#%s";
 	//命令编号
-	public static final int COMMAND = 001;
+	public static final String COMMAND = "001";
 	
 	@Autowired
 	private GardenerWechatOpenIdService gardenerWechatOpenIdServiceImpl;
@@ -104,6 +104,7 @@ public class BindGardenerReminder extends AbstractEventConsumerBean {
 			}
 			
 		};
+		this.logger.info("\n【Command:{}】注册成功",COMMAND);
 		//注册处理器
 		textConsumerMap.register(COMMAND, consumer);
 		

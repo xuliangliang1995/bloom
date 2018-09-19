@@ -19,7 +19,7 @@ public class TextConsumerMap implements ApplicationContextAware{
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private ApplicationContext applicationContext;
 	//根据事件Key映射消费者
-	private static final Map<Integer,WxMsgConsumer> consumers = new HashMap<Integer,WxMsgConsumer>();
+	private static final Map<String,WxMsgConsumer> consumers = new HashMap<String,WxMsgConsumer>();
 	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -42,13 +42,13 @@ public class TextConsumerMap implements ApplicationContextAware{
 	 * @param command
 	 * @return
 	 */
-	public Optional<WxMsgConsumer> findConsumerByCommand(int command) {
+	public Optional<WxMsgConsumer> findConsumerByCommand(String command) {
 		return Optional.ofNullable(consumers.get(command));
 	}
 	/**
 	 * 注册文本消息处理器
 	 */
-	public void register(int command,WxMsgConsumer consumer) {
+	public void register(String command,WxMsgConsumer consumer) {
 		if(consumers.containsKey(command)) {
 			this.logger.info("\n微信文本消息处理Command:{}发生替换。",command);
 		}

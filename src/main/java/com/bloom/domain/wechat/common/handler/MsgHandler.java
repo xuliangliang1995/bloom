@@ -46,11 +46,16 @@ public class MsgHandler extends AbstractHandler {
 	    String content = wxMessage.getContent();
 	    if(content.indexOf(":")>0) {
 	    	String command = content.split(":")[0];
+	    	
+	    	this.logger.info("try to matching command : {}",command);
 	    	if(NumberUtils.isParsable(command)) {
-	    		Optional<WxMsgConsumer> consumerOpt = textConsumerMap.findConsumerByCommand(Integer.valueOf(command));
+	    		Optional<WxMsgConsumer> consumerOpt = textConsumerMap.findConsumerByCommand(command);
 	    		if(consumerOpt.isPresent()) {
+	    			this.logger.info("matching success !");
 	    			return WxPostContext.pack(wxMessage, context, wxMpService, sessionManager)
 	    					.accept(consumerOpt.get());
+	    		} else {
+	    			this.logger.info("matching fail !");
 	    		}
 	    	}
 	    }
