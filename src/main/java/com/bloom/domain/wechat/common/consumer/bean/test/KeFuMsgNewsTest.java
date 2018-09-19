@@ -2,12 +2,12 @@ package com.bloom.domain.wechat.common.consumer.bean.test;
 
 import org.springframework.stereotype.Component;
 
-import com.bloom.domain.wechat.common.consumer.AbstractConsumerBean;
+import com.bloom.domain.wechat.common.consumer.AbstractEventConsumerBean;
 
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutNewsMessage.Item;
 @Component
-public class KeFuMsgNewsTest extends AbstractConsumerBean {
+public class KeFuMsgNewsTest extends AbstractEventConsumerBean {
 	public static final String KEY = "KEFU_MSG_NEWS_TEST";
 	
 	public KeFuMsgNewsTest() {

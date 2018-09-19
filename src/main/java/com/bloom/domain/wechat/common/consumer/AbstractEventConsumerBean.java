@@ -1,7 +1,12 @@
 package com.bloom.domain.wechat.common.consumer;
 
-public abstract class AbstractConsumerBean {
-	public AbstractConsumerBean(String key, WxMsgConsumer consumer) {
+/**
+ * 继承此类且被Spring管理的将会自动被检测并搜集
+ * @author xuliangliang
+ *
+ */
+public abstract class AbstractEventConsumerBean {
+	public AbstractEventConsumerBean(String key, WxMsgConsumer consumer) {
 		this.key = key;
 		this.consumer = consumer;
 	}

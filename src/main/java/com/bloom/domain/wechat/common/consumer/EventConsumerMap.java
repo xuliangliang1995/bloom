@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class ConsumerMap implements ApplicationContextAware{
+public class EventConsumerMap implements ApplicationContextAware{
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private ApplicationContext applicationContext;
 	//根据事件Key映射消费者
@@ -33,9 +33,9 @@ public class ConsumerMap implements ApplicationContextAware{
 	
 	@PostConstruct
 	public void gather(){
-		Collection<AbstractConsumerBean> consumerBeans = applicationContext.getBeansOfType(AbstractConsumerBean.class).values();
+		Collection<AbstractEventConsumerBean> consumerBeans = applicationContext.getBeansOfType(AbstractEventConsumerBean.class).values();
 		
-		this.logger.info("\n搜集微信消息Consumer数量:{}",consumerBeans.size());
+		this.logger.info("\n搜集微信消息EventConsumer数量:{}",consumerBeans.size());
 		
 		consumerBeans.forEach(bean -> {
 			consumers.put(bean.getKey(), bean.getConsumer());

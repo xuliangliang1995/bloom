@@ -5,14 +5,14 @@ import java.util.Date;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.stereotype.Component;
 
-import com.bloom.domain.wechat.common.consumer.AbstractConsumerBean;
+import com.bloom.domain.wechat.common.consumer.AbstractEventConsumerBean;
 
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 @Component
-public class TemplateMsgTest extends AbstractConsumerBean {
+public class TemplateMsgTest extends AbstractEventConsumerBean {
 	public static final String KEY = "TEMPLATE_MSG_TEST";
 	public TemplateMsgTest() {
 		super(KEY, ctx -> {

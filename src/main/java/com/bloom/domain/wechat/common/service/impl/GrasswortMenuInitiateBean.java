@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.bloom.domain.wechat.common.consumer.bean.bind.BindGardener;
+import com.bloom.domain.wechat.common.consumer.bean.bind.BindGardenerReminder;
 import com.bloom.domain.wechat.common.consumer.bean.test.KeFuMsgNewsTest;
 import com.bloom.domain.wechat.common.consumer.bean.test.TemplateMsgTest;
 import com.bloom.domain.wechat.common.service.WxMpMenuInitService;
@@ -38,7 +38,7 @@ public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 			WxMenuButton button11 = new WxMenuButton();
 			button11.setType(MenuButtonType.CLICK);
 			button11.setName("账号绑定");
-			button11.setKey(BindGardener.KEY);
+			button11.setKey(BindGardenerReminder.KEY);
 			
 		button1.getSubButtons().add(button11);
 		
