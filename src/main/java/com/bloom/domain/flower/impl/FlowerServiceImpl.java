@@ -54,7 +54,7 @@ public class FlowerServiceImpl implements FlowerService {
 	
 	@Override
 	@Transactional
-	@Cacheable(cacheNames = CachedName.flower, key = "#result.id")
+	@CachePut(cacheNames = CachedName.flower, key = "#result.id")
 	public Flower defaultFlower(int gardenerId) {
 		final String NAME = "grasswort";
 		FlowerExample example = new FlowerExample();
