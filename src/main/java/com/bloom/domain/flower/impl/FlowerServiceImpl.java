@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -49,6 +50,34 @@ public class FlowerServiceImpl implements FlowerService {
 		flower.setUt(now);
 		flowerExtDao.insert(flower);
 		return flower;
+	}
+	
+	@Override
+	@Transactional
+	@Cacheable(cacheNames = CachedName.flower, key = "#result.id")
+	public Flower defaultFlower(int gardenerId) {
+		final String NAME = "grasswort";
+		FlowerExample example = new FlowerExample();
+		example.createCriteria().andNameEqualTo(NAME)
+								.andGardenerIdEqualTo(gardenerId);
+		Flower defaultFlower = flowerExtDao.selectByExample(example).stream().findFirst().orElse(null);
+		
+		if (null == defaultFlower) {
+			//不存在、创建
+			Date now = new Date();
+			Flower flower = new Flower();
+			flower.setGardenerId(gardenerId);
+			flower.setName(NAME);
+			flower.setMoral("未指定花儿的叶片将默认归属于此。");
+			flower.setStar(FlowerStar.Star_1.value());
+			flower.setCt(now);
+			flower.setUt(now);
+			flowerExtDao.insert(flower);
+			return flower;
+		} else {
+			//存在、返回
+			return defaultFlower;
+		}
 	}
 
 	@Override

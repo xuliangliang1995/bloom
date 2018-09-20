@@ -53,6 +53,8 @@ public class TextConsumerMap implements ApplicationContextAware{
 			this.logger.info("\n微信文本消息处理Command:{}发生替换。",command);
 		}
 		consumers.put(command, consumer);
+		
+		this.logger.info("\n【Command:{}】注册成功",command);
 	}
 
 }

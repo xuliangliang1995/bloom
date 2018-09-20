@@ -104,7 +104,6 @@ public class BindGardenerReminder extends AbstractEventConsumerBean {
 			}
 			
 		};
-		this.logger.info("\n【Command:{}】注册成功",COMMAND);
 		//注册处理器
 		textConsumerMap.register(COMMAND, consumer);
 		

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.bloom.domain.wechat.common.consumer.bean.bind.BindGardenerReminder;
+import com.bloom.domain.wechat.common.consumer.bean.petal.CreatePetalLinkReminder;
 import com.bloom.domain.wechat.common.consumer.bean.test.KeFuMsgNewsTest;
 import com.bloom.domain.wechat.common.consumer.bean.test.TemplateMsgTest;
 import com.bloom.domain.wechat.common.service.WxMpMenuInitService;
@@ -40,7 +41,13 @@ public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 			button11.setName("账号绑定");
 			button11.setKey(BindGardenerReminder.KEY);
 			
+			WxMenuButton button12 = new WxMenuButton();
+			button12.setType(MenuButtonType.CLICK);
+			button12.setName("叶子记录");
+			button12.setKey(CreatePetalLinkReminder.KEY);
+			
 		button1.getSubButtons().add(button11);
+		button1.getSubButtons().add(button12);
 		
 		WxMenuButton button2 = new WxMenuButton();
 		button2.setType(MenuButtonType.VIEW);

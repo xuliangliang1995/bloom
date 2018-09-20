@@ -10,6 +10,8 @@ public interface FlowerService {
 	
 	Flower create(int gardenerId, CreateFlowerForm form);
 	
+	Flower defaultFlower(int gardenerId);
+	
 	void deleteById(int gardenerId,int flowerId);
 	
 	Flower edit(int gardenerId,int flowerId,EditFlowerForm editFlowerForm);
