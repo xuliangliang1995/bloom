@@ -48,7 +48,7 @@ public class MsgHandler extends AbstractHandler {
 	    	String command = content.split(":")[0];
 	    	
 	    	this.logger.info("try to matching command : {}",command);
-	    	if(NumberUtils.isParsable(command)) {
+	    	if(NumberUtils.isDigits(command)) {
 	    		Optional<WxMsgConsumer> consumerOpt = textConsumerMap.findConsumerByCommand(command);
 	    		if(consumerOpt.isPresent()) {
 	    			this.logger.info("matching success !");
