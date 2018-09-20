@@ -61,9 +61,8 @@ public class PetalServiceImpl implements PetalService {
 				.orElseThrow(() -> new FlowBreakException("叶子种类有误！"));
 		
 		Date now = new Date();
-		int gardenerId = LoginCheckUtil.loginGardenerId(request);
 		Petal petal = new Petal();
-		petal.setGardenerId(gardenerId);
+		petal.setGardenerId(flower.getGardenerId());
 		petal.setFlowerId(flower.getId());
 		petal.setName(createPetalForm.getName());
 		petal.setNote(createPetalForm.getNote());
