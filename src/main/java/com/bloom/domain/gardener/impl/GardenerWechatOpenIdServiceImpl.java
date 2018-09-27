@@ -1,6 +1,7 @@
 package com.bloom.domain.gardener.impl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,16 @@ public class GardenerWechatOpenIdServiceImpl implements GardenerWechatOpenIdServ
 		
 		return gardenerWechatOpenIdExtDao.selectByExample(example).stream()
 				.findFirst().map(GardenerWechatOpenId::getGardenerId);
+	}
+
+	@Override
+	public List<GardenerWechatOpenId> getBindWechatOpenIdByGardenerId(int gardenerId) {
+		
+		GardenerWechatOpenIdExample example = new GardenerWechatOpenIdExample();
+		example.createCriteria()
+			   .andGardenerIdEqualTo(gardenerId);
+		
+		return gardenerWechatOpenIdExtDao.selectByExample(example);
 	}
 
 }

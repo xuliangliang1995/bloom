@@ -13,7 +13,21 @@ public class PetalProgress {
 
     private Date fireTime;
 
+    private Byte fire;
+
     private Date ct;
+    
+    public static enum FireStatus{
+    	NO_FIRE((byte)0),
+    	FIRE((byte)1);
+    	private Byte status;
+		private FireStatus(Byte status) {
+			this.status = status;
+		}
+		public byte status() {
+			return status;
+		}
+    }
 
     public Long getId() {
         return id;
@@ -53,6 +67,14 @@ public class PetalProgress {
 
     public void setFireTime(Date fireTime) {
         this.fireTime = fireTime;
+    }
+
+    public Byte getFire() {
+        return fire;
+    }
+
+    public void setFire(Byte fire) {
+        this.fire = fire;
     }
 
     public Date getCt() {

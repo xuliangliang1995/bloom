@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.bloom.domain.wechat.common.config.WechatAccount;
 import com.bloom.domain.wechat.common.consumer.bean.bind.BindGardenerReminder;
 import com.bloom.domain.wechat.common.consumer.bean.petal.CreatePetalLinkReminder;
 import com.bloom.domain.wechat.common.consumer.bean.test.KeFuMsgNewsTest;
 import com.bloom.domain.wechat.common.consumer.bean.test.TemplateMsgTest;
+import com.bloom.domain.wechat.common.router.WxMpServiceGenerator;
 import com.bloom.domain.wechat.common.service.WxMpMenuInitService;
 
 import me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
@@ -24,12 +26,13 @@ import me.chanjar.weixin.mp.api.WxMpService;
 public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
-	@Qualifier("grasswort")
-	private WxMpService grasswort;
+	private WxMpServiceGenerator wxMpServiceGenerator;
 	
 	@Override
 	@PostConstruct
 	public void init() {
+		WxMpService grasswort = wxMpServiceGenerator.get(WechatAccount.GRASSWORT).get();
+		
 		WxMenu menu = new WxMenu();
 		
 		WxMenuButton button1 = new WxMenuButton();

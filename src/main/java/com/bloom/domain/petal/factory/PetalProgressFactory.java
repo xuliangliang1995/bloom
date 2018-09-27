@@ -23,6 +23,7 @@ public class PetalProgressFactory {
 		progress.setRetentionCurveId(curve.getId());
 		progress.setFireTime(new Date(now.getTime()+curve.getIntervalMinutes()*MILLISECOND_PER_MINUTE));
 		progress.setCt(now);
+		progress.setFire((byte)0);
 		return progress;
 	}
 	
