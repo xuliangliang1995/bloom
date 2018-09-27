@@ -47,6 +47,7 @@ public class PetalProgressServiceImpl implements PetalProgressService {
 	public PetalProgress createNextProgress(Petal petal) {
 		PetalProgress progress = petalProgressExtDao.currentProgress(petal.getId());
 		List<RetentionCurve> curves = retentionCurveServiceImpl.enabledRetentionCurves();
+		System.out.println(curves.size());
 		RetentionCurve nextCurve = curves.stream()
 				.filter(curve -> curve.getId()>progress.getRetentionCurveId()).findFirst()
 				.orElse(curves.get(curves.size()-1));
