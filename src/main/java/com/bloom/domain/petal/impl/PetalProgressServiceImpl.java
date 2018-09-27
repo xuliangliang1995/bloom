@@ -71,8 +71,8 @@ public class PetalProgressServiceImpl implements PetalProgressService {
 		Date now = new Date();
 		PetalProgressExample example = new PetalProgressExample();
 		example.createCriteria()
-			   .andFireEqualTo(PetalProgress.FireStatus.FIRE.status())
-			   .andFireTimeLessThan(now);
+			   .andFireEqualTo(PetalProgress.FireStatus.NO_FIRE.status())
+			   .andFireTimeLessThanOrEqualTo(now);
 		return petalProgressExtDao.selectByExample(example)
 				.stream()
 				.map(PetalProgress::getId)
