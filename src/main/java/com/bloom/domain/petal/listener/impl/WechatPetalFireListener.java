@@ -70,10 +70,10 @@ public class WechatPetalFireListener implements PetalFireListener {
 		WxMpTemplateMessage tmsg = WxMpTemplateMessage.builder()
 				.templateId(TemplateMsg.ZUO_YE_TI_XING.getId())
 				.data(Arrays.asList(
-						new WxMpTemplateData("first","您有新的内容需要复习啦，你可以选择不复习，但努力会让你更出色噢~ "),
+						new WxMpTemplateData("first","您有新的内容需要复习啦 ~ "),
 						new WxMpTemplateData("keyword1",DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm")),
 						new WxMpTemplateData("keyword2","--"),
-						new WxMpTemplateData("remark","点击我，即可获取要复习的内容。")
+						new WxMpTemplateData("remark","你可以选择不复习，但努力会让你更出色噢~")
 						))
 				.url(petalServiceImpl.getPetalInnerLinkService().findByPetalId(petal.getId()).getLink())
 				.build();
