@@ -87,6 +87,7 @@ public class WechatPetalFireListener implements PetalFireListener {
 				
 				if (wxMpService.isPresent()) {
 					try {
+						tmsg.setToUser(item.getOpenId());
 						wxMpService.get().getTemplateMsgService().sendTemplateMsg(tmsg);
 					} catch (WxErrorException e) {
 						logger.error("\n微信模板消息【{}】发送失败:{}",TemplateMsg.ZUO_YE_TI_XING.getTitle(),e.getMessage());
