@@ -12,6 +12,7 @@ import com.bloom.domain.wechat.common.builder.TextBuilder;
 import com.bloom.domain.wechat.common.consumer.TextConsumerMap;
 import com.bloom.domain.wechat.common.consumer.WxMsgConsumer;
 import com.bloom.domain.wechat.common.consumer.dto.WxPostContext;
+import com.bloom.util.general.NotNull;
 
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -43,7 +44,7 @@ public class MsgHandler extends AbstractHandler {
 	    }
 	    
 	    //判断是否是命令消息
-	    String content = wxMessage.getContent();
+	    String content = NotNull.of(wxMessage.getContent());
 	    if(content.indexOf(":")>0) {
 	    	String command = content.split(":")[0];
 	    	
