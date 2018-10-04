@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import com.bloom.dao.ext.PetalExtDao;
 import com.bloom.dao.po.Flower;
@@ -55,6 +56,7 @@ public class PetalServiceImpl implements PetalService {
 	@Transactional
 	@CachePut(cacheNames = CachedName.petal, key = "#result.id")
 	public Petal add(Flower flower,CreatePetalForm createPetalForm) {
+		Assert.isTrue(LoginCheckUtil.loginGardenerId(request)==flower.getGardenerId(),"权限不足！");
 		PetalVarietyEnum variety = Arrays.stream(PetalVarietyEnum.values())
 				.filter(vari -> vari.getId() == createPetalForm.getPetalVariety().intValue())
 				.findFirst()

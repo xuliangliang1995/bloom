@@ -5,6 +5,7 @@ import static com.bloom.domain.wechat.common.consumer.AbstractTextConsumerBean.p
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,15 +13,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.bloom.dao.po.Flower;
+import com.bloom.dao.po.Gardener;
 import com.bloom.dao.po.Petal;
 import com.bloom.domain.flower.FlowerService;
 import com.bloom.domain.gardener.GardenerWechatOpenIdService;
+import com.bloom.domain.gardener.SignService;
 import com.bloom.domain.petal.PetalService;
 import com.bloom.domain.petal.meta.PetalVarietyEnum;
 import com.bloom.domain.wechat.common.consumer.AbstractEventConsumerBean;
 import com.bloom.domain.wechat.common.consumer.TextConsumerMap;
 import com.bloom.domain.wechat.common.consumer.WxMsgConsumer;
 import com.bloom.exception.FlowBreakException;
+import com.bloom.util.image.RandomImage;
 import com.bloom.web.petal.vo.CreatePetalForm;
 
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
@@ -39,13 +43,15 @@ public class CreatePetalLinkReminder extends AbstractEventConsumerBean{
 	public static final String COMMAND = "002";
 	
 	@Autowired
-	private GardenerWechatOpenIdService gardenerWechatOpenIdServiceImpl;
-	@Autowired
 	private FlowerService flowerServiceImpl;
 	@Autowired
 	private PetalService petalServiceImpl;
 	@Autowired
 	private TextConsumerMap textConsumerMap;
+	@Autowired
+	private SignService signServiceImpl;
+	@Autowired
+	private HttpServletRequest request;
 	
 	public CreatePetalLinkReminder() {
 		super(KEY, ctx -> {
@@ -63,6 +69,7 @@ public class CreatePetalLinkReminder extends AbstractEventConsumerBean{
 		WxMsgConsumer consumer = ctx -> {
 			String content = ctx.getWxMessage().getContent();
 			String openId = ctx.getWxMessage().getFromUser();
+			String appId = ctx.getWxMpService().getWxMpConfigStorage().getAppId();
 			
 			String outMessageContent = "";
 			//确认命令
@@ -73,40 +80,31 @@ public class CreatePetalLinkReminder extends AbstractEventConsumerBean{
 					String link = params[1];
 					String note = params[2];
 					
-					//获取微信公众号绑定的用户
-					Optional<Integer> gardenerIdOpt = gardenerWechatOpenIdServiceImpl.getGardenerIdByWechatOpenId(
-							ctx.getWxMpService().getWxMpConfigStorage().getAppId(), openId);
+					Gardener gardener = signServiceImpl.signInByWechatOpenId(request, appId, openId);
 					
-					if (gardenerIdOpt.isPresent()) {
-						int gardenerId = gardenerIdOpt.get();
-						//find default flower 
-						Flower defaultFlower = flowerServiceImpl.defaultFlower(gardenerId);
-						//封装叶片数据
-						CreatePetalForm form = new CreatePetalForm();
-						form.setName(name);
-						form.setLink(link);
-						form.setNote(note);
-						form.setPetalVariety(PetalVarietyEnum.LINK.getId());
-						//添加叶片
-						Petal petal = petalServiceImpl.add(defaultFlower, form);
-						
-						Item article = new Item();
-						article.setTitle(petal.getName());
-						article.setPicUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536778670264&di=07c7563309915c3a239345a3820d6f3b&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01cc13554242c80000019ae9e173e9.jpg%401280w_1l_2o_100sh.jpg");
-						article.setDescription(petal.getNote());
-						article.setUrl(petalServiceImpl.getPetalInnerLinkService().findByPetalId(petal.getId()).getLink());
-						
-						WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.NEWS()
-								.addArticle(article)
-								.fromUser(ctx.getWxMessage().getToUser())
-								.toUser(ctx.getWxMessage().getFromUser())
-								.build();
-						ctx.setWxMpXmlOutMessage(wxMpXmlOutMessage);
-						
-					} else {
-						outMessageContent = "您还没有绑定账户！";
-					}
+					//find default flower 
+					Flower defaultFlower = flowerServiceImpl.defaultFlower(gardener.getId());
+					//封装叶片数据
+					CreatePetalForm form = new CreatePetalForm();
+					form.setName(name);
+					form.setLink(link);
+					form.setNote(note);
+					form.setPetalVariety(PetalVarietyEnum.LINK.getId());
+					//添加叶片
+					Petal petal = petalServiceImpl.add(defaultFlower, form);
 					
+					Item article = new Item();
+					article.setTitle(petal.getName());
+					article.setPicUrl(RandomImage.get());
+					article.setDescription(petal.getNote());
+					article.setUrl(petalServiceImpl.getPetalInnerLinkService().findByPetalId(petal.getId()).getLink());
+					
+					WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.NEWS()
+							.addArticle(article)
+							.fromUser(ctx.getWxMessage().getToUser())
+							.toUser(ctx.getWxMessage().getFromUser())
+							.build();
+					ctx.setWxMpXmlOutMessage(wxMpXmlOutMessage);
 				} 
 				if (null == ctx.getWxMpXmlOutMessage()) {
 					//绑定成功后,消息反馈

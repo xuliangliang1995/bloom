@@ -18,7 +18,7 @@ public class TemplateMsgTest extends AbstractEventConsumerBean {
 		super(KEY, ctx -> {
 			WxMpTemplateMessage message = WxMpTemplateMessage
 					.builder()
-					.templateId("iCFvelWpbpf4sQzOiEOaU_zdBatTsMP0afG-aW100PM")
+					.templateId("dX0jh5QtZBCK-yz0YJFhVxWHuFTARCdCKRq5lfbXMac")
 					.toUser(ctx.getWxMessage().getFromUser())
 					.url("https://github.com/xuliangliang1995")
 					.build()

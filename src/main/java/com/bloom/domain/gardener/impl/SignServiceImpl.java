@@ -15,11 +15,13 @@ import org.springframework.web.util.WebUtils;
 import com.bloom.dao.ext.GardenerExtDao;
 import com.bloom.dao.po.Gardener;
 import com.bloom.domain.CachedName;
+import com.bloom.domain.gardener.GardenerWechatOpenIdService;
 import com.bloom.domain.gardener.RoleService;
 import com.bloom.domain.gardener.SignService;
 import com.bloom.domain.gardener.meta.Gender;
 import com.bloom.domain.gardener.meta.SessionConstantKey;
 import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.WechatException;
 import com.bloom.util.encrypt.GardenerEncrypt;
 /**
  * SignUp、SignIn、SignOut
@@ -33,7 +35,8 @@ public class SignServiceImpl implements SignService{
 	private RoleService roleService;
 	@Resource
 	private GardenerExtDao gardenerExtDao;
-
+	@Resource
+	private GardenerWechatOpenIdService gardenerWechatOpenIdServiceImpl;
 	
 	/**
 	 * SignUp
@@ -82,6 +85,24 @@ public class SignServiceImpl implements SignService{
 		return gardener;
 	}
 	/**
+	 * 微信登录
+	 * @throws WechatException 
+	 */
+	@Override
+	@CachePut(cacheNames = CachedName.gardeners, key = "#result.id")
+	public Gardener signInByWechatOpenId(HttpServletRequest request, String appId, String openId){
+		int gardenerId = gardenerWechatOpenIdServiceImpl.getGardenerIdByWechatOpenId(appId, openId)
+				.orElseThrow(() -> new WechatException(appId,openId,"请先绑定Grasswort账户！"));
+		
+		Gardener gardener = gardenerExtDao.selectByPrimaryKey(gardenerId);
+		
+		WebUtils.setSessionAttribute(request, SessionConstantKey.GARDENER_ID_KEY, gardener.getId());
+		WebUtils.setSessionAttribute(request, SessionConstantKey.ROLE_ID_KEY, gardener.getRoleId());
+		
+		return gardener;
+	}
+	
+	/**
 	 * SignOut
 	 * @param session
 	 */
@@ -92,4 +113,5 @@ public class SignServiceImpl implements SignService{
 		session.removeAttribute(SessionConstantKey.ROLE_ID_KEY);
 		session.invalidate();
 	}
+	
 }

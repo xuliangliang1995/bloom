@@ -34,6 +34,8 @@ public class FlowerServiceImpl implements FlowerService {
 	private FlowerExtDao flowerExtDao;
 	@Autowired
 	private HttpServletRequest request;
+	
+	private static final String DEFAULT_FLOWER_NAME = "grasswort";
 
 	@Override
 	@Transactional
@@ -56,9 +58,9 @@ public class FlowerServiceImpl implements FlowerService {
 	@Transactional
 	@CachePut(cacheNames = CachedName.flower, key = "#result.id")
 	public Flower defaultFlower(int gardenerId) {
-		final String NAME = "grasswort";
+		Assert.isTrue(LoginCheckUtil.loginGardenerId(request)==gardenerId,"权限不足！");
 		FlowerExample example = new FlowerExample();
-		example.createCriteria().andNameEqualTo(NAME)
+		example.createCriteria().andNameEqualTo(DEFAULT_FLOWER_NAME)
 								.andGardenerIdEqualTo(gardenerId);
 		Flower defaultFlower = flowerExtDao.selectByExample(example).stream().findFirst().orElse(null);
 		
@@ -67,7 +69,7 @@ public class FlowerServiceImpl implements FlowerService {
 			Date now = new Date();
 			Flower flower = new Flower();
 			flower.setGardenerId(gardenerId);
-			flower.setName(NAME);
+			flower.setName(DEFAULT_FLOWER_NAME);
 			flower.setMoral("未指定花儿的叶片将默认归属于此。");
 			flower.setStar(FlowerStar.Star_1.value());
 			flower.setCt(now);
