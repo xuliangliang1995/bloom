@@ -67,6 +67,4 @@
 	<import resource="classpath:spring-redis.xml"/>
 	<!-- 引入quartz配置文件 -->
 	<import resource="classpath:spring-quartz.xml"/>
-	<!-- 导入wechat配置文件 -->
-	<import resource="classpath:spring-wechat.xml"/>
 </beans>
