@@ -19,6 +19,7 @@ import com.bloom.domain.petal.PetalService;
 import com.bloom.domain.petal.factory.PetalProgressFactory;
 import com.bloom.domain.petal.listener.PetalFireSource;
 import com.bloom.domain.retentioncurve.RetentionCurveService;
+import com.bloom.util.time.GeneralDateUtils;
 @Service
 public class PetalProgressServiceImpl implements PetalProgressService {
 	@Autowired
@@ -80,4 +81,36 @@ public class PetalProgressServiceImpl implements PetalProgressService {
 				.collect(Collectors.toList());
 	}
 	
+	@Override
+	public List<Integer> todayFiredPetalList(int gardenerId){
+		PetalProgressExample example = new PetalProgressExample();
+		
+		example.createCriteria()
+			   .andGardenerIdEqualTo(gardenerId)
+			   .andFireTimeGreaterThan(GeneralDateUtils.todayStart())
+			   .andFireEqualTo(PetalProgress.FireStatus.FIRE.status());
+		
+		example.setDistinct(true);
+		
+		return petalProgressExtDao.selectByExample(example)
+				                  .stream()
+				                  .map(PetalProgress::getPetalId)
+				                  .collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<Integer> todayFiredAndNoFiredPetalList(int gardenerId){
+		PetalProgressExample example = new PetalProgressExample();
+		
+		example.createCriteria()
+			   .andGardenerIdEqualTo(gardenerId)
+			   .andFireTimeGreaterThan(GeneralDateUtils.todayStart());
+		
+		example.setDistinct(true);
+		
+		return petalProgressExtDao.selectByExample(example)
+				                  .stream()
+				                  .map(PetalProgress::getPetalId)
+				                  .collect(Collectors.toList());
+	}
 }

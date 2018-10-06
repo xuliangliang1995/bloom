@@ -35,5 +35,9 @@ public class TemplateMsgTest extends AbstractEventConsumerBean {
 			}
 		});
 	}
+	@Override
+	public void consumerInit() {
+		//ignore，已经在构造参数中初始化
+	}
 
 }

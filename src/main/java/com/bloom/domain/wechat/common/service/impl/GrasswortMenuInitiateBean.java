@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.bloom.domain.wechat.common.config.WechatAccount;
 import com.bloom.domain.wechat.common.consumer.bean.bind.BindGardenerReminder;
 import com.bloom.domain.wechat.common.consumer.bean.petal.CreatePetalLinkReminder;
+import com.bloom.domain.wechat.common.consumer.bean.petal.TodayFiredPetal;
 import com.bloom.domain.wechat.common.consumer.bean.test.KeFuMsgNewsTest;
 import com.bloom.domain.wechat.common.consumer.bean.test.TemplateMsgTest;
 import com.bloom.domain.wechat.common.router.WxMpServiceGenerator;
@@ -38,7 +39,7 @@ public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 		WxMenuButton button1 = new WxMenuButton();
 		button1.setName("菜单");
 		menu.getButtons().add(button1);
-			
+		
 			WxMenuButton button11 = new WxMenuButton();
 			button11.setType(MenuButtonType.CLICK);
 			button11.setName("账号绑定");
@@ -46,11 +47,17 @@ public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 			
 			WxMenuButton button12 = new WxMenuButton();
 			button12.setType(MenuButtonType.CLICK);
-			button12.setName("叶子记录");
+			button12.setName("添加叶子");
 			button12.setKey(CreatePetalLinkReminder.KEY);
 			
-		button1.getSubButtons().add(button11);
+			WxMenuButton button13 = new WxMenuButton();
+			button13.setType(MenuButtonType.CLICK);
+			button13.setName("我的叶子");
+			button13.setKey(TodayFiredPetal.KEY);
+			
 		button1.getSubButtons().add(button12);
+		button1.getSubButtons().add(button13);
+		button1.getSubButtons().add(button11);
 		
 		WxMenuButton button2 = new WxMenuButton();
 		button2.setType(MenuButtonType.VIEW);

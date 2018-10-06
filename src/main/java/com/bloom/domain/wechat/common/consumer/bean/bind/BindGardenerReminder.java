@@ -109,4 +109,9 @@ public class BindGardenerReminder extends AbstractEventConsumerBean {
 		
 	}
 
+	@Override
+	public void consumerInit() {
+		//ignore
+	}
+
 }

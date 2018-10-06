@@ -10,18 +10,19 @@ public abstract class AbstractEventConsumerBean {
 		this.key = key;
 		this.consumer = consumer;
 	}
+	public AbstractEventConsumerBean(String key) {
+		this.key = key;
+	}
+	public abstract void consumerInit();
 	private String key;
-	private WxMsgConsumer consumer;
+	protected WxMsgConsumer consumer;
 	public String getKey() {
 		return key;
-	}
-	public void setKey(String key) {
-		this.key = key;
 	}
 	public WxMsgConsumer getConsumer() {
 		return consumer;
 	}
-	public void setConsumer(WxMsgConsumer consumer) {
-		this.consumer = consumer;
-	}
+	
+	
+	
 }

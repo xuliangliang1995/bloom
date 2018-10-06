@@ -20,4 +20,8 @@ public interface PetalProgressService {
 	
 	List<Long> outdatedNoFireProgerssIdList();
 	
+	List<Integer> todayFiredPetalList(int gardenerId);
+	
+	List<Integer> todayFiredAndNoFiredPetalList(int gardenerId);
+	
 }

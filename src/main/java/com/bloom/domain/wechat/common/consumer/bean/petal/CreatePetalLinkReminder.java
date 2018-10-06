@@ -123,4 +123,9 @@ public class CreatePetalLinkReminder extends AbstractEventConsumerBean{
 		};
 		textConsumerMap.register(COMMAND, consumer);
 	}
+
+	@Override
+	public void consumerInit() {
+		// ignore
+	}
 }
