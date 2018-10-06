@@ -46,7 +46,7 @@ public class TodayFiredPetal extends AbstractEventConsumerBean {
 	public void consumerInit() {
 		this.consumer = ctx -> {
 			String appId = ctx.getWxMpService().getWxMpConfigStorage().getAppId();
-			String openId = ctx.getWxMessage().getOpenId();
+			String openId = ctx.getWxMessage().getFromUser();
 			Gardener gardener = signServiceImpl.signInByWechatOpenId(request, appId, openId);
 			
 			List<Integer> petalIds = petalProgressServiceImpl.todayFiredAndNoFiredPetalList(gardener.getId());
