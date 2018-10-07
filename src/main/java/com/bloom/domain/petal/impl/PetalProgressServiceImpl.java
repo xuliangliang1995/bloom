@@ -90,11 +90,10 @@ public class PetalProgressServiceImpl implements PetalProgressService {
 			   .andFireTimeGreaterThan(GeneralDateUtils.todayStart())
 			   .andFireEqualTo(PetalProgress.FireStatus.FIRE.status());
 		
-		example.setDistinct(true);
-		
 		return petalProgressExtDao.selectByExample(example)
 				                  .stream()
 				                  .map(PetalProgress::getPetalId)
+				                  .distinct()
 				                  .collect(Collectors.toList());
 	}
 	
@@ -106,11 +105,10 @@ public class PetalProgressServiceImpl implements PetalProgressService {
 			   .andGardenerIdEqualTo(gardenerId)
 			   .andFireTimeGreaterThan(GeneralDateUtils.todayStart());
 		
-		example.setDistinct(true);
-		
 		return petalProgressExtDao.selectByExample(example)
 				                  .stream()
 				                  .map(PetalProgress::getPetalId)
+				                  .distinct()
 				                  .collect(Collectors.toList());
 	}
 }
