@@ -39,7 +39,7 @@ public class SignResourceApi {
 	@PostMapping
 	@CrossOrigin
 	public Result signUp(@Validated SignUpForm signUpForm,BindingResult result) {
-		signServiceImpl.signUp(signUpForm.getUsername(), signUpForm.getPassword());
+		signServiceImpl.signUp(signUpForm);
 		return Result.success();
 	}
 	/**

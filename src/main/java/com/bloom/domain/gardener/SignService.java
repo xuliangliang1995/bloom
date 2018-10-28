@@ -3,7 +3,7 @@ package com.bloom.domain.gardener;
 import javax.servlet.http.HttpServletRequest;
 
 import com.bloom.dao.po.Gardener;
-import com.bloom.exception.WechatException;
+import com.bloom.web.gardener.vo.SignUpForm;
 /**
  * 注册、签入、签出
  * @author 83554
@@ -11,7 +11,7 @@ import com.bloom.exception.WechatException;
  */
 public interface SignService {
 	
-	void signUp(String originalUsername,String originalPassword);
+	void signUp(SignUpForm signUpForm);
 	
 	Gardener signIn(HttpServletRequest request, String originalUsername, String originalPassword);
 	

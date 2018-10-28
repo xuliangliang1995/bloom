@@ -23,6 +23,7 @@ import com.bloom.domain.gardener.meta.SessionConstantKey;
 import com.bloom.exception.FlowBreakException;
 import com.bloom.exception.WechatException;
 import com.bloom.util.encrypt.GardenerEncrypt;
+import com.bloom.web.gardener.vo.SignUpForm;
 /**
  * SignUp、SignIn、SignOut
  * @author 83554
@@ -45,7 +46,9 @@ public class SignServiceImpl implements SignService{
 	 */
 	@Transactional
 	@Override
-	public void signUp(String originalUsername,String originalPassword) {
+	public void signUp(SignUpForm signUpForm) {
+		String originalUsername = signUpForm.getUsername();
+		String originalPassword = signUpForm.getPassword();
 		Date now = new Date();
 		Optional<Integer> keyOpt = Optional.ofNullable(
 				gardenerExtDao.selectKeyByUsername(GardenerEncrypt.encryptUsername(originalUsername))
@@ -56,6 +59,8 @@ public class SignServiceImpl implements SignService{
 		Gardener gardener = new Gardener();
 		gardener.setUsername(GardenerEncrypt.encryptUsername(originalUsername));
 		gardener.setPassword(originalPassword);
+		gardener.setNickName(signUpForm.getNickName());
+		gardener.setEmail(signUpForm.getEmail());
 		gardener.setGender(Gender.保密.name());
 		gardener.setRoleId(roleService.defaultRole().getId());
 		gardenerExtDao.insert(gardener);
