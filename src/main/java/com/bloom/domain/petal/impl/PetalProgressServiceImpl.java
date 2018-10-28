@@ -103,7 +103,7 @@ public class PetalProgressServiceImpl implements PetalProgressService {
 		
 		example.createCriteria()
 			   .andGardenerIdEqualTo(gardenerId)
-			   .andFireTimeGreaterThan(GeneralDateUtils.todayStart());
+			   .andFireTimeBetween(GeneralDateUtils.todayStart(), GeneralDateUtils.todayEnd());
 		
 		return petalProgressExtDao.selectByExample(example)
 				                  .stream()

@@ -71,7 +71,7 @@ public class TodayFiredPetal extends AbstractEventConsumerBean {
 				article.setDescription(petal.getNote());
 				article.setUrl(petalServiceImpl.getPetalInnerLinkService().findByPetalId(petal.getId()).getLink());
 				
-				if(out.getArticles().size()==8) {
+				if(out.getArticles().size()==1) {
 					try {
 						ctx.getWxMpService().getKefuService().sendKefuMessage(out);
 					} catch (WxErrorException e) {
