@@ -1,13 +1,18 @@
 package com.bloom.web.gardener;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.hateoas.ExposesResourceFor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,5 +67,18 @@ public class SignResourceApi {
 	@GetMapping("/loginInfo")
 	public ResponseEntity<?> loginInfo(HttpServletRequest request){
 		return ResponseEntity.ok(LoginCheckUtil.loginGardenerId(request));
+	}
+	/**
+	 * loginOut
+	 * @param request
+	 * @return
+	 * @throws URISyntaxException 
+	 */
+	@GetMapping("/loginOut")
+	public ResponseEntity<?> signOut(HttpServletRequest request) throws URISyntaxException{
+		signServiceImpl.signOut(request);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(new URI("https://www.grasswort.com"));
+		return new ResponseEntity<>(headers,HttpStatus.PERMANENT_REDIRECT);
 	}
 }
