@@ -26,6 +26,7 @@ import com.bloom.domain.petal.PetalProgressService;
 import com.bloom.domain.petal.PetalService;
 import com.bloom.domain.petal.meta.PetalVarietyEnum;
 import com.bloom.exception.FlowBreakException;
+import com.bloom.util.mybatis.Page;
 import com.bloom.web.petal.vo.CreatePetalForm;
 /**
  * petal
@@ -87,11 +88,8 @@ public class PetalServiceImpl implements PetalService {
 	}
 
 	@Override
-	public List<Petal> flowerPetals(int flowerId) {
-		PetalExample query = new PetalExample();
-		query.createCriteria().andFlowerIdEqualTo(flowerId);
-		query.setOrderByClause("id desc");
-		return petalExtDao.selectByExample(query);
+	public List<Petal> flowerPetals(int flowerId,Page page) {
+		return petalExtDao.flowerPetals(flowerId, page);
 	}
 
 	@Override
