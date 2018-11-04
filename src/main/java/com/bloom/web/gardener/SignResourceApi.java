@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bloom.dao.po.Gardener;
 import com.bloom.domain.gardener.SignService;
+import com.bloom.domain.gardener.general.LoginCheckUtil;
 import com.bloom.response.Result;
 import com.bloom.web.gardener.resource.GardenerReosurceAssembler;
 import com.bloom.web.gardener.resource.GardenerResource;
@@ -37,7 +37,6 @@ public class SignResourceApi {
 	 * @return
 	 */
 	@PostMapping
-	@CrossOrigin
 	public Result signUp(@Validated SignUpForm signUpForm,BindingResult result) {
 		signServiceImpl.signUp(signUpForm);
 		return Result.success();
@@ -49,13 +48,19 @@ public class SignResourceApi {
 	 * @return
 	 */
 	@GetMapping
-	@CrossOrigin
 	public ResponseEntity<GardenerResource> signIn(@Validated SignInForm signInForm,BindingResult result,
 			HttpServletRequest request) {
 		return ResponseEntity.status(HttpStatus.OK).body(
 					new GardenerReosurceAssembler().toResource(signServiceImpl.signIn(request, signInForm.getUsername(), signInForm.getPassword()))
 					);
 	}
-
-
+	/**
+	 * loginCheck
+	 * @param request
+	 * @return
+	 */
+	@GetMapping("/loginInfo")
+	public ResponseEntity<?> loginInfo(HttpServletRequest request){
+		return ResponseEntity.ok(LoginCheckUtil.loginGardenerId(request));
+	}
 }
