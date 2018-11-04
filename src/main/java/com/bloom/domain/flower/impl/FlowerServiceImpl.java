@@ -26,6 +26,7 @@ import com.bloom.domain.flower.FlowerService;
 import com.bloom.domain.flower.meta.FlowerStar;
 import com.bloom.domain.gardener.general.LoginCheckUtil;
 import com.bloom.exception.FlowBreakException;
+import com.bloom.util.mybatis.Page;
 import com.bloom.web.flower.vo.CreateFlowerForm;
 import com.bloom.web.flower.vo.EditFlowerForm;
 @Service
@@ -123,10 +124,8 @@ public class FlowerServiceImpl implements FlowerService {
 	}
 
 	@Override
-	public List<Flower> findFlowerByGardener(int gardenerId) {
-		FlowerExample example = new FlowerExample();
-		example.createCriteria().andGardenerIdEqualTo(gardenerId);
-		return flowerExtDao.selectByExample(example);
+	public List<Flower> findFlowerByGardener(int gardenerId,Page page) {
+		return flowerExtDao.findFlowersByGardenerId(gardenerId, page);
 	}
 
 }

@@ -6,6 +6,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
 import com.bloom.dao.po.Gardener;
+import com.bloom.util.mybatis.Page;
 import com.bloom.web.flower.FlowerResourceApi;
 import com.bloom.web.gardener.GardenerResourceApi;
 import com.bloom.web.retentioncurve.RetentionCurveResourceApi;
@@ -18,7 +19,7 @@ public class GardenerReosurceAssembler extends ResourceAssemblerSupport<Gardener
 	public GardenerResource toResource(Gardener gardener) {
 		GardenerResource gardenerResource = createResourceWithId(gardener.getId(), gardener);
 		gardenerResource.add(
-				linkTo(methodOn(FlowerResourceApi.class).readFlowers(gardener.getId())).withRel("flowers"),
+				linkTo(methodOn(FlowerResourceApi.class).readFlowers(gardener.getId(),Page.DEFAULT_PAGE_NO,Page.DEFAULT_PAGE_SIZE)).withRel("flowers"),
 				linkTo(methodOn(RetentionCurveResourceApi.class).enabledRetentionCurve()).withRel("retentionCurve")
 				);
 		return gardenerResource;

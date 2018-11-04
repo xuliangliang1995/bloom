@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.springframework.hateoas.Identifiable;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Flower implements Identifiable<Integer>,Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -18,9 +20,9 @@ public class Flower implements Identifiable<Integer>,Serializable{
     private String moral;
 
     private Byte star;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date ct;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date ut;
 
     public Integer getId() {

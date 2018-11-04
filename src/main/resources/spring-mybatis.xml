@@ -19,6 +19,7 @@
        				<value>classpath*:com/bloom/dao/ext/impl/*.xml</value>
        			</list>
        		</property>
+       		<property name="configLocation" value="classpath:configuration.xml" />
        </bean>
        
        <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

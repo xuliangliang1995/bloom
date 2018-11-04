@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bloom.dao.po.Flower;
+import com.bloom.domain.PageResources;
 import com.bloom.domain.flower.FlowerService;
 import com.bloom.exception.FlowBreakException;
+import com.bloom.util.mybatis.Page;
 import com.bloom.web.flower.resource.FlowerResource;
 import com.bloom.web.flower.resource.FlowerResourceAssembler;
 import com.bloom.web.flower.vo.CreateFlowerForm;
@@ -36,11 +39,15 @@ public class FlowerResourceApi {
 	@Autowired
 	private FlowerService flowerServiceImpl;
 	
+	@SuppressWarnings("unchecked")
 	@GetMapping
-	public Resources<FlowerResource> readFlowers(@PathVariable Integer gardenerId){
-		return new Resources<FlowerResource>(
-				new FlowerResourceAssembler().toResources(flowerServiceImpl.findFlowerByGardener(gardenerId))
-				);
+	public Resources<FlowerResource> readFlowers(@PathVariable Integer gardenerId,
+			@RequestParam(value = "page_no", required = false, defaultValue = Page.DEFAULT_PAGE_NO_TEXT)Integer pageNo,
+			@RequestParam(value = "page_size", required = false, defaultValue = Page.DEFAULT_PAGE_SIZE_TEXT)Integer pageSize){
+		Page page = new Page<Flower>(pageNo, pageSize);
+		return new PageResources<FlowerResource>(
+				new FlowerResourceAssembler().toResources(flowerServiceImpl.findFlowerByGardener(gardenerId,page))
+				).withTotal(page.getTotalCount());
 	}
 	
 	@GetMapping("/{flowerId}")

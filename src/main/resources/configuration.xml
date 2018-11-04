@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL MAP Config 3.1//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <settings>
+      <setting name="callSettersOnNulls" value="true"/>
+      <setting name="logImpl" value="SLF4J"/>
+      <setting name="autoMappingBehavior" value="FULL" /><!--自动映射字段  -->
+       <setting name="mapUnderscoreToCamelCase" value="true" /><!--自动驼峰命名规则（camel case）映射 -->
+  </settings>
+  <plugins>
+  <plugin interceptor="com.bloom.util.mybatis.MybatisPageInterceptor"></plugin>
+  </plugins>
+</configuration>

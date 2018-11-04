@@ -3,6 +3,7 @@ package com.bloom.domain.flower;
 import java.util.List;
 
 import com.bloom.dao.po.Flower;
+import com.bloom.util.mybatis.Page;
 import com.bloom.web.flower.vo.CreateFlowerForm;
 import com.bloom.web.flower.vo.EditFlowerForm;
 
@@ -18,6 +19,6 @@ public interface FlowerService {
 	
 	Flower findById(int id);
 	
-	List<Flower> findFlowerByGardener(int gardenerId);
+	List<Flower> findFlowerByGardener(int gardenerId,Page<Flower> page);
 
 }
