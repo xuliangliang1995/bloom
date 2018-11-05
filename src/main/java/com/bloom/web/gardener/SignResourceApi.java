@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.hateoas.ExposesResourceFor;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,6 +79,9 @@ public class SignResourceApi {
 	public ResponseEntity<?> signOut(HttpServletRequest request) throws URISyntaxException{
 		signServiceImpl.signOut(request);
 		HttpHeaders headers = new HttpHeaders();
+		headers.setPragma("no-cache");
+		headers.setCacheControl(CacheControl.noCache());
+		headers.setCacheControl(CacheControl.noStore());
 		headers.setLocation(new URI("https://www.grasswort.com"));
 		return new ResponseEntity<>(headers,HttpStatus.PERMANENT_REDIRECT);
 	}
