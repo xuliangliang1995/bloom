@@ -67,7 +67,9 @@ public class SignResourceApi {
 	 */
 	@GetMapping("/loginInfo")
 	public ResponseEntity<?> loginInfo(HttpServletRequest request){
-		return ResponseEntity.ok(LoginCheckUtil.loginGardenerId(request));
+		return ResponseEntity.ok(LoginCheckUtil.loginCheck(request)
+				?LoginCheckUtil.loginGardenerId(request)
+						:0);
 	}
 	/**
 	 * loginOut
