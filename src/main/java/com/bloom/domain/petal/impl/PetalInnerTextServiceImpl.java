@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.bloom.dao.ext.PetalInnerTextExtDao;
 import com.bloom.dao.po.Petal;
 import com.bloom.dao.po.PetalInnerText;
+import com.bloom.dao.po.PetalInnerTextWithBLOBs;
 import com.bloom.domain.petal.PetalInnerTextService;
 import com.bloom.exception.FlowBreakException;
 @Service
@@ -17,11 +18,12 @@ public class PetalInnerTextServiceImpl implements PetalInnerTextService {
 	private PetalInnerTextExtDao petalInnerTextExtDao;
 
 	@Override
-	public PetalInnerText addPetalText(Petal petal, String text) {
+	public PetalInnerTextWithBLOBs addPetalText(Petal petal, String text, String raw) {
 		Date now = new Date();
-		PetalInnerText innerText = new PetalInnerText();
+		PetalInnerTextWithBLOBs innerText = new PetalInnerTextWithBLOBs();
 		innerText.setPetalId(petal.getId());
 		innerText.setText(text);
+		innerText.setRaw(raw);
 		innerText.setCt(now);
 		innerText.setUt(now);
 		petalInnerTextExtDao.insert(innerText);
@@ -29,7 +31,7 @@ public class PetalInnerTextServiceImpl implements PetalInnerTextService {
 	}
 
 	@Override
-	public PetalInnerText findByPetalId(int petalId) {
+	public PetalInnerTextWithBLOBs findByPetalId(int petalId) {
 		return Optional.ofNullable(
 				petalInnerTextExtDao.findByPetalId(petalId)
 				).orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));

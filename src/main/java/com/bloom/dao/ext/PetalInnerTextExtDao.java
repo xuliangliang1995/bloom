@@ -1,10 +1,10 @@
 package com.bloom.dao.ext;
 
 import com.bloom.dao.PetalInnerTextMapper;
-import com.bloom.dao.po.PetalInnerText;
+import com.bloom.dao.po.PetalInnerTextWithBLOBs;
 
 public interface PetalInnerTextExtDao extends PetalInnerTextMapper {
 	
-	PetalInnerText findByPetalId(int petalId);
+	PetalInnerTextWithBLOBs findByPetalId(int petalId);
 
 }

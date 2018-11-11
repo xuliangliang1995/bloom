@@ -11,8 +11,6 @@ public class PetalInnerText {
 
     private Date ut;
 
-    private String text;
-
     public Integer getId() {
         return id;
     }
@@ -43,13 +41,5 @@ public class PetalInnerText {
 
     public void setUt(Date ut) {
         this.ut = ut;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text == null ? null : text.trim();
     }
 }

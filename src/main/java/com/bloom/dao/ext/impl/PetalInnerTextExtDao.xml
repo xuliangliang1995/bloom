@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bloom.dao.ext.PetalInnerTextExtDao">
-	<select id="findByPetalId" resultType="com.bloom.dao.po.PetalInnerText">
+	<select id="findByPetalId" resultType="com.bloom.dao.po.PetalInnerTextWithBLOBs">
 		select * from petal_inner_text where petal_id = #{petalId}
 	</select>
 </mapper>

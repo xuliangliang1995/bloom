@@ -79,7 +79,7 @@ public class PetalServiceImpl implements PetalService {
 			petalInnerLinkServiceImpl.addPetalLink(petal, createPetalForm.getLink());
 			break;
 		case RICH_TEXT:
-			petalInnerTextServiceImpl.addPetalText(petal, createPetalForm.getText());
+			petalInnerTextServiceImpl.addPetalText(petal, createPetalForm.getText(), createPetalForm.getRaw());
 			break;
 		}
 		
