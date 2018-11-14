@@ -21,6 +21,7 @@ import com.bloom.domain.petal.PetalService;
 import com.bloom.domain.petal.listener.PetalFireEvent;
 import com.bloom.domain.petal.listener.PetalFireListener;
 import com.bloom.domain.petal.listener.PetalFireSource;
+import com.bloom.domain.petal.meta.PetalVarietyEnum;
 import com.bloom.domain.wechat.common.meta.TemplateMsg;
 import com.bloom.domain.wechat.common.router.WxMpServiceGenerator;
 
@@ -65,56 +66,56 @@ public class WechatPetalFireListener implements PetalFireListener {
 		article.setPicUrl(RandomImage.get());
 		article.setDescription(petal.getNote());
 		article.setUrl(petalServiceImpl.getPetalInnerLinkService().findByPetalId(petal.getId()).getLink());*/
-		
-		
-		WxMpTemplateMessage tmsg = WxMpTemplateMessage.builder()
-				.templateId(TemplateMsg.ZUO_YE_TI_XING.getId())
-				.data(Arrays.asList(
-						new WxMpTemplateData("first","您有新的内容需要复习啦 ~ "),
-						new WxMpTemplateData("keyword1",DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm")),
-						new WxMpTemplateData("keyword2",String.format("【%s】", petal.getName()))  ,
-						new WxMpTemplateData("remark","你可以选择不复习，但努力会让你更出色噢~")
-						))
-				.url(petalServiceImpl.getPetalInnerLinkService().findByPetalId(petal.getId()).getLink())
-				.build();
-		List<GardenerWechatOpenId> openIdList = gardenerWechatOpenIdServiceImpl.getBindWechatOpenIdByGardenerId(petal.getGardenerId());
-		
-		openIdList.parallelStream().forEach(item -> {
-			//首先，模版消息要支持该微信公众号
-			if (TemplateMsg.ZUO_YE_TI_XING.support(item.getAppId())) {
-				//存在该公众号的配置信息
+		if(PetalVarietyEnum.LINK.getId()==petal.getPetalVarietyId().intValue()) {
+			WxMpTemplateMessage tmsg = WxMpTemplateMessage.builder()
+					.templateId(TemplateMsg.ZUO_YE_TI_XING.getId())
+					.data(Arrays.asList(
+							new WxMpTemplateData("first","您有新的内容需要复习啦 ~ "),
+							new WxMpTemplateData("keyword1",DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm")),
+							new WxMpTemplateData("keyword2",String.format("【%s】", petal.getName()))  ,
+							new WxMpTemplateData("remark","你可以选择不复习，但努力会让你更出色噢~")
+							))
+					.url(petalServiceImpl.getPetalInnerLinkService().findByPetalId(petal.getId()).getLink())
+					.build();
+			List<GardenerWechatOpenId> openIdList = gardenerWechatOpenIdServiceImpl.getBindWechatOpenIdByGardenerId(petal.getGardenerId());
+			
+			openIdList.parallelStream().forEach(item -> {
+				//首先，模版消息要支持该微信公众号
+				if (TemplateMsg.ZUO_YE_TI_XING.support(item.getAppId())) {
+					//存在该公众号的配置信息
+					Optional<WxMpService> wxMpService = wxMpServiceGenerator.get(item.getAppId());
+					
+					if (wxMpService.isPresent()) {
+						try {
+							tmsg.setToUser(item.getOpenId());
+							wxMpService.get().getTemplateMsgService().sendTemplateMsg(tmsg);
+						} catch (WxErrorException e) {
+							logger.error("\n微信模板消息【{}】发送失败:{}",TemplateMsg.ZUO_YE_TI_XING.getTitle(),e.getMessage());
+							e.printStackTrace();
+						}
+					}
+					
+				} else {
+					//ignore
+				}
+				/*【客服图文消息发送代码】
+				WxMpKefuMessage kefuMessage = WxMpKefuMessage.NEWS()
+						.addArticle(article)
+						.toUser(item.getOpenId())
+						.build();
 				Optional<WxMpService> wxMpService = wxMpServiceGenerator.get(item.getAppId());
 				
 				if (wxMpService.isPresent()) {
 					try {
-						tmsg.setToUser(item.getOpenId());
-						wxMpService.get().getTemplateMsgService().sendTemplateMsg(tmsg);
+						wxMpService.get().getKefuService().sendKefuMessage(kefuMessage);
 					} catch (WxErrorException e) {
-						logger.error("\n微信模板消息【{}】发送失败:{}",TemplateMsg.ZUO_YE_TI_XING.getTitle(),e.getMessage());
 						e.printStackTrace();
 					}
-				}
+				}*/
 				
-			} else {
-				//ignore
-			}
-			/*【客服图文消息发送代码】
-			WxMpKefuMessage kefuMessage = WxMpKefuMessage.NEWS()
-					.addArticle(article)
-					.toUser(item.getOpenId())
-					.build();
-			Optional<WxMpService> wxMpService = wxMpServiceGenerator.get(item.getAppId());
+			});
 			
-			if (wxMpService.isPresent()) {
-				try {
-					wxMpService.get().getKefuService().sendKefuMessage(kefuMessage);
-				} catch (WxErrorException e) {
-					e.printStackTrace();
-				}
-			}*/
-			
-		});
-		
+		}
 		petalProgressServiceImpl.createNextProgress(petal);
 	}
 
