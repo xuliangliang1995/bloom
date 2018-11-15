@@ -13,7 +13,17 @@
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
     <!-- 开启注解驱动 -->
-    <mvc:annotation-driven validator="validator"/>
+    <mvc:annotation-driven validator="validator">
+	<mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
     <!-- 放行静态资源 -->
     <mvc:default-servlet-handler />
     <!-- 开启aspect切面 -->
