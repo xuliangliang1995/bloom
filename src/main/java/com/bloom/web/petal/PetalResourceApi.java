@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -92,9 +95,12 @@ public class PetalResourceApi {
 				.filter(spetal -> spetal.getFlowerId().equals(flowerId))
 				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
 		Assert.isTrue(PetalVarietyEnum.RICH_TEXT.getId() == petal.getPetalVarietyId().intValue(),"请求错误！");
-		return ResponseEntity.ok(
-				petalServiceImpl.getPetalInnerTextService().findByPetalId(petalId).getText()
-				);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+		return new ResponseEntity<>(
+				petalServiceImpl.getPetalInnerTextService().findByPetalId(petalId).getText(), 
+				headers, 
+				HttpStatus.OK);
 	}
 
 }
