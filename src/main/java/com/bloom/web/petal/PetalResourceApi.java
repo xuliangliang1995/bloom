@@ -85,7 +85,7 @@ public class PetalResourceApi {
 				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
 		Assert.isTrue(PetalVarietyEnum.LINK.getId() == petal.getPetalVarietyId().intValue(),"请求错误！");
 		return ResponseEntity.ok(
-				petalServiceImpl.getPetalInnerLinkService().findByPetalId(petalId).getLink()
+				petalServiceImpl.getPetalInnerLinkService().findByPetalId(petalId)
 				);
 	}
 	
@@ -98,7 +98,7 @@ public class PetalResourceApi {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
 		return new ResponseEntity<>(
-				petalServiceImpl.getPetalInnerTextService().findByPetalId(petalId).getText(), 
+				petalServiceImpl.getPetalInnerTextService().findByPetalId(petalId), 
 				headers, 
 				HttpStatus.OK);
 	}
