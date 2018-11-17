@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -90,6 +91,16 @@ public class PetalResourceApi {
 		return new PetalResourceAssembler().toResource(
 				petalServiceImpl.edit(petalId,flower,editPetalForm)
 				);
+	}
+	
+	@DeleteMapping("{petalId}")
+	public ResponseEntity<?> deletePetal(@PathVariable Integer flowerId, @PathVariable Integer petalId){
+		int gardenerId = LoginCheckUtil.loginGardenerId(request);
+		Flower flower = Optional.of(flowerServiceImpl.findById(flowerId))
+				.filter(sflower -> sflower.getGardenerId().equals(gardenerId))
+				.orElseThrow(() -> new FlowBreakException("操作权限不足！"));
+		petalServiceImpl.deletePetal(petalId, flower);
+		return ResponseEntity.ok("删除成功");
 	}
 	
 	@GetMapping("/{petalId}/link")

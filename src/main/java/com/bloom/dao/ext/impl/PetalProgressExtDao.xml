@@ -4,4 +4,7 @@
 	<select id="currentProgress" resultMap="com.bloom.dao.PetalProgressMapper.BaseResultMap">
 		select * from petal_progress where petal_id = #{petalId,jdbcType=BIGINT} order by id desc limit 1
 	</select>
+	<delect id="deletePetalProgress">
+		delete from petal_progress where petal_id = #{petalId}
+	</delect>
 </mapper>

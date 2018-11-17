@@ -24,4 +24,6 @@ public interface PetalProgressService {
 	
 	List<Integer> todayFiredAndNoFiredPetalList(int gardenerId);
 	
+	void deletePetalProgressByPetalId(int petalId);
+	
 }

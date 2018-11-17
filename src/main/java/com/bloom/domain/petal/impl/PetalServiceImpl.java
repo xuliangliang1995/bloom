@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -106,7 +107,9 @@ public class PetalServiceImpl implements PetalService {
 		Date now = new Date();
 		Petal petal = Optional.ofNullable(
 				petalExtDao.selectByPrimaryKey(petalId)
-				).orElseThrow(() -> new FlowBreakException("操作对象不存在或已被删除！"));
+				)
+				.filter(p -> p.getFlowerId().equals(flower.getId()))
+				.orElseThrow(() -> new FlowBreakException("操作对象不存在或已被删除！"));
 		
 		Assert.isTrue(petal.getPetalVarietyId().equals(variety.getId()),"暂不支持更改类型");
 		
@@ -129,6 +132,40 @@ public class PetalServiceImpl implements PetalService {
 			break;
 		}
 		return petal;
+	}
+	
+	@Override
+	@Transactional
+	@CacheEvict(cacheNames = CachedName.petal, key = "#petalId")
+	public void deletePetal(int petalId,Flower flower) {
+		Assert.isTrue(LoginCheckUtil.loginGardenerId(request)==flower.getGardenerId(),"权限不足！");
+		
+		Petal petal = Optional.ofNullable(
+				petalExtDao.selectByPrimaryKey(petalId)
+				)
+				.filter(p -> p.getFlowerId().equals(flower.getId()))
+				.orElseThrow(() -> new FlowBreakException("操作对象不存在或已被删除！"));
+		
+		PetalVarietyEnum variety = Arrays.stream(PetalVarietyEnum.values())
+				.filter(v -> petal.getPetalVarietyId().equals(v.getId()))
+				.findFirst().get();
+		
+		//删除叶子
+		petalExtDao.deleteByPrimaryKey(petalId);
+		//删除叶子对应的进程
+		petalProgressServiceImpl.deletePetalProgressByPetalId(petalId);
+		//删除叶片内容
+		switch (variety) {
+		case LINK:
+			petalInnerLinkServiceImpl.deletePetalInnerLink(petal.getId());
+			break;
+
+		case RICH_TEXT:
+			petalInnerTextServiceImpl.deletePetalInnerText(petal.getId());
+			break;
+		}
+		
+		
 	}
 	
 	@Override

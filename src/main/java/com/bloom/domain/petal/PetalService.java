@@ -18,4 +18,6 @@ public interface PetalService extends PetalInnerGroupService{
 	
 	List<Petal> flowerPetals(int flowerId,Page page);
 	
+	void deletePetal(int petalId,Flower flower);
+	
 }

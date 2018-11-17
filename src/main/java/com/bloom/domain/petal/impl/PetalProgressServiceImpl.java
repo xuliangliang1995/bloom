@@ -111,4 +111,10 @@ public class PetalProgressServiceImpl implements PetalProgressService {
 				                  .distinct()
 				                  .collect(Collectors.toList());
 	}
+	
+	@Override
+	@Transactional
+	public void deletePetalProgressByPetalId(int petalId) {
+		petalProgressExtDao.deletePetalProgress(petalId);
+	}
 }
