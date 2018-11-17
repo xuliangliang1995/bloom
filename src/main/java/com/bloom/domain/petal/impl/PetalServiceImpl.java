@@ -28,6 +28,7 @@ import com.bloom.domain.petal.meta.PetalVarietyEnum;
 import com.bloom.exception.FlowBreakException;
 import com.bloom.util.mybatis.Page;
 import com.bloom.web.petal.vo.CreatePetalForm;
+import com.bloom.web.petal.vo.EditPetalForm;
 /**
  * petal
  * @author 83554
@@ -87,6 +88,49 @@ public class PetalServiceImpl implements PetalService {
 		return petal;
 	}
 
+	/**
+	 * 编辑叶子
+	 * @param flower
+	 * @param editPetalForm
+	 * @return
+	 */
+	@Transactional
+	@CachePut(cacheNames = CachedName.petal, key = "#result.id")
+	public Petal edit(int petalId,Flower flower,EditPetalForm editPetalForm) {
+		Assert.isTrue(LoginCheckUtil.loginGardenerId(request)==flower.getGardenerId(),"权限不足！");
+		PetalVarietyEnum variety = Arrays.stream(PetalVarietyEnum.values())
+				.filter(vari -> vari.getId() == editPetalForm.getPetalVariety().intValue())
+				.findFirst()
+				.orElseThrow(() -> new FlowBreakException("叶子种类有误！"));
+		
+		Date now = new Date();
+		Petal petal = Optional.ofNullable(
+				petalExtDao.selectByPrimaryKey(petalId)
+				).orElseThrow(() -> new FlowBreakException("操作对象不存在或已被删除！"));
+		
+		Assert.isTrue(petal.getPetalVarietyId().equals(variety.getId()),"暂不支持更改类型");
+		
+		petal.setGardenerId(flower.getGardenerId());
+		petal.setFlowerId(flower.getId());
+		petal.setName(editPetalForm.getName());
+		petal.setNote(editPetalForm.getNote());
+		petal.setPetalVarietyId(editPetalForm.getPetalVariety());
+		petal.setUt(now);
+		petalExtDao.updateByPrimaryKey(petal);
+		
+		switch (variety) {
+		case LINK:
+			petalInnerLinkServiceImpl.deletePetalInnerLink(petal.getId());
+			petalInnerLinkServiceImpl.addPetalLink(petal, editPetalForm.getLink());
+			break;
+		case RICH_TEXT:
+			petalInnerTextServiceImpl.deletePetalInnerText(petal.getId());
+			petalInnerTextServiceImpl.addPetalText(petal, editPetalForm.getText(), editPetalForm.getRaw());
+			break;
+		}
+		return petal;
+	}
+	
 	@Override
 	public List<Petal> flowerPetals(int flowerId,Page page) {
 		return petalExtDao.flowerPetals(flowerId, page);

@@ -4,4 +4,7 @@
 	<select id="findByPetalId" resultType="com.bloom.dao.po.PetalInnerTextWithBLOBs">
 		select * from petal_inner_text where petal_id = #{petalId}
 	</select>
+	<delete id="deleteByPetalId">
+		delete from petal_inner_text where petal_id = #{petalId}
+	</delete>
 </mapper>

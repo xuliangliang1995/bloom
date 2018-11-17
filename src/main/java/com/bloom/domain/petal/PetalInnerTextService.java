@@ -13,5 +13,7 @@ public interface PetalInnerTextService {
 	PetalInnerTextWithBLOBs addPetalText(Petal petal, String text, String raw);
 	
 	PetalInnerTextWithBLOBs findByPetalId(int petalId);
+	
+	void deletePetalInnerText(int petalId);
 
 }

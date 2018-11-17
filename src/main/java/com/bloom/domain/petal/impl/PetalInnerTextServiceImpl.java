@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bloom.dao.ext.PetalInnerTextExtDao;
 import com.bloom.dao.po.Petal;
@@ -37,4 +38,9 @@ public class PetalInnerTextServiceImpl implements PetalInnerTextService {
 				).orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
 	}
 
+	@Override
+	@Transactional
+	public void deletePetalInnerText(int petalId) {
+		petalInnerTextExtDao.deleteByPetalId(petalId);
+	}
 }

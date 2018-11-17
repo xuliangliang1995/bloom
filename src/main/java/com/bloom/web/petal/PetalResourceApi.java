@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +39,7 @@ import com.bloom.util.mybatis.Page;
 import com.bloom.web.petal.resource.PetalResource;
 import com.bloom.web.petal.resource.PetalResourceAssembler;
 import com.bloom.web.petal.vo.CreatePetalForm;
+import com.bloom.web.petal.vo.EditPetalForm;
 @RestController
 @ExposesResourceFor(Petal.class)
 @RequestMapping("/flowers/{flowerId}/petal")
@@ -75,6 +77,18 @@ public class PetalResourceApi {
 				.orElseThrow(() -> new FlowBreakException("操作权限不足！"));
 		return new PetalResourceAssembler().toResource(
 				petalServiceImpl.add(flower,createPetalForm)
+				);
+	}
+	
+	@PutMapping("{petalId}")
+	public PetalResource edit(@Validated EditPetalForm editPetalForm, BindingResult result,
+			@PathVariable Integer flowerId, @PathVariable Integer petalId) {
+		int gardenerId = LoginCheckUtil.loginGardenerId(request);
+		Flower flower = Optional.of(flowerServiceImpl.findById(flowerId))
+				.filter(sflower -> sflower.getGardenerId().equals(gardenerId))
+				.orElseThrow(() -> new FlowBreakException("操作权限不足！"));
+		return new PetalResourceAssembler().toResource(
+				petalServiceImpl.edit(petalId,flower,editPetalForm)
 				);
 	}
 	

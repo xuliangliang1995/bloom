@@ -6,5 +6,7 @@ import com.bloom.dao.po.PetalInnerTextWithBLOBs;
 public interface PetalInnerTextExtDao extends PetalInnerTextMapper {
 	
 	PetalInnerTextWithBLOBs findByPetalId(int petalId);
+	
+	void deleteByPetalId(int petalId);
 
 }
