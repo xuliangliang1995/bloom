@@ -76,6 +76,6 @@ public class FlowerResourceApi {
 	@DeleteMapping("/{flowerId}")
 	public ResponseEntity<?> deleteFlower(@PathVariable Integer gardenerId, @PathVariable Integer flowerId){
 		flowerServiceImpl.deleteById(gardenerId, flowerId);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		return ResponseEntity.status(HttpStatus.OK).body("删除成功");
 	}
 }
