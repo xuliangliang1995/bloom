@@ -10,7 +10,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -25,6 +24,7 @@ import com.bloom.domain.CachedName;
 import com.bloom.domain.flower.FlowerService;
 import com.bloom.domain.flower.meta.FlowerStar;
 import com.bloom.domain.gardener.general.LoginCheckUtil;
+import com.bloom.domain.petal.PetalService;
 import com.bloom.exception.FlowBreakException;
 import com.bloom.util.mybatis.Page;
 import com.bloom.web.flower.vo.CreateFlowerForm;
@@ -35,6 +35,8 @@ public class FlowerServiceImpl implements FlowerService {
 	private FlowerExtDao flowerExtDao;
 	@Autowired
 	private HttpServletRequest request;
+	@Resource
+	private PetalService petalServiceImpl;
 	
 	private static final String DEFAULT_FLOWER_NAME = "grasswort";
 
@@ -93,6 +95,9 @@ public class FlowerServiceImpl implements FlowerService {
 				)
 				.filter(sflower -> sflower.getGardenerId().equals(gardenerId))
 				.orElseThrow(() -> new FlowBreakException("您要操作的资源不存在或已被删除！"));
+		//先删除所有该flower下的petals
+		petalServiceImpl.flowerPetals(flowerId, null).forEach(petal -> petalServiceImpl.deletePetal(petal.getId(), flower));
+		
 		flowerExtDao.deleteByPrimaryKey(flower.getId());
 	}
 
