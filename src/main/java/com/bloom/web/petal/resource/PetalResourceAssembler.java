@@ -1,15 +1,15 @@
 package com.bloom.web.petal.resource;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
+import java.util.Arrays;
+
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
 import com.bloom.dao.po.Petal;
 import com.bloom.domain.petal.meta.PetalVarietyEnum;
 import com.bloom.web.petal.PetalResourceApi;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-
-import java.util.Arrays;
 
 public class PetalResourceAssembler extends ResourceAssemblerSupport<Petal, PetalResource> {
 

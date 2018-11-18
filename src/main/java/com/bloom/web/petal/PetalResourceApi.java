@@ -49,6 +49,7 @@ public class PetalResourceApi {
 	private PetalService petalServiceImpl;
 	@Autowired
 	private FlowerService flowerServiceImpl;
+
 	@Autowired
 	private HttpServletRequest request;
 	
@@ -56,7 +57,7 @@ public class PetalResourceApi {
 	public Resources<PetalResource> flowerPetals(@PathVariable Integer flowerId,
 			@RequestParam(value = "page_no", required = false, defaultValue = Page.DEFAULT_PAGE_NO_TEXT)Integer pageNo,
 			@RequestParam(value = "page_size", required = false, defaultValue = Page.DEFAULT_PAGE_SIZE_TEXT)Integer pageSize){
-		Page page = new Page<Petal>(pageNo,pageSize);
+		Page<Petal> page = new Page<Petal>(pageNo,pageSize);
 		return new PageResources<PetalResource>(
 				new PetalResourceAssembler().toResources(petalServiceImpl.flowerPetals(flowerId,page))
 				).withTotal(page.getTotalCount());
@@ -127,5 +128,6 @@ public class PetalResourceApi {
 				headers, 
 				HttpStatus.OK);
 	}
-
+	
+	
 }

@@ -117,4 +117,15 @@ public class PetalProgressServiceImpl implements PetalProgressService {
 	public void deletePetalProgressByPetalId(int petalId) {
 		petalProgressExtDao.deletePetalProgress(petalId);
 	}
+
+	@Override
+	public List<PetalProgress> petalProgress(int gardenerId,Date startDate, Date endDate) {
+		PetalProgressExample example = new PetalProgressExample();
+		example.createCriteria()
+			.andGardenerIdEqualTo(gardenerId)
+			.andFireTimeBetween(startDate, endDate);
+		example.setOrderByClause("fire_time desc,id desc");
+		return petalProgressExtDao.selectByExample(example)
+				;
+	}
 }
