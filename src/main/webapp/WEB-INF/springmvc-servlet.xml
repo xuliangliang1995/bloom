@@ -13,7 +13,7 @@
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
     <!-- 开启注解驱动 -->
-    <mvc:annotation-driven validator="validator">
+    <mvc:annotation-driven validator="validator" conversion-service="conversionService">
 	<mvc:message-converters>
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
                 <property name="supportedMediaTypes">
@@ -38,6 +38,14 @@
 		p:prefix="/WEB-INF/jsp/"
 		p:suffix=".jsp" />
 		
+	<!-- 配置类型转换 -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">  
+	    <property name="converters">  
+	       <list>  
+	       	<bean class="com.bloom.convert.StringConvertDate"></bean>
+	        </list>  
+	    </property>  
+	</bean>
 	<import resource="classpath:spring-validator.xml"/>
 
 </beans>
