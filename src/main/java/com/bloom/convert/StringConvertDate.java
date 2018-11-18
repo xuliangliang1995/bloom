@@ -31,8 +31,12 @@ public class StringConvertDate implements Converter<String, Date> {
             simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         } else if (Pattern.matches("^\\d{4}\\d{2}\\d{2}$", source)) {
             simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        } else if (Pattern.matches("^\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}$", source)){
+            simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        } else if(Pattern.matches("^\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}$", source)) { 
+        	simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         } else {
-            throw new TypeMismatchException("", Date.class);
+        	throw new TypeMismatchException("", Date.class);
         }
 
         return simpleDateFormat;
