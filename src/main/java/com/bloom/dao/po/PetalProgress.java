@@ -2,6 +2,8 @@ package com.bloom.dao.po;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class PetalProgress {
     private Long id;
 
@@ -10,11 +12,11 @@ public class PetalProgress {
     private Integer gardenerId;
 
     private Integer retentionCurveId;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm",timezone="GMT+8")
     private Date fireTime;
 
     private Byte fire;
-
+    
     private Date ct;
     
     public static enum FireStatus{
