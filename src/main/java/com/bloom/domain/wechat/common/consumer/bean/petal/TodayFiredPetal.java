@@ -105,11 +105,6 @@ public class TodayFiredPetal extends AbstractEventConsumerBean {
 					}
 				}
 			}
-			try {
-				ctx.getWxMpService().getKefuService().sendKefuMessage(out);
-			} catch (WxErrorException e) {
-				e.printStackTrace();
-			}
 		};
 	}
 
