@@ -1,5 +1,6 @@
 package com.bloom.domain.wechat.common.consumer.bean.petal;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -15,13 +16,19 @@ import com.bloom.dao.po.Petal;
 import com.bloom.domain.gardener.SignService;
 import com.bloom.domain.petal.PetalProgressService;
 import com.bloom.domain.petal.PetalService;
+import com.bloom.domain.petal.meta.PetalVarietyEnum;
 import com.bloom.domain.wechat.common.consumer.AbstractEventConsumerBean;
 import com.bloom.util.image.RandomImage;
+import com.bloom.web.petal.PetalResourceApi;
 
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage;
 import me.chanjar.weixin.mp.bean.kefu.WxMpKefuMessage.WxArticle;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 @Component
 public class TodayFiredPetal extends AbstractEventConsumerBean {
 	
@@ -69,7 +76,20 @@ public class TodayFiredPetal extends AbstractEventConsumerBean {
 				article.setTitle(petal.getName());
 				article.setPicUrl(RandomImage.get());
 				article.setDescription(petal.getNote());
-				article.setUrl(petalServiceImpl.getPetalInnerLinkService().findByPetalId(petal.getId()).getLink());
+				
+				PetalVarietyEnum variety = Arrays.stream(PetalVarietyEnum.values())
+						.filter(v -> v.getId() == petal.getPetalVarietyId())
+						.findFirst().get();
+				switch (variety) {
+				case LINK:
+					article.setUrl(petalServiceImpl.getPetalInnerLinkService().findByPetalId(petal.getId()).getLink());
+					break;
+
+				case RICH_TEXT:
+					article.setUrl(linkTo(methodOn(PetalResourceApi.class).petalPage(petal.getFlowerId(), petal.getId())).withSelfRel().getHref());
+					break;
+				}
+				
 				
 				out.getArticles().add(article);
 				

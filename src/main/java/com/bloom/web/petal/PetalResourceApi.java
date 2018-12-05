@@ -33,6 +33,7 @@ import com.bloom.dao.po.Petal;
 import com.bloom.domain.PageResources;
 import com.bloom.domain.flower.FlowerService;
 import com.bloom.domain.gardener.general.LoginCheckUtil;
+import com.bloom.domain.petal.PetalPageRender;
 import com.bloom.domain.petal.PetalService;
 import com.bloom.domain.petal.meta.PetalVarietyEnum;
 import com.bloom.exception.FlowBreakException;
@@ -64,15 +65,16 @@ public class PetalResourceApi {
 	}
 	
 	@GetMapping("/{petalId}")
-	public PetalResource findById(@PathVariable Integer flowerId,@PathVariable Integer petalId) {
+	public PetalResource findById(@PathVariable Integer flowerId, @PathVariable Integer petalId) {
 		Petal petal = Optional.of(petalServiceImpl.findByPetalId(petalId))
 				.filter(spetal -> spetal.getFlowerId().equals(flowerId))
 				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
 		return new PetalResourceAssembler().toResource(petal);
 	}
 	
+	
 	@PostMapping
-	public PetalResource create(@Validated CreatePetalForm createPetalForm,BindingResult result,@PathVariable Integer flowerId) {
+	public PetalResource create(@Validated CreatePetalForm createPetalForm, BindingResult result, @PathVariable Integer flowerId) {
 		int gardenerId = LoginCheckUtil.loginGardenerId(request);
 		Flower flower = Optional.of(flowerServiceImpl.findById(flowerId))
 				.filter(sflower -> sflower.getGardenerId().equals(gardenerId))
@@ -105,7 +107,7 @@ public class PetalResourceApi {
 	}
 	
 	@GetMapping("/{petalId}/link")
-	public ResponseEntity<?> petalLink(@PathVariable Integer flowerId,@PathVariable Integer petalId){
+	public ResponseEntity<?> petalLink(@PathVariable Integer flowerId, @PathVariable Integer petalId){
 		Petal petal = Optional.of(petalServiceImpl.findByPetalId(petalId))
 				.filter(spetal -> spetal.getFlowerId().equals(flowerId))
 				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
@@ -116,7 +118,7 @@ public class PetalResourceApi {
 	}
 	
 	@GetMapping("/{petalId}/text")
-	public ResponseEntity<?> petalText(@PathVariable Integer flowerId,@PathVariable Integer petalId){
+	public ResponseEntity<?> petalText(@PathVariable Integer flowerId, @PathVariable Integer petalId){
 		Petal petal = Optional.of(petalServiceImpl.findByPetalId(petalId))
 				.filter(spetal -> spetal.getFlowerId().equals(flowerId))
 				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
@@ -129,5 +131,17 @@ public class PetalResourceApi {
 				HttpStatus.OK);
 	}
 	
-	
+	@GetMapping("/{petalId}/page")
+	public ResponseEntity<?> petalPage(@PathVariable Integer flowerId, @PathVariable Integer petalId) {
+		Petal petal = Optional.ofNullable(petalServiceImpl.findByPetalId(petalId))
+				.filter(spetal -> spetal.getFlowerId().equals(flowerId))
+				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
+		Assert.isTrue(PetalVarietyEnum.RICH_TEXT.getId() == petal.getPetalVarietyId().intValue(), "请求错误！");
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.parseMediaType("text/html;charset=utf-8"));;
+		return new ResponseEntity<>(
+				PetalPageRender.render(petalServiceImpl.getPetalInnerTextService().findByPetalId(petalId).getText()), 
+				headers, 
+				HttpStatus.OK);
+	}
 }

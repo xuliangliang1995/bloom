@@ -29,6 +29,7 @@ public class PetalResourceAssembler extends ResourceAssemblerSupport<Petal, Peta
 			break;
 		case RICH_TEXT:
 			pr.add(linkTo(methodOn(PetalResourceApi.class).petalText(petal.getFlowerId(), petal.getId())).withRel("text"));
+			pr.add(linkTo(methodOn(PetalResourceApi.class).petalPage(petal.getFlowerId(), petal.getId())).withRel("page"));
 			break;
 		}
 		return pr;
