@@ -1,5 +1,8 @@
 package com.bloom.domain.petal.listener.impl;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +27,7 @@ import com.bloom.domain.petal.listener.PetalFireSource;
 import com.bloom.domain.petal.meta.PetalVarietyEnum;
 import com.bloom.domain.wechat.common.meta.TemplateMsg;
 import com.bloom.domain.wechat.common.router.WxMpServiceGenerator;
+import com.bloom.web.petal.PetalResourceApi;
 
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -60,62 +64,51 @@ public class WechatPetalFireListener implements PetalFireListener {
 	public void accept(PetalFireEvent fireEvent) {
 		Petal petal = fireEvent.getPetal();
 		
-		/*【图文消息表现形式较好，但发送场景不适用，暂时采用模版消息】
-		WxArticle article = new WxArticle();
-		article.setTitle(petal.getName());
-		article.setPicUrl(RandomImage.get());
-		article.setDescription(petal.getNote());
-		article.setUrl(petalServiceImpl.getPetalInnerLinkService().findByPetalId(petal.getId()).getLink());*/
-		if(PetalVarietyEnum.LINK.getId()==petal.getPetalVarietyId().intValue()) {
-			WxMpTemplateMessage tmsg = WxMpTemplateMessage.builder()
-					.templateId(TemplateMsg.ZUO_YE_TI_XING.getId())
-					.data(Arrays.asList(
-							new WxMpTemplateData("first","您有新的内容需要复习啦 ~ "),
-							new WxMpTemplateData("keyword1",DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm")),
-							new WxMpTemplateData("keyword2",String.format("【%s】", petal.getName()))  ,
-							new WxMpTemplateData("remark","你可以选择不复习，但努力会让你更出色噢~")
-							))
-					.url(petalServiceImpl.getPetalInnerLinkService().findByPetalId(petal.getId()).getLink())
-					.build();
-			List<GardenerWechatOpenId> openIdList = gardenerWechatOpenIdServiceImpl.getBindWechatOpenIdByGardenerId(petal.getGardenerId());
-			
-			openIdList.parallelStream().forEach(item -> {
-				//首先，模版消息要支持该微信公众号
-				if (TemplateMsg.ZUO_YE_TI_XING.support(item.getAppId())) {
-					//存在该公众号的配置信息
-					Optional<WxMpService> wxMpService = wxMpServiceGenerator.get(item.getAppId());
-					
-					if (wxMpService.isPresent()) {
-						try {
-							tmsg.setToUser(item.getOpenId());
-							wxMpService.get().getTemplateMsgService().sendTemplateMsg(tmsg);
-						} catch (WxErrorException e) {
-							logger.error("\n微信模板消息【{}】发送失败:{}",TemplateMsg.ZUO_YE_TI_XING.getTitle(),e.getMessage());
-							e.printStackTrace();
-						}
-					}
-					
-				} else {
-					//ignore
-				}
-				/*【客服图文消息发送代码】
-				WxMpKefuMessage kefuMessage = WxMpKefuMessage.NEWS()
-						.addArticle(article)
-						.toUser(item.getOpenId())
-						.build();
+		String url = "";
+		PetalVarietyEnum variety = Arrays.stream(PetalVarietyEnum.values()).filter(v -> petal.getPetalVarietyId().equals(v.getId()))
+				.findFirst().get();
+		switch (variety) {
+		case LINK:
+			url = petalServiceImpl.getPetalInnerLinkService().findByPetalId(petal.getId()).getLink();
+			break;
+		case RICH_TEXT:
+			url = linkTo(methodOn(PetalResourceApi.class).petalPage(petal.getFlowerId(), petal.getId())).withSelfRel().getHref();
+			break;
+		}
+		
+		WxMpTemplateMessage tmsg = WxMpTemplateMessage.builder()
+				.templateId(TemplateMsg.ZUO_YE_TI_XING.getId())
+				.data(Arrays.asList(
+						new WxMpTemplateData("first","您有新的内容需要复习啦 ~ "),
+						new WxMpTemplateData("keyword1",DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm")),
+						new WxMpTemplateData("keyword2",String.format("【%s】", petal.getName()))  ,
+						new WxMpTemplateData("remark","你可以选择不复习，但努力会让你更出色噢~")
+						))
+				.url(url)
+				.build();
+		List<GardenerWechatOpenId> openIdList = gardenerWechatOpenIdServiceImpl.getBindWechatOpenIdByGardenerId(petal.getGardenerId());
+		
+		openIdList.parallelStream().forEach(item -> {
+			// 首先，模版消息要支持该微信公众号
+			if (TemplateMsg.ZUO_YE_TI_XING.support(item.getAppId())) {
+				// 存在该公众号的配置信息
 				Optional<WxMpService> wxMpService = wxMpServiceGenerator.get(item.getAppId());
 				
 				if (wxMpService.isPresent()) {
 					try {
-						wxMpService.get().getKefuService().sendKefuMessage(kefuMessage);
+						tmsg.setToUser(item.getOpenId());
+						wxMpService.get().getTemplateMsgService().sendTemplateMsg(tmsg);
 					} catch (WxErrorException e) {
+						logger.error("\n微信模板消息【{}】发送失败:{}",TemplateMsg.ZUO_YE_TI_XING.getTitle(),e.getMessage());
 						e.printStackTrace();
 					}
-				}*/
+				}
 				
-			});
-			
-		}
+			} else {
+				// ignore
+			}
+		});
+	
 		petalProgressServiceImpl.createNextProgress(petal);
 	}
 
