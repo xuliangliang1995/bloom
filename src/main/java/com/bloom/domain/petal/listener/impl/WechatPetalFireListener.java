@@ -74,6 +74,7 @@ public class WechatPetalFireListener implements PetalFireListener {
 		case RICH_TEXT:
 			url = linkTo(methodOn(PetalResourceApi.class).petalPage(petal.getFlowerId(), petal.getId())).withSelfRel().getHref()
 				.replaceAll("http://","https://grasswort.com/");
+			logger.info(url);
 			break;
 		}
 		
