@@ -50,6 +50,11 @@ public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 			button12.setName("添加叶子");
 			button12.setKey(CreatePetalLinkReminder.KEY);
 			
+			WxMenuButton button13 = new WxMenuButton();
+			button13.setType(MenuButtonType.VIEW);
+			button13.setName("百度一下");
+			button13.setUrl("https://www.baidu.com");;
+			
 		button1.getSubButtons().add(button11);	
 		button1.getSubButtons().add(button12);
 		

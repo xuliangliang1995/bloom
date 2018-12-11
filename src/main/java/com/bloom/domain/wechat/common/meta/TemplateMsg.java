@@ -4,12 +4,20 @@ import com.bloom.domain.wechat.common.config.WechatAccount;
 
 public enum TemplateMsg {
 	ZUO_YE_TI_XING("3T-5TRP1uJDNE7WsJ-Id4cR8HZbJs-moq3PMRqXKux0",
-				   "作业提醒",
-				   "{{first.DATA}}\r\n" + 
-				   "开始时间：{{keyword1.DATA}}\r\n" + 
-				   "完成时间：{{keyword2.DATA}}\r\n" + 
-				   "{{remark.DATA}}",
-				   WechatAccount.GRASSWORT);
+	    "作业提醒",
+		"{{first.DATA}}\r\n" + 
+		"开始时间：{{keyword1.DATA}}\r\n" + 
+		"完成时间：{{keyword2.DATA}}\r\n" + 
+		"{{remark.DATA}}",
+		WechatAccount.GRASSWORT),
+	XUE_XI_SHOU_QUAN_TI_XING("uUwV70bNoHNFEKQFiw7CIZhw_CHmhshDHtz7C81GrlI",
+		"学习授权提醒",
+		"{{first.DATA}}\r\n" + 
+		"资源名称：{{keyword1.DATA}}\r\n" + 
+		"开始时间：{{keyword2.DATA}}\r\n" + 
+		"结束时间：{{keyword3.DATA}}\r\n" + 
+		"{{remark.DATA}}",
+		WechatAccount.GRASSWORT);
 	private String id;
 	private String title;
 	private String template;

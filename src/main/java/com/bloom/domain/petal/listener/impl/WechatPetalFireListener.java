@@ -77,11 +77,12 @@ public class WechatPetalFireListener implements PetalFireListener {
 		}
 		
 		WxMpTemplateMessage tmsg = WxMpTemplateMessage.builder()
-				.templateId(TemplateMsg.ZUO_YE_TI_XING.getId())
+				.templateId(TemplateMsg.XUE_XI_SHOU_QUAN_TI_XING.getId())
 				.data(Arrays.asList(
-						new WxMpTemplateData("first","您有新的内容需要复习啦 ~ "),
-						new WxMpTemplateData("keyword1",DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm")),
-						new WxMpTemplateData("keyword2",String.format("【%s】", petal.getName()))  ,
+						new WxMpTemplateData("first","新的复习内容已经推送给您~ "),
+						new WxMpTemplateData("keyword1",String.format("【%s】", petal.getName())),
+						new WxMpTemplateData("keyword2",DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm")),
+						new WxMpTemplateData("keyword3","--"),
 						new WxMpTemplateData("remark","你可以选择不复习，但努力会让你更出色噢~")
 						))
 				.url(url)
@@ -90,7 +91,7 @@ public class WechatPetalFireListener implements PetalFireListener {
 		
 		openIdList.parallelStream().forEach(item -> {
 			// 首先，模版消息要支持该微信公众号
-			if (TemplateMsg.ZUO_YE_TI_XING.support(item.getAppId())) {
+			if (TemplateMsg.XUE_XI_SHOU_QUAN_TI_XING.support(item.getAppId())) {
 				// 存在该公众号的配置信息
 				Optional<WxMpService> wxMpService = wxMpServiceGenerator.get(item.getAppId());
 				
