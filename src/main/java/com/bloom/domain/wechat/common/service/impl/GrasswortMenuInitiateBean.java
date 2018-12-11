@@ -57,6 +57,7 @@ public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 			
 		button1.getSubButtons().add(button11);	
 		button1.getSubButtons().add(button12);
+		button1.getSubButtons().add(button13);
 		
 		WxMenuButton button2 = new WxMenuButton();
 		button2.setType(MenuButtonType.CLICK);
