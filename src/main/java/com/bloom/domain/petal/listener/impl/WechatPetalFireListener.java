@@ -82,7 +82,7 @@ public class WechatPetalFireListener implements PetalFireListener {
 						new WxMpTemplateData("first","新的复习内容已经推送给您~ "),
 						new WxMpTemplateData("keyword1",String.format("【%s】", petal.getName())),
 						new WxMpTemplateData("keyword2",DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm")),
-						new WxMpTemplateData("keyword3","--"),
+						new WxMpTemplateData("keyword3",DateFormatUtils.format(new Date(), "yyyy-MM-dd")),
 						new WxMpTemplateData("remark","你可以选择不复习，但努力会让你更出色噢~")
 						))
 				.url(url)
