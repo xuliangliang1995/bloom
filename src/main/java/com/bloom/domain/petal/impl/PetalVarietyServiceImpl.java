@@ -24,14 +24,14 @@ public class PetalVarietyServiceImpl implements PetalVarietyService {
 	private PetalVarietyExtDao petalVarietyExtDao;
 
 	@Override
-	@Cacheable(cacheNames = CachedName.petal, key = "#root.methodName")
+	@Cacheable(cacheNames = CachedName.PETAL, key = "#root.methodName")
 	public List<PetalVariety> varieties() {
 		PetalVarietyExample query = new PetalVarietyExample();
 		return petalVarietyExtDao.selectByExample(query);
 	}
 
 	@Override
-	@Cacheable(cacheNames = CachedName.petal, key = "#varietyId")
+	@Cacheable(cacheNames = CachedName.PETAL, key = "#varietyId")
 	public PetalVariety findById(int varietyId) {
 		return Optional.ofNullable(petalVarietyExtDao.selectByPrimaryKey(varietyId))
 				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));

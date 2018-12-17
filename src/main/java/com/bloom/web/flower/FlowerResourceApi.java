@@ -39,12 +39,11 @@ public class FlowerResourceApi {
 	@Autowired
 	private FlowerService flowerServiceImpl;
 	
-	@SuppressWarnings("unchecked")
 	@GetMapping
 	public Resources<FlowerResource> readFlowers(@PathVariable Integer gardenerId,
 			@RequestParam(value = "page_no", required = false, defaultValue = Page.DEFAULT_PAGE_NO_TEXT)Integer pageNo,
 			@RequestParam(value = "page_size", required = false, defaultValue = Page.DEFAULT_PAGE_SIZE_TEXT)Integer pageSize){
-		Page page = new Page<Flower>(pageNo, pageSize);
+		Page<Flower> page = new Page<>(pageNo, pageSize);
 		return new PageResources<FlowerResource>(
 				new FlowerResourceAssembler().toResources(flowerServiceImpl.findFlowerByGardener(gardenerId,page))
 				).withTotal(page.getTotalCount());

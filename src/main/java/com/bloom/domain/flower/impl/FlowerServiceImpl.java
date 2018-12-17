@@ -42,7 +42,7 @@ public class FlowerServiceImpl implements FlowerService {
 
 	@Override
 	@Transactional
-	@CachePut(cacheNames = CachedName.flower, key = "#result.id")
+	@CachePut(cacheNames = CachedName.FLOWER, key = "#result.id")
 	public Flower create(int gardenerId, CreateFlowerForm form) {
 		Assert.isTrue(LoginCheckUtil.loginGardenerId(request)==gardenerId,"权限不足！");
 		Date now = new Date();
@@ -59,7 +59,7 @@ public class FlowerServiceImpl implements FlowerService {
 	
 	@Override
 	@Transactional
-	@CachePut(cacheNames = CachedName.flower, key = "#result.id")
+	@CachePut(cacheNames = CachedName.FLOWER, key = "#result.id")
 	public Flower defaultFlower(int gardenerId) {
 		Assert.isTrue(LoginCheckUtil.loginGardenerId(request)==gardenerId,"权限不足！");
 		FlowerExample example = new FlowerExample();
@@ -87,7 +87,7 @@ public class FlowerServiceImpl implements FlowerService {
 
 	@Override
 	@Transactional
-	@CacheEvict(cacheNames = CachedName.flower, key = "#flowerId")
+	@CacheEvict(cacheNames = CachedName.FLOWER, key = "#flowerId")
 	public void deleteById(int gardenerId, int flowerId) {
 		Assert.isTrue(gardenerId == LoginCheckUtil.loginGardenerId(request),"操作权限不足！");
 		Flower flower = Optional.ofNullable(
@@ -103,7 +103,7 @@ public class FlowerServiceImpl implements FlowerService {
 
 	@Override
 	@Transactional
-	@CachePut(cacheNames = CachedName.flower, key = "#result.id")
+	@CachePut(cacheNames = CachedName.FLOWER, key = "#result.id")
 	public Flower edit(int gardenerId,int flowerId,EditFlowerForm editFlowerForm) {
 		Assert.isTrue(gardenerId == LoginCheckUtil.loginGardenerId(request),"操作权限不足！");
 		
@@ -121,7 +121,7 @@ public class FlowerServiceImpl implements FlowerService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = CachedName.flower, key = "#id")
+	@Cacheable(cacheNames = CachedName.FLOWER, key = "#id")
 	public Flower findById(int id) {
 		return Optional.ofNullable(
 				flowerExtDao.selectByPrimaryKey(id)
@@ -129,7 +129,7 @@ public class FlowerServiceImpl implements FlowerService {
 	}
 
 	@Override
-	public List<Flower> findFlowerByGardener(int gardenerId,Page page) {
+	public List<Flower> findFlowerByGardener(int gardenerId,Page<?> page) {
 		return flowerExtDao.findFlowersByGardenerId(gardenerId, page);
 	}
 

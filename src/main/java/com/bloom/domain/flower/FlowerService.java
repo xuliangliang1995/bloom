@@ -19,6 +19,6 @@ public interface FlowerService {
 	
 	Flower findById(int id);
 	
-	List<Flower> findFlowerByGardener(int gardenerId,Page<Flower> page);
+	List<Flower> findFlowerByGardener(int gardenerId,Page<?> page);
 
 }

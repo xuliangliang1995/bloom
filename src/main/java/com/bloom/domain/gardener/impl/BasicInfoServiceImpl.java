@@ -24,7 +24,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 
 	@Override
 	@Transactional
-	@CachePut(cacheNames = CachedName.gardeners, key = "#result.id")
+	@CachePut(cacheNames = CachedName.GARDENERS, key = "#result.id")
 	public Gardener basicInfo(Integer gardenerKey, String nickName, Gender gender, Date birthday) {
 		Date now = new Date();
 		Gardener gardener = new Gardener();
@@ -39,7 +39,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 
 	@Override
 	@Transactional
-	@CachePut(cacheNames = CachedName.gardeners, key = "#result.id")
+	@CachePut(cacheNames = CachedName.GARDENERS, key = "#result.id")
 	public Gardener setEmail(Integer gardenerKey, String email) {
 		Date now = new Date();
 		Gardener gardener = new Gardener();
@@ -51,7 +51,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = CachedName.gardeners, key = "#id")
+	@Cacheable(cacheNames = CachedName.GARDENERS, key = "#id")
 	public Gardener findGardenerById(int id) {
 		return Optional.ofNullable(
 				gardenerExtDao.selectByPrimaryKey(id)

@@ -16,7 +16,7 @@ public interface PetalService extends PetalInnerGroupService{
 	
 	Petal edit(int petalId,Flower flower,EditPetalForm editPetalForm);
 	
-	List<Petal> flowerPetals(int flowerId,@SuppressWarnings("rawtypes") Page page);
+	List<Petal> flowerPetals(int flowerId,Page<?> page);
 	
 	void deletePetal(int petalId,Flower flower);
 	

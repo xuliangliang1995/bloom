@@ -75,7 +75,7 @@ public class SignServiceImpl implements SignService{
 	 * @param originalPassword
 	 */
 	@Override
-	@CachePut(cacheNames = CachedName.gardeners, key = "#result.id")
+	@CachePut(cacheNames = CachedName.GARDENERS, key = "#result.id")
 	public Gardener signIn(HttpServletRequest request,String originalUsername,String originalPassword) {
 		Integer key = Optional.ofNullable(
 				gardenerExtDao.selectKeyByUsername(GardenerEncrypt.encryptUsername(originalUsername))
@@ -94,7 +94,7 @@ public class SignServiceImpl implements SignService{
 	 * @throws WechatException 
 	 */
 	@Override
-	@CachePut(cacheNames = CachedName.gardeners, key = "#result.id")
+	@CachePut(cacheNames = CachedName.GARDENERS, key = "#result.id")
 	public Gardener signInByWechatOpenId(HttpServletRequest request, String appId, String openId){
 		int gardenerId = gardenerWechatOpenIdServiceImpl.getGardenerIdByWechatOpenId(appId, openId)
 				.orElseThrow(() -> new WechatException(appId,openId,"请先绑定Grasswort账户！"));

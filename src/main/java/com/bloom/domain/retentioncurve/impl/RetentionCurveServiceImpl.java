@@ -29,7 +29,7 @@ public class RetentionCurveServiceImpl implements RetentionCurveService {
 	private RetentionCurveExtDao retentionCurveExtDao;
 
 	@Override
-	@Cacheable(cacheNames = CachedName.retentionCurve, key = "#curveId")
+	@Cacheable(cacheNames = CachedName.RETENTION_CURVE, key = "#curveId")
 	public RetentionCurve findById(int curveId) {
 		return Optional.ofNullable(retentionCurveExtDao.selectByPrimaryKey(curveId))
 				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
@@ -38,7 +38,7 @@ public class RetentionCurveServiceImpl implements RetentionCurveService {
 	@Override
 	@Transactional
 	@RoleCheck(value= {HighGradeRole.Administrator})
-	@CacheEvict(cacheNames = CachedName.retentionCurve, allEntries = true)
+	@CacheEvict(cacheNames = CachedName.RETENTION_CURVE, allEntries = true)
 	public RetentionCurve add(RetentionCurve curve) {
 		curve.setCt(new Date());
 		retentionCurveExtDao.insert(curve);
@@ -48,13 +48,13 @@ public class RetentionCurveServiceImpl implements RetentionCurveService {
 	@Override
 	@Transactional
 	@RoleCheck(value= {HighGradeRole.Administrator})
-	@CacheEvict(cacheNames = CachedName.retentionCurve, allEntries = true)
+	@CacheEvict(cacheNames = CachedName.RETENTION_CURVE, allEntries = true)
 	public void delete(int curveId) {
 		retentionCurveExtDao.deleteByPrimaryKey(curveId);
 	}
 
 	@Override
-	@Cacheable(cacheNames = CachedName.retentionCurve, key = "#root.methodName")
+	@Cacheable(cacheNames = CachedName.RETENTION_CURVE, key = "#root.methodName")
 	public List<RetentionCurve> enabledRetentionCurves() {
 		RetentionCurveExample query = new RetentionCurveExample();
 		query.createCriteria().andEnabledEqualTo(true);
@@ -63,7 +63,7 @@ public class RetentionCurveServiceImpl implements RetentionCurveService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = CachedName.retentionCurve, key = "#root.methodName")
+	@Cacheable(cacheNames = CachedName.RETENTION_CURVE, key = "#root.methodName")
 	public List<RetentionCurve> retentionCurves() {
 		RetentionCurveExample query = new RetentionCurveExample();
 		query.setOrderByClause("interval_minutes asc");

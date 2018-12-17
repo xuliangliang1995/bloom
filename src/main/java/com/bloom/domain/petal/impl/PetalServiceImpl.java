@@ -18,7 +18,6 @@ import org.springframework.util.Assert;
 import com.bloom.dao.ext.PetalExtDao;
 import com.bloom.dao.po.Flower;
 import com.bloom.dao.po.Petal;
-import com.bloom.dao.po.PetalExample;
 import com.bloom.domain.CachedName;
 import com.bloom.domain.gardener.general.LoginCheckUtil;
 import com.bloom.domain.petal.PetalInnerLinkService;
@@ -49,7 +48,7 @@ public class PetalServiceImpl implements PetalService {
 	private PetalInnerTextService petalInnerTextServiceImpl;
 	
 	@Override
-	@Cacheable(cacheNames = CachedName.petal, key = "#petalId")
+	@Cacheable(cacheNames = CachedName.PETAL, key = "#petalId")
 	public Petal findByPetalId(int petalId) {
 		return Optional.ofNullable(petalExtDao.selectByPrimaryKey(petalId))
 				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
@@ -57,7 +56,7 @@ public class PetalServiceImpl implements PetalService {
 
 	@Override
 	@Transactional
-	@CachePut(cacheNames = CachedName.petal, key = "#result.id")
+	@CachePut(cacheNames = CachedName.PETAL, key = "#result.id")
 	public Petal add(Flower flower,CreatePetalForm createPetalForm) {
 		Assert.isTrue(LoginCheckUtil.loginGardenerId(request)==flower.getGardenerId(),"权限不足！");
 		PetalVarietyEnum variety = Arrays.stream(PetalVarietyEnum.values())
@@ -96,7 +95,7 @@ public class PetalServiceImpl implements PetalService {
 	 * @return
 	 */
 	@Transactional
-	@CachePut(cacheNames = CachedName.petal, key = "#result.id")
+	@CachePut(cacheNames = CachedName.PETAL, key = "#result.id")
 	public Petal edit(int petalId,Flower flower,EditPetalForm editPetalForm) {
 		Assert.isTrue(LoginCheckUtil.loginGardenerId(request)==flower.getGardenerId(),"权限不足！");
 		PetalVarietyEnum variety = Arrays.stream(PetalVarietyEnum.values())
@@ -136,7 +135,7 @@ public class PetalServiceImpl implements PetalService {
 	
 	@Override
 	@Transactional
-	@CacheEvict(cacheNames = CachedName.petal, key = "#petalId")
+	@CacheEvict(cacheNames = CachedName.PETAL, key = "#petalId")
 	public void deletePetal(int petalId,Flower flower) {
 		Assert.isTrue(LoginCheckUtil.loginGardenerId(request)==flower.getGardenerId(),"权限不足！");
 		
@@ -169,7 +168,7 @@ public class PetalServiceImpl implements PetalService {
 	}
 	
 	@Override
-	public List<Petal> flowerPetals(int flowerId,Page page) {
+	public List<Petal> flowerPetals(int flowerId,Page<?> page) {
 		return petalExtDao.flowerPetals(flowerId, page);
 	}
 
