@@ -199,18 +199,6 @@
 	    <version>${javax.annotation.version}</version>
 	</dependency>
 	
-	<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-	<!-- <dependency>
-	    <groupId>org.slf4j</groupId>
-	    <artifactId>slf4j-api</artifactId>
-	    <version>1.7.25</version>
-	</dependency>
-	<dependency>
-	        <groupId>org.slf4j</groupId>
-	        <artifactId>slf4j-simple</artifactId>
-	        <version>1.7.25</version>
-	</dependency>  -->
-    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
 	<dependency>
 	    <groupId>org.slf4j</groupId>
 	    <artifactId>slf4j-log4j12</artifactId>
@@ -222,22 +210,31 @@
     <finalName>bloom</finalName>
     <!-- 如果不添加此节点mybatis的mapper.xml文件都会被漏掉。 -->
     <resources>
-	<resource>
-		<directory>src/main/java</directory>
-		<includes>
-			<include>**/*.properties</include>
-			<include>**/*.xml</include>
-		</includes>
-		<filtering>false</filtering>
-	</resource>
-	<resource>
-		<directory>src/main/resources</directory>
-		<includes>
-			<include>**/*.properties</include>
-			<include>**/*.xml</include>
-		</includes>
-		<filtering>false</filtering>
-	</resource>
+		<resource>
+			<directory>src/main/java</directory>
+			<includes>
+				<include>**/*.properties</include>
+				<include>**/*.xml</include>
+			</includes>
+			<filtering>false</filtering>
+		</resource>
+		<resource>
+			<directory>src/main/resources</directory>
+			<includes>
+				<include>**/*.properties</include>
+				<include>**/*.xml</include>
+			</includes>
+			<filtering>false</filtering>
+		</resource>
+		<resource>
+	        <directory>src/main/resources</directory>
+	        <includes>
+	            <include>dbcp/jdbc.properties</include>
+	            <include>quartz/quartz-db.properties</include>
+	            <include>redis/redis.properties</include>
+	        </includes>
+	        <filtering>true</filtering>
+	    </resource>
     </resources>
 
     <plugins>
@@ -309,16 +306,39 @@
   </properties>
   <profiles>  
     <profile>  
-        <id>jdk-${java.version}</id>  
+        <id>test</id>  
         <activation>  
             <activeByDefault>true</activeByDefault>  
             <jdk>${java.version}</jdk>  
-        </activation>  
+        </activation> 
+        <build>
+	        <filters>
+	            <filter>src/main/resources/config/application-${env}.properties</filter>
+	        </filters>
+	    </build>   
         <properties>  
+            <env>test</env>
             <maven.compiler.source>${java.version}</maven.compiler.source>  
             <maven.compiler.target>${java.version}</maven.compiler.target>  
             <maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>  
         </properties>  
     </profile>  
+    <profile>  
+        <id>online</id>  
+        <activation>  
+            <jdk>${java.version}</jdk>  
+        </activation>
+        <build>
+	        <filters>
+	            <filter>src/main/resources/config/application-${env}.properties</filter>
+	        </filters>
+	    </build>  
+        <properties>  
+            <env>online</env>
+            <maven.compiler.source>${java.version}</maven.compiler.source>  
+            <maven.compiler.target>${java.version}</maven.compiler.target>  
+            <maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>  
+        </properties>  
+    </profile>
    </profiles> 
 </project>
