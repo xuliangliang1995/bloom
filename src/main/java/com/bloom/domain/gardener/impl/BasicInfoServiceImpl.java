@@ -16,7 +16,7 @@ import com.bloom.dao.po.Gardener;
 import com.bloom.domain.CachedName;
 import com.bloom.domain.gardener.BasicInfoService;
 import com.bloom.domain.gardener.meta.Gender;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 @Service
 public class BasicInfoServiceImpl implements BasicInfoService {
 	@Resource
@@ -56,7 +56,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 		return Optional.ofNullable(
 				gardenerExtDao.selectByPrimaryKey(id)
 				)
-				.orElseThrow(() -> new FlowBreakException("该用户不存在！"));
+				.orElseThrow(() -> new ServiceException("该用户不存在！"));
 	}
 	
 

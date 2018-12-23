@@ -20,7 +20,9 @@ import com.bloom.domain.gardener.RoleService;
 import com.bloom.domain.gardener.SignService;
 import com.bloom.domain.gardener.meta.Gender;
 import com.bloom.domain.gardener.meta.SessionConstantKey;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.IncorrectAccountException;
+import com.bloom.exception.IncorrectPasswordException;
+import com.bloom.exception.ServiceException;
 import com.bloom.exception.WechatException;
 import com.bloom.util.encrypt.GardenerEncrypt;
 import com.bloom.web.gardener.vo.SignUpForm;
@@ -54,7 +56,7 @@ public class SignServiceImpl implements SignService{
 				gardenerExtDao.selectKeyByUsername(GardenerEncrypt.encryptUsername(originalUsername))
 				);
 		if(keyOpt.isPresent()) 
-			throw new FlowBreakException("该用户名已存在！");
+			throw new ServiceException("该用户名已存在！");
 		//注册
 		Gardener gardener = new Gardener();
 		gardener.setUsername(GardenerEncrypt.encryptUsername(originalUsername));
@@ -76,17 +78,15 @@ public class SignServiceImpl implements SignService{
 	 */
 	@Override
 	@CachePut(cacheNames = CachedName.GARDENERS, key = "#result.id")
-	public Gardener signIn(HttpServletRequest request,String originalUsername,String originalPassword) {
+	public Gardener signIn(String originalUsername,String originalPassword) {
 		Integer key = Optional.ofNullable(
 				gardenerExtDao.selectKeyByUsername(GardenerEncrypt.encryptUsername(originalUsername))
 				)
-				.orElseThrow(() -> new FlowBreakException("该账户名不存在！"));
+				.orElseThrow(() -> new IncorrectAccountException());
 		String password = GardenerEncrypt.encryptPassword(key, originalUsername, originalPassword);
 		Gardener gardener = gardenerExtDao.selectByPrimaryKey(key);
 		if(!password.equals(gardener.getPassword()))
-			throw new FlowBreakException("登录失败！密码有误！");
-		WebUtils.setSessionAttribute(request, SessionConstantKey.GARDENER_ID_KEY, gardener.getId());
-		WebUtils.setSessionAttribute(request, SessionConstantKey.ROLE_ID_KEY, gardener.getRoleId());
+			throw new IncorrectPasswordException();
 		return gardener;
 	}
 	/**

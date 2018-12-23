@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bloom.dao.po.Flower;
 import com.bloom.domain.PageResources;
 import com.bloom.domain.flower.FlowerService;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 import com.bloom.util.mybatis.Page;
 import com.bloom.web.flower.resource.FlowerResource;
 import com.bloom.web.flower.resource.FlowerResourceAssembler;
@@ -53,7 +53,7 @@ public class FlowerResourceApi {
 	public FlowerResource readFlower(@PathVariable Integer gardenerId, @PathVariable Integer flowerId) {
 		Flower flower = Optional.of(flowerServiceImpl.findById(flowerId))
 				.filter(sflower -> sflower.getGardenerId().equals(gardenerId))
-				.orElseThrow(() -> new FlowBreakException("资源不存在！"));
+				.orElseThrow(() -> new ServiceException("资源不存在！"));
 		return new FlowerResourceAssembler().toResource(flower);
 	}
 	

@@ -25,7 +25,7 @@ import com.bloom.domain.flower.FlowerService;
 import com.bloom.domain.flower.meta.FlowerStar;
 import com.bloom.domain.gardener.general.LoginCheckUtil;
 import com.bloom.domain.petal.PetalService;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 import com.bloom.util.mybatis.Page;
 import com.bloom.web.flower.vo.CreateFlowerForm;
 import com.bloom.web.flower.vo.EditFlowerForm;
@@ -94,7 +94,7 @@ public class FlowerServiceImpl implements FlowerService {
 				flowerExtDao.selectByPrimaryKey(flowerId)
 				)
 				.filter(sflower -> sflower.getGardenerId().equals(gardenerId))
-				.orElseThrow(() -> new FlowBreakException("您要操作的资源不存在或已被删除！"));
+				.orElseThrow(() -> new ServiceException("您要操作的资源不存在或已被删除！"));
 		//先删除所有该flower下的petals
 		petalServiceImpl.flowerPetals(flowerId, null).forEach(petal -> petalServiceImpl.deletePetal(petal.getId(), flower));
 		
@@ -111,7 +111,7 @@ public class FlowerServiceImpl implements FlowerService {
 				flowerExtDao.selectByPrimaryKey(flowerId)
 				)
 				.filter(sflower -> sflower.getGardenerId().equals(gardenerId))
-				.orElseThrow(() -> new FlowBreakException("您要编辑的资源不存在或已被删除！"));
+				.orElseThrow(() -> new ServiceException("您要编辑的资源不存在或已被删除！"));
 		flower.setName(editFlowerForm.getName());
 		flower.setMoral(editFlowerForm.getMoral());
 		flower.setUt(new Date());
@@ -125,7 +125,7 @@ public class FlowerServiceImpl implements FlowerService {
 	public Flower findById(int id) {
 		return Optional.ofNullable(
 				flowerExtDao.selectByPrimaryKey(id)
-				).orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
+				).orElseThrow(() -> new ServiceException("资源不存在或已被删除！"));
 	}
 
 	@Override

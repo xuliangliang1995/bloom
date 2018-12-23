@@ -9,7 +9,7 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 
 @Aspect
 @Component
@@ -24,7 +24,7 @@ public class ValidatorAspect {
 		if(bindingResult.isPresent()) {
 			BindingResult result = (BindingResult) bindingResult.get();
 			if(result.hasErrors()) {
-				throw new FlowBreakException(result.getAllErrors().get(0).getDefaultMessage());
+				throw new ServiceException(result.getAllErrors().get(0).getDefaultMessage());
 			}
 		}
 	}

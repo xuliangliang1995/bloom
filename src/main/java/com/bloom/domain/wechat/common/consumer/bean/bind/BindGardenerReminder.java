@@ -20,7 +20,7 @@ import com.bloom.domain.gardener.SignService;
 import com.bloom.domain.wechat.common.consumer.AbstractEventConsumerBean;
 import com.bloom.domain.wechat.common.consumer.TextConsumerMap;
 import com.bloom.domain.wechat.common.consumer.WxMsgConsumer;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 import com.bloom.util.encrypt.GardenerEncrypt;
 
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
@@ -100,7 +100,7 @@ public class BindGardenerReminder extends AbstractEventConsumerBean {
 				ctx.setWxMpXmlOutMessage(outMessage);
 				
 			} else {
-				throw new FlowBreakException("command is unmatched");
+				throw new ServiceException("command is unmatched");
 			}
 			
 		};

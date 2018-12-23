@@ -36,7 +36,7 @@ import com.bloom.domain.gardener.general.LoginCheckUtil;
 import com.bloom.domain.petal.PetalPageRender;
 import com.bloom.domain.petal.PetalService;
 import com.bloom.domain.petal.meta.PetalVarietyEnum;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 import com.bloom.util.mybatis.Page;
 import com.bloom.web.petal.resource.PetalResource;
 import com.bloom.web.petal.resource.PetalResourceAssembler;
@@ -68,7 +68,7 @@ public class PetalResourceApi {
 	public PetalResource findById(@PathVariable Integer flowerId, @PathVariable Integer petalId) {
 		Petal petal = Optional.of(petalServiceImpl.findByPetalId(petalId))
 				.filter(spetal -> spetal.getFlowerId().equals(flowerId))
-				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
+				.orElseThrow(() -> new ServiceException("资源不存在或已被删除！"));
 		return new PetalResourceAssembler().toResource(petal);
 	}
 	
@@ -78,7 +78,7 @@ public class PetalResourceApi {
 		int gardenerId = LoginCheckUtil.loginGardenerId(request);
 		Flower flower = Optional.of(flowerServiceImpl.findById(flowerId))
 				.filter(sflower -> sflower.getGardenerId().equals(gardenerId))
-				.orElseThrow(() -> new FlowBreakException("操作权限不足！"));
+				.orElseThrow(() -> new ServiceException("操作权限不足！"));
 		return new PetalResourceAssembler().toResource(
 				petalServiceImpl.add(flower,createPetalForm)
 				);
@@ -90,7 +90,7 @@ public class PetalResourceApi {
 		int gardenerId = LoginCheckUtil.loginGardenerId(request);
 		Flower flower = Optional.of(flowerServiceImpl.findById(flowerId))
 				.filter(sflower -> sflower.getGardenerId().equals(gardenerId))
-				.orElseThrow(() -> new FlowBreakException("操作权限不足！"));
+				.orElseThrow(() -> new ServiceException("操作权限不足！"));
 		return new PetalResourceAssembler().toResource(
 				petalServiceImpl.edit(petalId,flower,editPetalForm)
 				);
@@ -101,7 +101,7 @@ public class PetalResourceApi {
 		int gardenerId = LoginCheckUtil.loginGardenerId(request);
 		Flower flower = Optional.of(flowerServiceImpl.findById(flowerId))
 				.filter(sflower -> sflower.getGardenerId().equals(gardenerId))
-				.orElseThrow(() -> new FlowBreakException("操作权限不足！"));
+				.orElseThrow(() -> new ServiceException("操作权限不足！"));
 		petalServiceImpl.deletePetal(petalId, flower);
 		return ResponseEntity.ok("删除成功");
 	}
@@ -110,7 +110,7 @@ public class PetalResourceApi {
 	public ResponseEntity<?> petalLink(@PathVariable Integer flowerId, @PathVariable Integer petalId){
 		Petal petal = Optional.of(petalServiceImpl.findByPetalId(petalId))
 				.filter(spetal -> spetal.getFlowerId().equals(flowerId))
-				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
+				.orElseThrow(() -> new ServiceException("资源不存在或已被删除！"));
 		Assert.isTrue(PetalVarietyEnum.LINK.getId() == petal.getPetalVarietyId().intValue(),"请求错误！");
 		return ResponseEntity.ok(
 				petalServiceImpl.getPetalInnerLinkService().findByPetalId(petalId)
@@ -121,7 +121,7 @@ public class PetalResourceApi {
 	public ResponseEntity<?> petalText(@PathVariable Integer flowerId, @PathVariable Integer petalId){
 		Petal petal = Optional.of(petalServiceImpl.findByPetalId(petalId))
 				.filter(spetal -> spetal.getFlowerId().equals(flowerId))
-				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
+				.orElseThrow(() -> new ServiceException("资源不存在或已被删除！"));
 		Assert.isTrue(PetalVarietyEnum.RICH_TEXT.getId() == petal.getPetalVarietyId().intValue(),"请求错误！");
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
@@ -135,7 +135,7 @@ public class PetalResourceApi {
 	public ResponseEntity<?> petalPage(@PathVariable Integer flowerId, @PathVariable Integer petalId) {
 		Petal petal = Optional.ofNullable(petalServiceImpl.findByPetalId(petalId))
 				.filter(spetal -> spetal.getFlowerId().equals(flowerId))
-				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
+				.orElseThrow(() -> new ServiceException("资源不存在或已被删除！"));
 		Assert.isTrue(PetalVarietyEnum.RICH_TEXT.getId() == petal.getPetalVarietyId().intValue(), "请求错误！");
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType("text/html;charset=utf-8"));;

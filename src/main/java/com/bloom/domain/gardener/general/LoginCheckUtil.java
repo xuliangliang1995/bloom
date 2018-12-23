@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.util.WebUtils;
 
 import com.bloom.domain.gardener.meta.SessionConstantKey;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 
 public class LoginCheckUtil {
 	
@@ -20,7 +20,7 @@ public class LoginCheckUtil {
 		return (int)Optional.ofNullable(
 				WebUtils.getSessionAttribute(request, SessionConstantKey.GARDENER_ID_KEY)
 				)
-				.orElseThrow(() -> new FlowBreakException("您还没有登录！"));
+				.orElseThrow(() -> new ServiceException("您还没有登录！"));
 	}
 	
 	/**
@@ -43,6 +43,6 @@ public class LoginCheckUtil {
 		return (int)Optional.ofNullable(
 				WebUtils.getSessionAttribute(request, SessionConstantKey.ROLE_ID_KEY)
 				)
-				.orElseThrow(() -> new FlowBreakException("您还没有登录！"));
+				.orElseThrow(() -> new ServiceException("您还没有登录！"));
 	}
 }

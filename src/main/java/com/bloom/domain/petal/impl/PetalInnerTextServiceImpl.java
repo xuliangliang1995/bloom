@@ -16,7 +16,7 @@ import com.bloom.dao.po.PetalInnerText;
 import com.bloom.dao.po.PetalInnerTextWithBLOBs;
 import com.bloom.domain.CachedName;
 import com.bloom.domain.petal.PetalInnerTextService;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 @Service
 public class PetalInnerTextServiceImpl implements PetalInnerTextService {
 	@Autowired
@@ -41,7 +41,7 @@ public class PetalInnerTextServiceImpl implements PetalInnerTextService {
 	public PetalInnerTextWithBLOBs findByPetalId(int petalId) {
 		return Optional.ofNullable(
 				petalInnerTextExtDao.findByPetalId(petalId)
-				).orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
+				).orElseThrow(() -> new ServiceException("资源不存在或已被删除！"));
 	}
 
 	@Override

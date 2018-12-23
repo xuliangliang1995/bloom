@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.WebUtils;
 
 import com.bloom.dao.po.Gardener;
 import com.bloom.domain.gardener.SignService;
 import com.bloom.domain.gardener.general.LoginCheckUtil;
+import com.bloom.domain.gardener.meta.SessionConstantKey;
 import com.bloom.response.Result;
 import com.bloom.web.gardener.resource.GardenerReosurceAssembler;
 import com.bloom.web.gardener.resource.GardenerResource;
@@ -57,12 +59,16 @@ public class SignResourceApi {
 	@GetMapping
 	public ResponseEntity<GardenerResource> signIn(@Validated SignInForm signInForm,BindingResult result,
 			HttpServletRequest request,HttpServletResponse response) {
+		Gardener gardener = signServiceImpl.signIn(signInForm.getUsername(), signInForm.getPassword());
+		WebUtils.setSessionAttribute(request, SessionConstantKey.GARDENER_ID_KEY, gardener.getId());
+		WebUtils.setSessionAttribute(request, SessionConstantKey.ROLE_ID_KEY, gardener.getRoleId());
+		
 		response.setHeader("Access-Control-Allow-Credentials","true");
 		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 		response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH");
 		return ResponseEntity.status(HttpStatus.OK).body(
-					new GardenerReosurceAssembler().toResource(signServiceImpl.signIn(request, signInForm.getUsername(), signInForm.getPassword()))
+					new GardenerReosurceAssembler().toResource(gardener)
 					);
 	}
 	/**

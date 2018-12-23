@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.bloom.annotation.RoleCheck;
 import com.bloom.domain.gardener.general.LoginCheckUtil;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 
 @Aspect
 @Component
@@ -33,7 +33,7 @@ public class RoleCheckAspect {
 		Arrays.stream(rc.value())
 			.filter(role -> role.value() == LoginCheckUtil.loginRoleId(request))
 			.findFirst()
-			.orElseThrow(() -> new FlowBreakException("权限不足！"));
+			.orElseThrow(() -> new ServiceException("权限不足！"));
 	}
 
 }

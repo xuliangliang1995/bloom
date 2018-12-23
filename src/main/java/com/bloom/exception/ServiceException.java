@@ -4,10 +4,10 @@ package com.bloom.exception;
  * @author 83554
  *
  */
-public class FlowBreakException extends RuntimeException {
+public class ServiceException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
-	public FlowBreakException(String msg) {
+	public ServiceException(String msg) {
 		super(msg);
 	};
 }

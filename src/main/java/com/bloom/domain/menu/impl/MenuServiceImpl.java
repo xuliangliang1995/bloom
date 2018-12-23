@@ -25,7 +25,7 @@ import com.bloom.domain.CachedName;
 import com.bloom.domain.gardener.meta.HighGradeRole;
 import com.bloom.domain.menu.MenuService;
 import com.bloom.domain.menu.vo.MenuTree;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 @Service
 public class MenuServiceImpl implements MenuService {
 	@Resource
@@ -56,7 +56,7 @@ public class MenuServiceImpl implements MenuService {
 	public void deleteMenu(int menuId) {
 		Menu menu = Optional.ofNullable(
 				menuExtDao.selectByPrimaryKey(menuId)
-				).orElseThrow(() -> new FlowBreakException("所选菜单不存在或已被删除！"));
+				).orElseThrow(() -> new ServiceException("所选菜单不存在或已被删除！"));
 		int childMenuCount = menuExtDao.getChildMenuCount(menu.getId());
 		
 		Assert.isTrue(childMenuCount == 0,"请先删除子菜单！");

@@ -25,7 +25,7 @@ import com.bloom.domain.petal.PetalInnerTextService;
 import com.bloom.domain.petal.PetalProgressService;
 import com.bloom.domain.petal.PetalService;
 import com.bloom.domain.petal.meta.PetalVarietyEnum;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 import com.bloom.util.mybatis.Page;
 import com.bloom.web.petal.vo.CreatePetalForm;
 import com.bloom.web.petal.vo.EditPetalForm;
@@ -51,7 +51,7 @@ public class PetalServiceImpl implements PetalService {
 	@Cacheable(cacheNames = CachedName.PETAL, key = "#petalId")
 	public Petal findByPetalId(int petalId) {
 		return Optional.ofNullable(petalExtDao.selectByPrimaryKey(petalId))
-				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
+				.orElseThrow(() -> new ServiceException("资源不存在或已被删除！"));
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class PetalServiceImpl implements PetalService {
 		PetalVarietyEnum variety = Arrays.stream(PetalVarietyEnum.values())
 				.filter(vari -> vari.getId() == createPetalForm.getPetalVariety().intValue())
 				.findFirst()
-				.orElseThrow(() -> new FlowBreakException("叶子种类有误！"));
+				.orElseThrow(() -> new ServiceException("叶子种类有误！"));
 		
 		Date now = new Date();
 		Petal petal = new Petal();
@@ -101,14 +101,14 @@ public class PetalServiceImpl implements PetalService {
 		PetalVarietyEnum variety = Arrays.stream(PetalVarietyEnum.values())
 				.filter(vari -> vari.getId() == editPetalForm.getPetalVariety().intValue())
 				.findFirst()
-				.orElseThrow(() -> new FlowBreakException("叶子种类有误！"));
+				.orElseThrow(() -> new ServiceException("叶子种类有误！"));
 		
 		Date now = new Date();
 		Petal petal = Optional.ofNullable(
 				petalExtDao.selectByPrimaryKey(petalId)
 				)
 				.filter(p -> p.getFlowerId().equals(flower.getId()))
-				.orElseThrow(() -> new FlowBreakException("操作对象不存在或已被删除！"));
+				.orElseThrow(() -> new ServiceException("操作对象不存在或已被删除！"));
 		
 		Assert.isTrue(petal.getPetalVarietyId().equals(variety.getId()),"暂不支持更改类型");
 		
@@ -143,7 +143,7 @@ public class PetalServiceImpl implements PetalService {
 				petalExtDao.selectByPrimaryKey(petalId)
 				)
 				.filter(p -> p.getFlowerId().equals(flower.getId()))
-				.orElseThrow(() -> new FlowBreakException("操作对象不存在或已被删除！"));
+				.orElseThrow(() -> new ServiceException("操作对象不存在或已被删除！"));
 		
 		PetalVarietyEnum variety = Arrays.stream(PetalVarietyEnum.values())
 				.filter(v -> petal.getPetalVarietyId().equals(v.getId()))

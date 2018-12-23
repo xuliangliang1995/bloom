@@ -16,7 +16,7 @@ import com.bloom.dao.ext.RoleExtDao;
 import com.bloom.dao.po.Role;
 import com.bloom.domain.gardener.RoleService;
 import com.bloom.domain.gardener.meta.HighGradeRole;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 /**
  * 角色管理
  * @author 83554
@@ -62,14 +62,14 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	@RoleCheck(HighGradeRole.Administrator)
 	public void deleteRole(int roleId) {
-		throw new FlowBreakException("暂不支持此操作！");
+		throw new ServiceException("暂不支持此操作！");
 	}
 
 	@Override
 	public Role getRoleById(int id) {
 		return Optional.ofNullable(
 				roleExtDao.selectByPrimaryKey(id)
-				).orElseThrow(() -> new FlowBreakException("该角色不存在或已被删除！"));
+				).orElseThrow(() -> new ServiceException("该角色不存在或已被删除！"));
 	}
 
 }
