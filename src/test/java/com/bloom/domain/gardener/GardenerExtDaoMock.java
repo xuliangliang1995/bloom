@@ -128,8 +128,8 @@ public class GardenerExtDaoMock implements GardenerExtDao{
 	 * @see com.bloom.dao.GardenerMapper#insertSelective(com.bloom.dao.po.Gardener)
 	 */
 	@Override
+	@Deprecated
 	public int insertSelective(Gardener record) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -137,8 +137,8 @@ public class GardenerExtDaoMock implements GardenerExtDao{
 	 * @see com.bloom.dao.GardenerMapper#selectByExample(com.bloom.dao.po.GardenerExample)
 	 */
 	@Override
+	@Deprecated
 	public List<Gardener> selectByExample(GardenerExample example) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -146,8 +146,8 @@ public class GardenerExtDaoMock implements GardenerExtDao{
 	 * @see com.bloom.dao.GardenerMapper#updateByPrimaryKeySelective(com.bloom.dao.po.Gardener)
 	 */
 	@Override
+	@Deprecated
 	public int updateByPrimaryKeySelective(Gardener record) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

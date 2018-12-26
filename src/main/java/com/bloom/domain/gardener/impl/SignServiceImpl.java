@@ -24,6 +24,7 @@ import com.bloom.exception.IncorrectAccountException;
 import com.bloom.exception.IncorrectPasswordException;
 import com.bloom.exception.ServiceException;
 import com.bloom.exception.WechatException;
+import com.bloom.exception.WechatNoBindGrasswortAccountException;
 import com.bloom.util.encrypt.GardenerEncrypt;
 import com.bloom.web.gardener.vo.SignUpForm;
 /**
@@ -78,7 +79,7 @@ public class SignServiceImpl implements SignService{
 	 */
 	@Override
 	@CachePut(cacheNames = CachedName.GARDENERS, key = "#result.id")
-	public Gardener signIn(String originalUsername,String originalPassword) {
+	public Gardener signIn(HttpServletRequest request, String originalUsername,String originalPassword) {
 		Integer key = Optional.ofNullable(
 				gardenerExtDao.selectKeyByUsername(GardenerEncrypt.encryptUsername(originalUsername))
 				)
@@ -87,6 +88,10 @@ public class SignServiceImpl implements SignService{
 		Gardener gardener = gardenerExtDao.selectByPrimaryKey(key);
 		if(!password.equals(gardener.getPassword()))
 			throw new IncorrectPasswordException();
+		
+		WebUtils.setSessionAttribute(request, SessionConstantKey.GARDENER_ID_KEY, gardener.getId());
+		WebUtils.setSessionAttribute(request, SessionConstantKey.ROLE_ID_KEY, gardener.getRoleId());
+		
 		return gardener;
 	}
 	/**
@@ -97,7 +102,7 @@ public class SignServiceImpl implements SignService{
 	@CachePut(cacheNames = CachedName.GARDENERS, key = "#result.id")
 	public Gardener signInByWechatOpenId(HttpServletRequest request, String appId, String openId){
 		int gardenerId = gardenerWechatOpenIdServiceImpl.getGardenerIdByWechatOpenId(appId, openId)
-				.orElseThrow(() -> new WechatException(appId,openId,"请先绑定Grasswort账户！"));
+				.orElseThrow(() -> new WechatNoBindGrasswortAccountException(appId,openId));
 		
 		Gardener gardener = gardenerExtDao.selectByPrimaryKey(gardenerId);
 		

@@ -59,16 +59,14 @@ public class SignResourceApi {
 	@GetMapping
 	public ResponseEntity<GardenerResource> signIn(@Validated SignInForm signInForm,BindingResult result,
 			HttpServletRequest request,HttpServletResponse response) {
-		Gardener gardener = signServiceImpl.signIn(signInForm.getUsername(), signInForm.getPassword());
-		WebUtils.setSessionAttribute(request, SessionConstantKey.GARDENER_ID_KEY, gardener.getId());
-		WebUtils.setSessionAttribute(request, SessionConstantKey.ROLE_ID_KEY, gardener.getRoleId());
-		
 		response.setHeader("Access-Control-Allow-Credentials","true");
 		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 		response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH");
 		return ResponseEntity.status(HttpStatus.OK).body(
-					new GardenerReosurceAssembler().toResource(gardener)
+					new GardenerReosurceAssembler().toResource(
+							signServiceImpl.signIn(request, signInForm.getUsername(), signInForm.getPassword())
+							)
 					);
 	}
 	/**

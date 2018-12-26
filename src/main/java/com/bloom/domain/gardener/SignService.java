@@ -13,7 +13,7 @@ public interface SignService {
 	
 	void signUp(SignUpForm signUpForm);
 	
-	Gardener signIn(String originalUsername, String originalPassword);
+	Gardener signIn(HttpServletRequest request, String originalUsername, String originalPassword);
 	
 	Gardener signInByWechatOpenId(HttpServletRequest request,String appId,String openId);
 	
