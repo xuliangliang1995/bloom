@@ -66,7 +66,7 @@ public class SignServiceImplTest{
 		when(roleService.defaultRole()).thenReturn(defaultRole);
 		// 准备数据
 		final String USERNAME = "grasswort";
-		final String PASSWORD = "xol4l2y2xx";
+		final String PASSWORD = "grasswort";
 		SignUpForm form = new SignUpForm();
 		form.setUsername(USERNAME);
 		form.setPassword(PASSWORD);
