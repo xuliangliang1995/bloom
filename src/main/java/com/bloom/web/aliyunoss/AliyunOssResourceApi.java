@@ -34,6 +34,10 @@ import com.bloom.util.encrypt.MD5;
 public class AliyunOssResourceApi {
 	
 	private static final String DEFAULT_IMAGE_BUCKET = "grasswort-petals-img";
+	private static final String DEFAULT_ALIYUNOSS_PREFIX = "https://grasswort-petals-img.oss-cn-hangzhou.aliyuncs.com/";
+	private static final String DISPOSE_STYLE_TARGET = "_target"; 
+	@SuppressWarnings("unused")
+	private static final String DISPOSE_STYLE_COMPRESS = "_compress";
 	
 	/**
 	 * 
@@ -52,7 +56,7 @@ public class AliyunOssResourceApi {
 		String objectName = MD5.encrypt(System.currentTimeMillis() + RandomStringUtils.randomAlphabetic(6)).concat(suffix);
 		try {
 			Oss.FileHandler.UPLOAD.upload(DEFAULT_IMAGE_BUCKET, objectName, file.getBytes());
-			return ResponseEntity.ok(objectName);
+			return ResponseEntity.ok(DEFAULT_ALIYUNOSS_PREFIX + objectName + DISPOSE_STYLE_TARGET);
 		} catch (IOException e) {
 			throw new FlowBreakException("图片上传失败！");
 		}
