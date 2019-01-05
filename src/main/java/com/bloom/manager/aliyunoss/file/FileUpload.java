@@ -11,7 +11,6 @@ import java.net.URL;
 
 import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSException;
-import com.aliyun.oss.model.PutObjectResult;
 import com.bloom.manager.aliyunoss.Oss;
 
 /**
@@ -46,8 +45,8 @@ public class FileUpload {
 	 * @param text
 	 * void
 	 */
-	public PutObjectResult upload(String bucketName, String objectName, String text) {
-		return Oss.client().putObject(bucketName, objectName, new ByteArrayInputStream(text.getBytes()));
+	public void upload(String bucketName, String objectName, String text) {
+		Oss.client().putObject(bucketName, objectName, new ByteArrayInputStream(text.getBytes()));
 	}
 	
 	/**
@@ -59,8 +58,8 @@ public class FileUpload {
 	 * @param byteArray
 	 * void
 	 */
-	public PutObjectResult upload(String bucketName, String objectName, byte[] byteArray) {
-		return Oss.client().putObject(bucketName, objectName, new ByteArrayInputStream(byteArray));
+	public void upload(String bucketName, String objectName, byte[] byteArray) {
+		Oss.client().putObject(bucketName, objectName, new ByteArrayInputStream(byteArray));
 	}
 	
 	/**
@@ -75,8 +74,8 @@ public class FileUpload {
 	 * @throws IOException
 	 * void
 	 */
-	public PutObjectResult upload(String bucketName, String objectName, URL url) throws OSSException, ClientException, IOException {
-		return Oss.client().putObject(bucketName, objectName, url.openStream());
+	public void upload(String bucketName, String objectName, URL url) throws OSSException, ClientException, IOException {
+		Oss.client().putObject(bucketName, objectName, url.openStream());
 	}
 	
 	/**
@@ -88,8 +87,8 @@ public class FileUpload {
 	 * @param fis
 	 * void
 	 */
-	public PutObjectResult upload(String bucketName, String objectName, FileInputStream fis) {
-		return Oss.client().putObject(bucketName, objectName, fis);
+	public void upload(String bucketName, String objectName, FileInputStream fis) {
+		Oss.client().putObject(bucketName, objectName, fis);
 	}
 
 	/**
@@ -101,8 +100,8 @@ public class FileUpload {
 	 * @param file
 	 * void
 	 */
-	public PutObjectResult upload(String bucketName, String objectName, File file) {
-		return Oss.client().putObject(bucketName, objectName, file);
+	public void upload(String bucketName, String objectName, File file) {
+		Oss.client().putObject(bucketName, objectName, file);
 	}
 	
 	/**
