@@ -4,7 +4,6 @@
 package com.bloom.web.aliyunoss;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bloom.domain.gardener.general.LoginCheckUtil;
 import com.bloom.exception.FlowBreakException;
 import com.bloom.manager.aliyunoss.Oss;
+import com.bloom.util.encrypt.MD5;
 
 /**
  * <p>Title: AliyunOssResourceApi.java<／p>
@@ -50,15 +49,7 @@ public class AliyunOssResourceApi {
 			HttpServletRequest request) {
 		String fileName = file.getOriginalFilename();
 		String suffix = fileName.substring(fileName.lastIndexOf("."));
-		
-		String objectName = Arrays.stream(new Object[] {
-				System.currentTimeMillis(), 
-				LoginCheckUtil.loginGardenerId(request), 
-				RandomStringUtils.random(6),
-				suffix
-			})
-			.map(obj -> String.valueOf(obj))
-			.reduce((a, b) -> a + "_" + b).get();
+		String objectName = MD5.encrypt(System.currentTimeMillis() + RandomStringUtils.randomAlphabetic(6)).concat(suffix);
 		try {
 			Oss.FileHandler.UPLOAD.upload(DEFAULT_IMAGE_BUCKET, objectName, file.getBytes());
 			return ResponseEntity.ok(objectName);
@@ -66,5 +57,4 @@ public class AliyunOssResourceApi {
 			throw new FlowBreakException("图片上传失败！");
 		}
 	}
-
 }
