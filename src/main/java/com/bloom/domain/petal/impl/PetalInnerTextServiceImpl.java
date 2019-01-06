@@ -66,6 +66,7 @@ public class PetalInnerTextServiceImpl implements PetalInnerTextService {
 	@Transactional
 	public void deletePetalInnerText(int petalId) {
 		petalInnerTextExtDao.deleteByPetalId(petalId);
+		aliyunOssReferenceServiceImpl.removeRefByReferrer(OssReferrerTypeEnum.PETAL, petalId);
 	}
 
 	/* (non-Javadoc)
@@ -74,7 +75,7 @@ public class PetalInnerTextServiceImpl implements PetalInnerTextService {
 	@Override
 	@CachePut(cacheNames = CachedName.PETAL_TEXT, key = "#petal.id")
 	public PetalInnerTextWithBLOBs editPetalText(Petal petal, String text, String raw) {
-		this.deletePetalInnerText(petal.getId());
+		petalInnerTextExtDao.deleteByPetalId(petal.getId());
 		PetalInnerTextWithBLOBs innerText = this.addPetalText(petal, text, raw);
 		// 替换Oss图片引用
 		List<OssRefDTO> ossRefs = OssUtils.findOssUrlFromText(raw, 

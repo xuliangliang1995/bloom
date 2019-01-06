@@ -4,6 +4,7 @@
 package com.bloom.domain.oss.impl;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -65,6 +66,10 @@ public class AliyunOssReferenceServiceImpl implements AliyunOssReferenceService 
 	@Override
 	public void removeRef(OssReferrerTypeEnum type, Integer referrerId, String ossBucket, String ossKey) {
 		aliyunOssReferenceExtDao.removeRefs(type, referrerId, ossBucket, ossKey);
+		boolean noOthersRef = ! this.existOssRef(ossBucket, ossKey);
+		if (noOthersRef) {
+			Oss.FileHandler.DELETE.delete(ossBucket, ossKey);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -74,6 +79,10 @@ public class AliyunOssReferenceServiceImpl implements AliyunOssReferenceService 
 	public void removeRefByReferrer(OssReferrerTypeEnum type, Integer referrerId) {
 		aliyunOssReferenceExtDao.listOssRefs(type, referrerId).forEach(ref -> {
 			aliyunOssReferenceExtDao.deleteByPrimaryKey(ref.getId());
+			boolean noOthersRef = ! this.existOssRef(ref.getOssBucket(), ref.getOssKey());
+			if (noOthersRef) {
+				Oss.FileHandler.DELETE.delete(ref.getOssBucket(), ref.getOssKey());
+			}
 		});
 		
 	}
@@ -95,19 +104,27 @@ public class AliyunOssReferenceServiceImpl implements AliyunOssReferenceService 
 		List<AliyunOssReference> previousRefs = this.listOssRefs(type, referrerId);
 		Set<String> previousRefSet = previousRefs.stream().map(r -> r.getOssBucket() + "," + r.getOssKey()).collect(Collectors.toSet());
 		Set<String> enterRefSet = refs.stream().map(r -> r.getBucketName() + "," + r.getObjectKey()).collect(Collectors.toSet());
-		Set<String> previousRefSet2 = previousRefs.stream().map(r -> r.getOssBucket() + "," + r.getOssKey()).collect(Collectors.toSet());
-		Set<String> enterRefSet2 = refs.stream().map(r -> r.getBucketName() + "," + r.getObjectKey()).collect(Collectors.toSet());
-		// 之前的 - 新进的 = 删除的
-		previousRefSet.removeAll(enterRefSet2);
-		// 新进的 - 之前的 = 新增的
-		enterRefSet.removeAll(previousRefSet2);
+		// 新增集合
+		Set<String> saveSet = new HashSet<>();
+		// 删除集合
+		Set<String> deleteSet = new HashSet<>();
 		
-		enterRefSet.stream().forEach(ref -> {
+		for (String ref : previousRefSet) {
+			if (! enterRefSet.contains(ref)) {
+				deleteSet.add(ref);
+			}
+		}
+		for (String ref : enterRefSet) {
+			if (! previousRefSet.contains(ref)) {
+				saveSet.add(ref);
+			}
+		}
+		saveSet.stream().forEach(ref -> {
 			String[] array = ref.split(",");
 			this.saveRef(type, referrerId, array[0], array[1]);
 		});
 		
-		previousRefSet.stream().forEach(ref -> {
+		deleteSet.stream().forEach(ref -> {
 			String[] array = ref.split(",");
 			this.removeRef(type, referrerId, array[0], array[1]);
 			// 删除之后判断文件是否还存在别的引用
