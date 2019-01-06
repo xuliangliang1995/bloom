@@ -75,8 +75,18 @@ public class PetalInnerTextServiceImpl implements PetalInnerTextService {
 	@Override
 	@CachePut(cacheNames = CachedName.PETAL_TEXT, key = "#petal.id")
 	public PetalInnerTextWithBLOBs editPetalText(Petal petal, String text, String raw) {
+		// 删除旧的
 		petalInnerTextExtDao.deleteByPetalId(petal.getId());
-		PetalInnerTextWithBLOBs innerText = this.addPetalText(petal, text, raw);
+		Date now = new Date();
+		// 添加新的
+		PetalInnerTextWithBLOBs innerText = new PetalInnerTextWithBLOBs();
+		innerText.setPetalId(petal.getId());
+		innerText.setText(text);
+		innerText.setRaw(raw);
+		innerText.setCt(now);
+		innerText.setUt(now);
+		petalInnerTextExtDao.insert(innerText);
+		
 		// 替换Oss图片引用
 		List<OssRefDTO> ossRefs = OssUtils.findOssUrlFromText(raw, 
 				OssStipulation.DEFAULT_BUCKET_NAME, OssStipulation.DefaultBucketDisposeStyle.TARGET);
