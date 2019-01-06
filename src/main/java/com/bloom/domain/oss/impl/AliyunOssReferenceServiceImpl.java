@@ -95,10 +95,12 @@ public class AliyunOssReferenceServiceImpl implements AliyunOssReferenceService 
 		List<AliyunOssReference> previousRefs = this.listOssRefs(type, referrerId);
 		Set<String> previousRefSet = previousRefs.stream().map(r -> r.getOssBucket() + "," + r.getOssKey()).collect(Collectors.toSet());
 		Set<String> enterRefSet = refs.stream().map(r -> r.getBucketName() + "," + r.getObjectKey()).collect(Collectors.toSet());
+		Set<String> previousRefSet2 = previousRefs.stream().map(r -> r.getOssBucket() + "," + r.getOssKey()).collect(Collectors.toSet());
+		Set<String> enterRefSet2 = refs.stream().map(r -> r.getBucketName() + "," + r.getObjectKey()).collect(Collectors.toSet());
 		// 之前的 - 新进的 = 删除的
-		previousRefSet.removeAll(enterRefSet);
+		previousRefSet.removeAll(enterRefSet2);
 		// 新进的 - 之前的 = 新增的
-		enterRefSet.removeAll(previousRefSet);
+		enterRefSet.removeAll(previousRefSet2);
 		
 		enterRefSet.stream().forEach(ref -> {
 			String[] array = ref.split(",");

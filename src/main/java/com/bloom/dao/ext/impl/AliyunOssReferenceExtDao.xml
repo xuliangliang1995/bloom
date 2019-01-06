@@ -14,7 +14,7 @@
 	
 	<delete id="removeRefs">
 	 	delete from aliyun_oss_reference
-	 	where where oss_key = #{key} and referrer_id = #{referrerId}
+	 	where oss_key = #{key} and referrer_id = #{referrerId}
 	 	and referrer_type = #{referrerTypeEnum.value} and oss_bucket = #{bucket}
 	</delete>
 </mapper>
