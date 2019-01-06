@@ -6,18 +6,22 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class RetentionCurve implements Serializable{
+public class AliyunOssReference implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
 
-    private Long intervalMinutes;
+    private Integer referrerId;
 
-    private Boolean enabled;
+    private Integer referrerType;
 
-    private String note;
+    private String ossBucket;
+
+    private String ossKey;
 
     private Date ct;
+
+    private Date ut;
 
 }

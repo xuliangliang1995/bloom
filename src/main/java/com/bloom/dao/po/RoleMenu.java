@@ -1,9 +1,16 @@
 package com.bloom.dao.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RoleMenu {
-    private Integer id;
+import lombok.Data;
+
+@Data
+public class RoleMenu implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+
+	private Integer id;
 
     private Integer roleId;
 
@@ -11,35 +18,4 @@ public class RoleMenu {
 
     private Date ct;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    public Integer getMenuId() {
-        return menuId;
-    }
-
-    public void setMenuId(Integer menuId) {
-        this.menuId = menuId;
-    }
-
-    public Date getCt() {
-        return ct;
-    }
-
-    public void setCt(Date ct) {
-        this.ct = ct;
-    }
 }

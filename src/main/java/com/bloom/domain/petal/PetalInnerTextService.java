@@ -15,5 +15,7 @@ public interface PetalInnerTextService {
 	PetalInnerTextWithBLOBs findByPetalId(int petalId);
 	
 	void deletePetalInnerText(int petalId);
+	
+	PetalInnerTextWithBLOBs editPetalText(Petal petal, String text, String raw);
 
 }

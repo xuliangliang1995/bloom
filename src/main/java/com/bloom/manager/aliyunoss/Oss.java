@@ -7,6 +7,7 @@ import com.aliyun.oss.OSSClient;
 import com.bloom.manager.aliyunoss.bucket.BucketQuery;
 import com.bloom.manager.aliyunoss.bucket.CreateBucket;
 import com.bloom.manager.aliyunoss.bucket.DeleteBucket;
+import com.bloom.manager.aliyunoss.file.FileDelete;
 import com.bloom.manager.aliyunoss.file.FileUpload;
 
 /**
@@ -60,6 +61,7 @@ public class Oss {
 	 */
 	public static class FileHandler {
 		public static final FileUpload UPLOAD = FileUpload.instance();
+		public static final FileDelete DELETE = FileDelete.instance();
 	}
 	
 	/**

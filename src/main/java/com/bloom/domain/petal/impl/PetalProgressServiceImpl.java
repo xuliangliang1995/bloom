@@ -18,6 +18,7 @@ import com.bloom.domain.petal.PetalProgressService;
 import com.bloom.domain.petal.PetalService;
 import com.bloom.domain.petal.factory.PetalProgressFactory;
 import com.bloom.domain.petal.listener.PetalFireSource;
+import com.bloom.domain.petal.meta.PetalProgressFireStatus;
 import com.bloom.domain.retentioncurve.RetentionCurveService;
 import com.bloom.util.time.GeneralDateUtils;
 @Service
@@ -61,7 +62,7 @@ public class PetalProgressServiceImpl implements PetalProgressService {
 	@Transactional
 	public void fire(long progressId) {
 		PetalProgress progress = petalProgressExtDao.selectByPrimaryKey(progressId);
-		progress.setFire(PetalProgress.FireStatus.FIRE.status());
+		progress.setFire(PetalProgressFireStatus.FIRE.status());
 		petalProgressExtDao.updateByPrimaryKey(progress);
 		
 		Petal petal = petalServiceImpl.findByPetalId(progress.getPetalId());
@@ -73,7 +74,7 @@ public class PetalProgressServiceImpl implements PetalProgressService {
 		Date now = new Date();
 		PetalProgressExample example = new PetalProgressExample();
 		example.createCriteria()
-			   .andFireEqualTo(PetalProgress.FireStatus.NO_FIRE.status())
+			   .andFireEqualTo(PetalProgressFireStatus.NO_FIRE.status())
 			   .andFireTimeLessThanOrEqualTo(now);
 		return petalProgressExtDao.selectByExample(example)
 				.stream()
@@ -88,7 +89,7 @@ public class PetalProgressServiceImpl implements PetalProgressService {
 		example.createCriteria()
 			   .andGardenerIdEqualTo(gardenerId)
 			   .andFireTimeGreaterThan(GeneralDateUtils.todayStart())
-			   .andFireEqualTo(PetalProgress.FireStatus.FIRE.status());
+			   .andFireEqualTo(PetalProgressFireStatus.FIRE.status());
 		
 		return petalProgressExtDao.selectByExample(example)
 				                  .stream()
