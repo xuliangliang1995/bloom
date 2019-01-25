@@ -41,8 +41,11 @@ import com.bloom.web.gardener.vo.SignUpForm;
 public class SignResourceApi {
 	@Resource
 	private SignService signServiceImpl;
+
 	/**
-	 * SignUp
+	 * 注册
+	 * @param signUpForm
+	 * @param result
 	 * @return
 	 */
 	@PostMapping
@@ -50,10 +53,13 @@ public class SignResourceApi {
 		signServiceImpl.signUp(signUpForm);
 		return Result.success();
 	}
+
 	/**
-	 * SignIn
-	 * @param username
-	 * @param password
+	 * 登录
+	 * @param signInForm
+	 * @param result
+	 * @param request
+	 * @param response
 	 * @return
 	 */
 	@GetMapping
@@ -69,8 +75,9 @@ public class SignResourceApi {
 							)
 					);
 	}
+
 	/**
-	 * loginCheck
+	 * 当前登录信息
 	 * @param request
 	 * @return
 	 */
@@ -80,11 +87,12 @@ public class SignResourceApi {
 				?LoginCheckUtil.loginGardenerId(request)
 						:0);
 	}
+
 	/**
-	 * loginOut
+	 * 登出
 	 * @param request
 	 * @return
-	 * @throws URISyntaxException 
+	 * @throws URISyntaxException
 	 */
 	@GetMapping("/loginOut")
 	public ResponseEntity<?> signOut(HttpServletRequest request) throws URISyntaxException{
