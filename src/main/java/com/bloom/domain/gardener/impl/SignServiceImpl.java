@@ -41,11 +41,10 @@ public class SignServiceImpl implements SignService{
 	private GardenerExtDao gardenerExtDao;
 	@Resource
 	private GardenerWechatOpenIdService gardenerWechatOpenIdServiceImpl;
-	
+
 	/**
-	 * SignUp
-	 * @param originalUsername
-	 * @param originalPassword
+	 * 注册
+	 * @param signUpForm
 	 */
 	@Transactional
 	@Override
@@ -72,10 +71,13 @@ public class SignServiceImpl implements SignService{
 		gardener.setUt(now);
 		gardenerExtDao.updateByPrimaryKeySelective(gardener);
 	}
+
 	/**
-	 * SignIn
+	 * 登录
+	 * @param request
 	 * @param originalUsername
 	 * @param originalPassword
+	 * @return
 	 */
 	@Override
 	@CachePut(cacheNames = CachedName.GARDENERS, key = "#result.id")
@@ -111,10 +113,10 @@ public class SignServiceImpl implements SignService{
 		
 		return gardener;
 	}
-	
+
 	/**
-	 * SignOut
-	 * @param session
+	 * 登出
+	 * @param request
 	 */
 	@Override
 	public void signOut(HttpServletRequest request) {

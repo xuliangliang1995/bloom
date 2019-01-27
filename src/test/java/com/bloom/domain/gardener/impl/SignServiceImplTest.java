@@ -1,22 +1,16 @@
 /**
  * 
  */
-package com.bloom.domain.gardener;
+package com.bloom.domain.gardener.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.bloom.dao.po.Gardener;
+import com.bloom.dao.po.Role;
+import com.bloom.domain.gardener.RoleService;
+import com.bloom.domain.gardener.meta.SessionConstantKey;
+import com.bloom.exception.IncorrectAccountException;
+import com.bloom.exception.IncorrectPasswordException;
+import com.bloom.exception.WechatNoBindGrasswortAccountException;
+import com.bloom.web.gardener.vo.SignUpForm;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,15 +19,13 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.bloom.dao.po.Gardener;
-import com.bloom.dao.po.Role;
-import com.bloom.domain.gardener.impl.GardenerWechatOpenIdServiceImpl;
-import com.bloom.domain.gardener.impl.SignServiceImpl;
-import com.bloom.domain.gardener.meta.SessionConstantKey;
-import com.bloom.exception.IncorrectAccountException;
-import com.bloom.exception.IncorrectPasswordException;
-import com.bloom.exception.WechatNoBindGrasswortAccountException;
-import com.bloom.web.gardener.vo.SignUpForm;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Optional;
+
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 /**
  * <p>Title: SignServiceImplTest2.java<／p>

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.bloom.domain.gardener;
+package com.bloom.domain.gardener.impl;
 
 import java.util.ArrayList;
 import java.util.Date;

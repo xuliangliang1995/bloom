@@ -1,1 +1,1 @@
-insert into gardener (role_id, username, password, nick_name, gender, birthday, email, ct, ut) values (1, '9c55bd291ac8745b1ab43458e6889dc2', 'd2e549e9bc613aad49310cd984e0448b', '昵称', '保密', null, '835547206@qq.com', now(), now())
+insert into gardener (role_id, username, password, nick_name, gender, birthday, email, ct, ut) values (1, '61261d47d225349690386957b1ec44e6', 'b824f63967573a20a7f889e6f5a46ffd', 'unit_nickname', '保密', null, '835547206@qq.com', now(), now())
