@@ -8,7 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
- * <p>Title: SpringTextContext.java<／p>
+ * <p>Title: SpringTestContext.java<／p>
  * <p>Description: 基于Spring的测试环境<／p>
  * <p>Copyright: Copyright (c) 2019<／p>
  * <p>Company: grasswort<／p>
@@ -28,4 +28,4 @@ import org.springframework.test.context.web.WebAppConfiguration;
 },properties = {
 		"spring.test.context.cache.maxSize=32"
 })
-public class SpringTextContext {}
+public class SpringTestContext {}

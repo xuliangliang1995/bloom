@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @version 1.0
  * @date 2019/1/27
  */
-public class TestDemo extends SpringTextContext{
+public class TestDemo extends SpringTestContext {
 	@Resource
 	private SignService signServiceImpl;
 	@Autowired

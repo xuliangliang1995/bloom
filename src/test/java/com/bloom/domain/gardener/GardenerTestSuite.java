@@ -1,6 +1,8 @@
 package com.bloom.domain.gardener;
 
+import com.bloom.domain.gardener.general.LoginCheckUtilTest;
 import com.bloom.domain.gardener.impl.SignServiceImplTest;
+import com.bloom.domain.gardener.impl.SignServiceImplTest2;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -16,7 +18,9 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-		SignServiceImplTest.class
+		LoginCheckUtilTest.class,
+		SignServiceImplTest.class,
+		SignServiceImplTest2.class
 })
 public class GardenerTestSuite {
 }

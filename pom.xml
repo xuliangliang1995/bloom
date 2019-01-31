@@ -373,7 +373,13 @@
 		  <scope>test</scope>
 	  </dependency>
 
-  </dependencies>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>1.6.6</version>
+		</dependency>
+
+	</dependencies>
   <build>
     <finalName>bloom</finalName>
     <!-- 如果不添加此节点mybatis的mapper.xml文件都会被漏掉。 -->

@@ -9,6 +9,7 @@ import org.springframework.web.util.WebUtils;
 import com.bloom.domain.gardener.meta.SessionConstantKey;
 import com.bloom.exception.ServiceException;
 
+
 public class LoginCheckUtil {
 	
 	/**
@@ -17,7 +18,7 @@ public class LoginCheckUtil {
 	 * @return
 	 */
 	public static int loginGardenerId(HttpServletRequest request) {
-		return (int)Optional.ofNullable(
+		return (int) Optional.ofNullable(
 				WebUtils.getSessionAttribute(request, SessionConstantKey.GARDENER_ID_KEY)
 				)
 				.orElseThrow(() -> new ServiceException("您还没有登录！"));

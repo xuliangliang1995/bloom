@@ -1,22 +1,19 @@
 package com.bloom.domain.gardener.impl;
 
-import java.util.Date;
-import java.util.Optional;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
-
 import com.bloom.annotation.RoleCheck;
-import com.bloom.dao.ext.GardenerExtDao;
 import com.bloom.dao.ext.RoleExtDao;
 import com.bloom.dao.po.Role;
 import com.bloom.domain.gardener.RoleService;
 import com.bloom.domain.gardener.meta.HighGradeRole;
 import com.bloom.exception.ServiceException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.Optional;
 /**
  * 角色管理
  * @author 83554
@@ -26,8 +23,6 @@ import com.bloom.exception.ServiceException;
 public class RoleServiceImpl implements RoleService {
 	@Resource
 	private RoleExtDao roleExtDao;
-	@Resource
-	private GardenerExtDao gardenerExtDao;
 	
 	@Override
 	public Role defaultRole() {
