@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.bloom.exception.ServiceException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bloom.exception.FlowBreakException;
 import com.bloom.manager.aliyunoss.Oss;
 import com.bloom.manager.aliyunoss.constant.OssStipulation;
 import com.bloom.manager.aliyunoss.util.OssUtils;
@@ -54,7 +54,7 @@ public class AliyunOssResourceApi {
 					OssUtils.replenishOssUrl(OssStipulation.DEFAULT_BUCKET_NAME, objectName, OssStipulation.DefaultBucketDisposeStyle.TARGET)
 					);
 		} catch (IOException e) {
-			throw new FlowBreakException("图片上传失败！");
+			throw new ServiceException("图片上传失败！");
 		}
 	}
 }
