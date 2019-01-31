@@ -23,7 +23,7 @@ import com.bloom.domain.petal.meta.PetalVarietyEnum;
 import com.bloom.domain.wechat.common.consumer.AbstractEventConsumerBean;
 import com.bloom.domain.wechat.common.consumer.TextConsumerMap;
 import com.bloom.domain.wechat.common.consumer.WxMsgConsumer;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 import com.bloom.util.image.RandomImage;
 import com.bloom.web.petal.vo.CreatePetalForm;
 
@@ -117,7 +117,7 @@ public class CreatePetalLinkReminder extends AbstractEventConsumerBean{
 				}
 				
 			} else {
-				throw new FlowBreakException("command is unmatched");
+				throw new ServiceException("command is unmatched");
 			}
 			
 		};

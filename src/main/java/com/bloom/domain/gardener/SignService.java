@@ -11,7 +11,7 @@ import com.bloom.web.gardener.vo.SignUpForm;
  */
 public interface SignService {
 	
-	void signUp(SignUpForm signUpForm);
+	Gardener signUp(SignUpForm signUpForm);
 	
 	Gardener signIn(HttpServletRequest request, String originalUsername, String originalPassword);
 	

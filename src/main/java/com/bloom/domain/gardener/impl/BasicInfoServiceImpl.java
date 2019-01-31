@@ -1,22 +1,19 @@
 package com.bloom.domain.gardener.impl;
 
-import java.util.Date;
-import java.util.Optional;
-
-import javax.annotation.Resource;
-
-import org.apache.ibatis.cache.CacheKey;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.bloom.dao.ext.GardenerExtDao;
 import com.bloom.dao.po.Gardener;
 import com.bloom.domain.CachedName;
 import com.bloom.domain.gardener.BasicInfoService;
 import com.bloom.domain.gardener.meta.Gender;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.Optional;
 @Service
 public class BasicInfoServiceImpl implements BasicInfoService {
 	@Resource
@@ -56,7 +53,7 @@ public class BasicInfoServiceImpl implements BasicInfoService {
 		return Optional.ofNullable(
 				gardenerExtDao.selectByPrimaryKey(id)
 				)
-				.orElseThrow(() -> new FlowBreakException("该用户不存在！"));
+				.orElseThrow(() -> new ServiceException("该用户不存在！"));
 	}
 	
 

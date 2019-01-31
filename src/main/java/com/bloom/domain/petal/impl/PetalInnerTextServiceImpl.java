@@ -19,10 +19,11 @@ import com.bloom.domain.CachedName;
 import com.bloom.domain.oss.AliyunOssReferenceService;
 import com.bloom.domain.oss.meta.OssReferrerTypeEnum;
 import com.bloom.domain.petal.PetalInnerTextService;
-import com.bloom.exception.FlowBreakException;
 import com.bloom.manager.aliyunoss.constant.OssStipulation;
 import com.bloom.manager.aliyunoss.dto.OssRefDTO;
 import com.bloom.manager.aliyunoss.util.OssUtils;
+import com.bloom.exception.ServiceException;
+
 @Service
 public class PetalInnerTextServiceImpl implements PetalInnerTextService {
 	@Resource
@@ -58,7 +59,7 @@ public class PetalInnerTextServiceImpl implements PetalInnerTextService {
 	public PetalInnerTextWithBLOBs findByPetalId(int petalId) {
 		return Optional.ofNullable(
 				petalInnerTextExtDao.findByPetalId(petalId)
-				).orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
+				).orElseThrow(() -> new ServiceException("资源不存在或已被删除！"));
 	}
 
 	@Override
