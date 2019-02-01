@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -23,7 +24,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
+import java.util.Optional;
+
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 /**
  * 注册、登录单元测试
@@ -38,6 +43,8 @@ public class SignServiceImplTest extends SpringTestContext {
 	}
 	@Autowired
 	private MockHttpServletRequest request;
+	@Autowired
+	private GardenerWechatOpenIdServiceImpl gardenerWechatOpenIdServiceImpl;
 
 	private JdbcTemplate jdbcTemplate;
 
@@ -108,6 +115,20 @@ public class SignServiceImplTest extends SpringTestContext {
 		signServiceImpl.signOut(request);
 
 		assertFalse(LoginCheckUtil.loginCheck(request));
+
+		// 微信登录
+		GardenerWechatOpenIdServiceImpl mockService = Mockito.mock(GardenerWechatOpenIdServiceImpl.class);
+		when(mockService.getGardenerIdByWechatOpenId(anyString(), anyString()))
+				.thenReturn(Optional.of(REGISTER_GARDENER_ID));
+
+		signServiceImpl.setGardenerWechatOpenIdServiceImpl(mockService);
+		signServiceImpl.signIn(request, signUpForm.getUsername(), signUpForm.getPassword());
+
+		assertTrue(LoginCheckUtil.loginCheck(request));
+		assertEquals(REGISTER_GARDENER_ID, Integer.valueOf(LoginCheckUtil.loginGardenerId(request)));
+
+		signServiceImpl.setGardenerWechatOpenIdServiceImpl(gardenerWechatOpenIdServiceImpl);
+
 	}
 
 	/**

@@ -123,5 +123,13 @@ public class SignServiceImpl implements SignService{
 		session.removeAttribute(SessionConstantKey.ROLE_ID_KEY);
 		session.invalidate();
 	}
+
+	/**
+	 * 设置 gardenerWechatOpenIdServiceImpl
+	 * @param gardenerWechatOpenIdServiceImpl
+	 */
+	public void setGardenerWechatOpenIdServiceImpl(GardenerWechatOpenIdServiceImpl gardenerWechatOpenIdServiceImpl) {
+		this.gardenerWechatOpenIdServiceImpl = gardenerWechatOpenIdServiceImpl;
+	}
 	
 }

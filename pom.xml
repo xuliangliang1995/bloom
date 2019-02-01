@@ -444,7 +444,7 @@
                     <goal>generate</goal>
                  </goals>
                  <phase>generate</phase>
-                 <configuration>
+				  <configuration>
                     <verbose>true</verbose>
                     <overwrite>true</overwrite>
                  </configuration>
