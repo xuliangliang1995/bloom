@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -45,6 +46,8 @@ public class SignServiceImplTest extends SpringTestContext {
 	private MockHttpServletRequest request;
 	@Autowired
 	private GardenerWechatOpenIdServiceImpl gardenerWechatOpenIdServiceImpl;
+	@Mock
+	private GardenerWechatOpenIdServiceImpl gardenerWechatOpenIdServiceImplMock;
 
 	private JdbcTemplate jdbcTemplate;
 
@@ -117,11 +120,10 @@ public class SignServiceImplTest extends SpringTestContext {
 		assertFalse(LoginCheckUtil.loginCheck(request));
 
 		// 微信登录
-		GardenerWechatOpenIdServiceImpl mockService = Mockito.mock(GardenerWechatOpenIdServiceImpl.class);
-		when(mockService.getGardenerIdByWechatOpenId(anyString(), anyString()))
+		when(gardenerWechatOpenIdServiceImplMock.getGardenerIdByWechatOpenId(anyString(), anyString()))
 				.thenReturn(Optional.of(REGISTER_GARDENER_ID));
 
-		signServiceImpl.setGardenerWechatOpenIdServiceImpl(mockService);
+		signServiceImpl.setGardenerWechatOpenIdServiceImpl(gardenerWechatOpenIdServiceImplMock);
 		signServiceImpl.signIn(request, signUpForm.getUsername(), signUpForm.getPassword());
 
 		assertTrue(LoginCheckUtil.loginCheck(request));

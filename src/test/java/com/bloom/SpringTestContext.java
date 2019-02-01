@@ -1,6 +1,8 @@
 package com.bloom;
 
+import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.TestPropertySource;
@@ -28,4 +30,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 },properties = {
 		"spring.test.context.cache.maxSize=32"
 })
-public class SpringTestContext {}
+public class SpringTestContext {
+
+	@Before
+	public void init() {
+		MockitoAnnotations.initMocks(this);
+	}
+}
