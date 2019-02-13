@@ -58,9 +58,10 @@ public class TodayFiredPetal extends AbstractEventConsumerBean {
 			
 			List<Integer> petalIds = petalProgressServiceImpl.todayFiredAndNoFiredPetalList(gardener.getId());
 			
-			if(petalIds.isEmpty()) {
+			if (petalIds.isEmpty()) {
 				WxMpXmlOutMessage out = WxMpXmlOutMessage.TEXT()
 						.content("今日没有要复习的内容！")
+						.fromUser(ctx.getWxMessage().getToUser())
 						.toUser(openId)
 						.build();
 				ctx.setWxMpXmlOutMessage(out);
