@@ -4,4 +4,7 @@
 	<select id="findByPetalId" resultType="com.bloom.dao.po.PetalInnerLink">
 		select * from petal_inner_link where petal_id = #{petalId}
 	</select>
+	<delete id="deleteByPetalId">
+		delete from petal_inner_link where petal_id = #{petalId}
+	</delete>
 </mapper>

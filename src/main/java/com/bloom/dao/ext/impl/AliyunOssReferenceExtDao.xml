@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bloom.dao.ext.AliyunOssReferenceExtDao">
+
+	<select id="countOssRef" resultType="int">
+		select count(*) from aliyun_oss_reference where oss_key = #{key} and oss_bucket = #{bucket}
+	</select>
+	
+	<select id="listOssRefs" resultMap="com.bloom.dao.AliyunOssReferenceMapper.BaseResultMap">
+		select id, oss_bucket, oss_key from aliyun_oss_reference 
+		where referrer_id = #{referrerId} and referrer_type = #{referrerTypeEnum.value}
+		order by id asc;
+	</select>
+	
+	<delete id="removeRefs">
+	 	delete from aliyun_oss_reference
+	 	where oss_key = #{key} and referrer_id = #{referrerId}
+	 	and referrer_type = #{referrerTypeEnum.value} and oss_bucket = #{bucket}
+	</delete>
+</mapper>

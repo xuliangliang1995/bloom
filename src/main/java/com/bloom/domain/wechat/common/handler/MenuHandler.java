@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import com.bloom.domain.wechat.common.consumer.ConsumerMap;
+import com.bloom.domain.wechat.common.consumer.EventConsumerMap;
 import com.bloom.domain.wechat.common.consumer.WxMsgConsumer;
 import com.bloom.domain.wechat.common.consumer.dto.WxPostContext;
 
@@ -29,7 +29,7 @@ public class MenuHandler extends AbstractHandler {
 	      return null;
 	  }
 	  String eventKey = wxMessage.getEventKey();
-	  Optional<WxMsgConsumer> consumerOpt = ConsumerMap.findConsumer(eventKey);
+	  Optional<WxMsgConsumer> consumerOpt = EventConsumerMap.findConsumer(eventKey);
 	  if(consumerOpt.isPresent()) {
 		  WxPostContext ctx = WxPostContext.pack(wxMessage, context, wxMpService, sessionManager);
 		  return ctx.accept(consumerOpt.get());

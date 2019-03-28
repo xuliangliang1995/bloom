@@ -6,6 +6,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 
 import com.bloom.dao.po.Flower;
+import com.bloom.util.mybatis.Page;
 import com.bloom.web.flower.FlowerResourceApi;
 import com.bloom.web.petal.PetalResourceApi;
 import com.bloom.web.petal.PetalVarietyResourceApi;
@@ -20,7 +21,7 @@ public class FlowerResourceAssembler extends ResourceAssemblerSupport<Flower, Fl
 	public FlowerResource toResource(Flower flower) {
 		FlowerResource flowerResource = createResourceWithId(flower.getId(), flower,flower.getGardenerId());
 		flowerResource.add(
-				linkTo(methodOn(PetalResourceApi.class).flowerPetals(flower.getId())).withRel("petals"),
+				linkTo(methodOn(PetalResourceApi.class).flowerPetals(flower.getId(),Page.DEFAULT_PAGE_NO,Page.DEFAULT_PAGE_SIZE)).withRel("petals"),
 				linkTo(methodOn(PetalVarietyResourceApi.class).varieties()).withRel("petalVarieties")
 				);
 		return flowerResource;

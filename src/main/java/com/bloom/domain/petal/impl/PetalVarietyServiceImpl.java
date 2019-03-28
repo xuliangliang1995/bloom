@@ -12,7 +12,7 @@ import com.bloom.dao.po.PetalVariety;
 import com.bloom.dao.po.PetalVarietyExample;
 import com.bloom.domain.CachedName;
 import com.bloom.domain.petal.PetalVarietyService;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 /**
  * 叶子种类
  * @author 83554
@@ -24,17 +24,17 @@ public class PetalVarietyServiceImpl implements PetalVarietyService {
 	private PetalVarietyExtDao petalVarietyExtDao;
 
 	@Override
-	@Cacheable(cacheNames = CachedName.petal, key = "#root.methodName")
+	@Cacheable(cacheNames = CachedName.PETAL, key = "#root.methodName")
 	public List<PetalVariety> varieties() {
 		PetalVarietyExample query = new PetalVarietyExample();
 		return petalVarietyExtDao.selectByExample(query);
 	}
 
 	@Override
-	@Cacheable(cacheNames = CachedName.petal, key = "#varietyId")
+	@Cacheable(cacheNames = CachedName.PETAL, key = "#varietyId")
 	public PetalVariety findById(int varietyId) {
 		return Optional.ofNullable(petalVarietyExtDao.selectByPrimaryKey(varietyId))
-				.orElseThrow(() -> new FlowBreakException("资源不存在或已被删除！"));
+				.orElseThrow(() -> new ServiceException("资源不存在或已被删除！"));
 	}
 
 }

@@ -19,5 +19,7 @@ public class CreatePetalForm {
 	private String link;
 	
 	private String text;
+	
+	private String raw;
 
 }

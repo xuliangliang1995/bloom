@@ -2,24 +2,25 @@ package com.bloom.dao;
 
 import com.bloom.dao.po.PetalInnerText;
 import com.bloom.dao.po.PetalInnerTextExample;
+import com.bloom.dao.po.PetalInnerTextWithBLOBs;
 import java.util.List;
 
 public interface PetalInnerTextMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(PetalInnerText record);
+    int insert(PetalInnerTextWithBLOBs record);
 
-    int insertSelective(PetalInnerText record);
+    int insertSelective(PetalInnerTextWithBLOBs record);
 
-    List<PetalInnerText> selectByExampleWithBLOBs(PetalInnerTextExample example);
+    List<PetalInnerTextWithBLOBs> selectByExampleWithBLOBs(PetalInnerTextExample example);
 
     List<PetalInnerText> selectByExample(PetalInnerTextExample example);
 
-    PetalInnerText selectByPrimaryKey(Integer id);
+    PetalInnerTextWithBLOBs selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(PetalInnerText record);
+    int updateByPrimaryKeySelective(PetalInnerTextWithBLOBs record);
 
-    int updateByPrimaryKeyWithBLOBs(PetalInnerText record);
+    int updateByPrimaryKeyWithBLOBs(PetalInnerTextWithBLOBs record);
 
     int updateByPrimaryKey(PetalInnerText record);
 }

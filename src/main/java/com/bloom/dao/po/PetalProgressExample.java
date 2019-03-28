@@ -405,6 +405,66 @@ public class PetalProgressExample {
             return (Criteria) this;
         }
 
+        public Criteria andFireIsNull() {
+            addCriterion("fire is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFireIsNotNull() {
+            addCriterion("fire is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFireEqualTo(Byte value) {
+            addCriterion("fire =", value, "fire");
+            return (Criteria) this;
+        }
+
+        public Criteria andFireNotEqualTo(Byte value) {
+            addCriterion("fire <>", value, "fire");
+            return (Criteria) this;
+        }
+
+        public Criteria andFireGreaterThan(Byte value) {
+            addCriterion("fire >", value, "fire");
+            return (Criteria) this;
+        }
+
+        public Criteria andFireGreaterThanOrEqualTo(Byte value) {
+            addCriterion("fire >=", value, "fire");
+            return (Criteria) this;
+        }
+
+        public Criteria andFireLessThan(Byte value) {
+            addCriterion("fire <", value, "fire");
+            return (Criteria) this;
+        }
+
+        public Criteria andFireLessThanOrEqualTo(Byte value) {
+            addCriterion("fire <=", value, "fire");
+            return (Criteria) this;
+        }
+
+        public Criteria andFireIn(List<Byte> values) {
+            addCriterion("fire in", values, "fire");
+            return (Criteria) this;
+        }
+
+        public Criteria andFireNotIn(List<Byte> values) {
+            addCriterion("fire not in", values, "fire");
+            return (Criteria) this;
+        }
+
+        public Criteria andFireBetween(Byte value1, Byte value2) {
+            addCriterion("fire between", value1, value2, "fire");
+            return (Criteria) this;
+        }
+
+        public Criteria andFireNotBetween(Byte value1, Byte value2) {
+            addCriterion("fire not between", value1, value2, "fire");
+            return (Criteria) this;
+        }
+
         public Criteria andCtIsNull() {
             addCriterion("ct is null");
             return (Criteria) this;

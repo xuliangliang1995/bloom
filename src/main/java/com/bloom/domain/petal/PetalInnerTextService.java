@@ -1,7 +1,7 @@
 package com.bloom.domain.petal;
 
 import com.bloom.dao.po.Petal;
-import com.bloom.dao.po.PetalInnerText;
+import com.bloom.dao.po.PetalInnerTextWithBLOBs;
 
 /**
  * 叶子 - text
@@ -10,8 +10,12 @@ import com.bloom.dao.po.PetalInnerText;
  */
 public interface PetalInnerTextService {
 	
-	PetalInnerText addPetalText(Petal petal, String text);
+	PetalInnerTextWithBLOBs addPetalText(Petal petal, String text, String raw);
 	
-	PetalInnerText findByPetalId(int petalId);
+	PetalInnerTextWithBLOBs findByPetalId(int petalId);
+	
+	void deletePetalInnerText(int petalId);
+	
+	PetalInnerTextWithBLOBs editPetalText(Petal petal, String text, String raw);
 
 }

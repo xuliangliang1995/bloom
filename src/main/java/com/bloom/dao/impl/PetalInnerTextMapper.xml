@@ -7,7 +7,8 @@
     <result column="ct" jdbcType="TIMESTAMP" property="ct" />
     <result column="ut" jdbcType="TIMESTAMP" property="ut" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bloom.dao.po.PetalInnerText">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.bloom.dao.po.PetalInnerTextWithBLOBs">
+    <result column="raw" jdbcType="LONGVARCHAR" property="raw" />
     <result column="text" jdbcType="LONGVARCHAR" property="text" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -43,7 +44,7 @@
     id, petal_id, ct, ut
   </sql>
   <sql id="Blob_Column_List">
-    text
+    raw, text
   </sql>
   <select id="selectByExampleWithBLOBs" parameterType="com.bloom.dao.po.PetalInnerTextExample" resultMap="ResultMapWithBLOBs">
     select
@@ -89,16 +90,16 @@
     delete from petal_inner_text
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.bloom.dao.po.PetalInnerText" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.bloom.dao.po.PetalInnerTextWithBLOBs">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into petal_inner_text (petal_id, ct, ut, 
-      text)
+      raw, text)
     values (#{petalId,jdbcType=INTEGER}, #{ct,jdbcType=TIMESTAMP}, #{ut,jdbcType=TIMESTAMP}, 
-      #{text,jdbcType=LONGVARCHAR})
+      #{raw,jdbcType=LONGVARCHAR}, #{text,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.bloom.dao.po.PetalInnerText">
+  <insert id="insertSelective" parameterType="com.bloom.dao.po.PetalInnerTextWithBLOBs">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -112,6 +113,9 @@
       </if>
       <if test="ut != null">
         ut,
+      </if>
+      <if test="raw != null">
+        raw,
       </if>
       <if test="text != null">
         text,
@@ -127,12 +131,15 @@
       <if test="ut != null">
         #{ut,jdbcType=TIMESTAMP},
       </if>
+      <if test="raw != null">
+        #{raw,jdbcType=LONGVARCHAR},
+      </if>
       <if test="text != null">
         #{text,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.bloom.dao.po.PetalInnerText">
+  <update id="updateByPrimaryKeySelective" parameterType="com.bloom.dao.po.PetalInnerTextWithBLOBs">
     update petal_inner_text
     <set>
       <if test="petalId != null">
@@ -144,17 +151,21 @@
       <if test="ut != null">
         ut = #{ut,jdbcType=TIMESTAMP},
       </if>
+      <if test="raw != null">
+        raw = #{raw,jdbcType=LONGVARCHAR},
+      </if>
       <if test="text != null">
         text = #{text,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bloom.dao.po.PetalInnerText">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bloom.dao.po.PetalInnerTextWithBLOBs">
     update petal_inner_text
     set petal_id = #{petalId,jdbcType=INTEGER},
       ct = #{ct,jdbcType=TIMESTAMP},
       ut = #{ut,jdbcType=TIMESTAMP},
+      raw = #{raw,jdbcType=LONGVARCHAR},
       text = #{text,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

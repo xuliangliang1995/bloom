@@ -3,6 +3,9 @@ package com.bloom.dao.po;
 import java.io.Serializable;
 import java.util.Date;
 
+import lombok.Data;
+
+@Data
 public class RetentionCurve implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -17,43 +20,4 @@ public class RetentionCurve implements Serializable{
 
     private Date ct;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Long getIntervalMinutes() {
-        return intervalMinutes;
-    }
-
-    public void setIntervalMinutes(Long intervalMinutes) {
-        this.intervalMinutes = intervalMinutes;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note == null ? null : note.trim();
-    }
-
-    public Date getCt() {
-        return ct;
-    }
-
-    public void setCt(Date ct) {
-        this.ct = ct;
-    }
 }

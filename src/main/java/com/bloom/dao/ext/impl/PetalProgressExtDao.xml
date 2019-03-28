@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bloom.dao.ext.PetalProgressExtDao">
-	<select id="currentProgress" resultType="com.bloom.dao.po.PetalProgress">
+	<select id="currentProgress" resultMap="com.bloom.dao.PetalProgressMapper.BaseResultMap">
 		select * from petal_progress where petal_id = #{petalId,jdbcType=BIGINT} order by id desc limit 1
 	</select>
+	<delete id="deletePetalProgress">
+		delete from petal_progress where petal_id = #{petalId}
+	</delete>
 </mapper>

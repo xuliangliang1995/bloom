@@ -7,6 +7,7 @@
     <result column="gardener_id" jdbcType="INTEGER" property="gardenerId" />
     <result column="retention_curve_id" jdbcType="INTEGER" property="retentionCurveId" />
     <result column="fire_time" jdbcType="TIMESTAMP" property="fireTime" />
+    <result column="fire" jdbcType="TINYINT" property="fire" />
     <result column="ct" jdbcType="TIMESTAMP" property="ct" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -39,7 +40,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, petal_id, gardener_id, retention_curve_id, fire_time, ct
+    id, petal_id, gardener_id, retention_curve_id, fire_time, fire, ct
   </sql>
   <select id="selectByExample" parameterType="com.bloom.dao.po.PetalProgressExample" resultMap="BaseResultMap">
     select
@@ -66,14 +67,16 @@
     delete from petal_progress
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.bloom.dao.po.PetalProgress" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.bloom.dao.po.PetalProgress">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into petal_progress (petal_id, gardener_id, retention_curve_id, 
-      fire_time, ct)
+      fire_time, fire, ct
+      )
     values (#{petalId,jdbcType=INTEGER}, #{gardenerId,jdbcType=INTEGER}, #{retentionCurveId,jdbcType=INTEGER}, 
-      #{fireTime,jdbcType=TIMESTAMP}, #{ct,jdbcType=TIMESTAMP})
+      #{fireTime,jdbcType=TIMESTAMP}, #{fire,jdbcType=TINYINT}, #{ct,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.bloom.dao.po.PetalProgress">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -93,6 +96,9 @@
       <if test="fireTime != null">
         fire_time,
       </if>
+      <if test="fire != null">
+        fire,
+      </if>
       <if test="ct != null">
         ct,
       </if>
@@ -109,6 +115,9 @@
       </if>
       <if test="fireTime != null">
         #{fireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fire != null">
+        #{fire,jdbcType=TINYINT},
       </if>
       <if test="ct != null">
         #{ct,jdbcType=TIMESTAMP},
@@ -130,6 +139,9 @@
       <if test="fireTime != null">
         fire_time = #{fireTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="fire != null">
+        fire = #{fire,jdbcType=TINYINT},
+      </if>
       <if test="ct != null">
         ct = #{ct,jdbcType=TIMESTAMP},
       </if>
@@ -142,6 +154,7 @@
       gardener_id = #{gardenerId,jdbcType=INTEGER},
       retention_curve_id = #{retentionCurveId,jdbcType=INTEGER},
       fire_time = #{fireTime,jdbcType=TIMESTAMP},
+      fire = #{fire,jdbcType=TINYINT},
       ct = #{ct,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>

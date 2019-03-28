@@ -25,7 +25,7 @@ import com.bloom.domain.CachedName;
 import com.bloom.domain.gardener.meta.HighGradeRole;
 import com.bloom.domain.menu.MenuService;
 import com.bloom.domain.menu.vo.MenuTree;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 @Service
 public class MenuServiceImpl implements MenuService {
 	@Resource
@@ -36,7 +36,7 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	@Transactional
 	@RoleCheck(HighGradeRole.Administrator)
-	@CacheEvict(cacheNames = CachedName.menuTree,allEntries = true)
+	@CacheEvict(cacheNames = CachedName.MENU_TREE,allEntries = true)
 	public void createMenu(Menu menu) {
 		Date now = new Date();
 		Assert.isTrue(StringUtils.hasText(menu.getName()),"菜单名称不能为空");
@@ -52,11 +52,11 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	@Transactional
 	@RoleCheck(HighGradeRole.Administrator)
-	@CacheEvict(cacheNames = CachedName.menuTree,allEntries = true)
+	@CacheEvict(cacheNames = CachedName.MENU_TREE,allEntries = true)
 	public void deleteMenu(int menuId) {
 		Menu menu = Optional.ofNullable(
 				menuExtDao.selectByPrimaryKey(menuId)
-				).orElseThrow(() -> new FlowBreakException("所选菜单不存在或已被删除！"));
+				).orElseThrow(() -> new ServiceException("所选菜单不存在或已被删除！"));
 		int childMenuCount = menuExtDao.getChildMenuCount(menu.getId());
 		
 		Assert.isTrue(childMenuCount == 0,"请先删除子菜单！");
@@ -65,7 +65,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = CachedName.menuTree, key = "#roleId")
+	@Cacheable(cacheNames = CachedName.MENU_TREE, key = "#roleId")
 	public List<MenuTree> roleMenuTree(int roleId) {
 		List<MenuTree> tags = menuExtDao.getMenuList(0, roleId);
 		tags.stream().forEach(tag -> {
@@ -80,7 +80,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	@Cacheable(cacheNames = CachedName.menuTree,key = "#root.methodName")
+	@Cacheable(cacheNames = CachedName.MENU_TREE,key = "#root.methodName")
 	public List<MenuTree> menuTree() {
 		List<MenuTree> tags = menuExtDao.getAllMenuList(0);
 		tags.stream().forEach(tag -> {

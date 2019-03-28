@@ -13,7 +13,17 @@
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
     <!-- 开启注解驱动 -->
-    <mvc:annotation-driven validator="validator"/>
+    <mvc:annotation-driven validator="validator" conversion-service="conversionService">
+	<mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
     <!-- 放行静态资源 -->
     <mvc:default-servlet-handler />
     <!-- 开启aspect切面 -->
@@ -28,6 +38,15 @@
 		p:prefix="/WEB-INF/jsp/"
 		p:suffix=".jsp" />
 		
+	<!-- 配置类型转换 -->
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">  
+	    <property name="converters">  
+	       <list>  
+	       	<bean class="com.bloom.convert.StringConvertDate"></bean>
+	        </list>  
+	    </property>  
+	</bean>
 	<import resource="classpath:spring-validator.xml"/>
-
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 </beans>

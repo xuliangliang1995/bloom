@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bloom.dao.po.RetentionCurve;
 import com.bloom.domain.retentioncurve.RetentionCurveService;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
 import com.bloom.web.retentioncurve.resource.RetentionCurveResource;
 import com.bloom.web.retentioncurve.resource.RetentionCurveResourceAssembler;
 import com.bloom.web.retentioncurve.vo.AddRetentionCurveVO;

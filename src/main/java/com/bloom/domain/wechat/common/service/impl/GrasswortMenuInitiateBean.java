@@ -8,8 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.bloom.domain.wechat.common.consumer.bean.KeFuMsgNewsTest;
-import com.bloom.domain.wechat.common.consumer.bean.TemplateMsgTest;
+import com.bloom.domain.wechat.common.config.WechatAccount;
+import com.bloom.domain.wechat.common.consumer.bean.bind.BindGardenerReminder;
+import com.bloom.domain.wechat.common.consumer.bean.petal.CreatePetalLinkReminder;
+import com.bloom.domain.wechat.common.consumer.bean.petal.TodayFiredPetal;
+import com.bloom.domain.wechat.common.consumer.bean.test.KeFuMsgNewsTest;
+import com.bloom.domain.wechat.common.consumer.bean.test.TemplateMsgTest;
+import com.bloom.domain.wechat.common.router.WxMpServiceGenerator;
 import com.bloom.domain.wechat.common.service.WxMpMenuInitService;
 
 import me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
@@ -22,24 +27,42 @@ import me.chanjar.weixin.mp.api.WxMpService;
 public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
-	@Qualifier("grasswort")
-	private WxMpService grasswort;
+	private WxMpServiceGenerator wxMpServiceGenerator;
 	
 	@Override
 	@PostConstruct
 	public void init() {
+		WxMpService grasswort = wxMpServiceGenerator.get(WechatAccount.GRASSWORT).get();
+		
 		WxMenu menu = new WxMenu();
 		
 		WxMenuButton button1 = new WxMenuButton();
-		button1.setType(MenuButtonType.VIEW);
-		button1.setName("搜索");
-		button1.setUrl("http://www.baidu.com/");
+		button1.setName("菜单");
 		menu.getButtons().add(button1);
 		
+			WxMenuButton button11 = new WxMenuButton();
+			button11.setType(MenuButtonType.CLICK);
+			button11.setName("账号绑定");
+			button11.setKey(BindGardenerReminder.KEY);
+			
+			WxMenuButton button12 = new WxMenuButton();
+			button12.setType(MenuButtonType.CLICK);
+			button12.setName("添加叶子");
+			button12.setKey(CreatePetalLinkReminder.KEY);
+			
+			WxMenuButton button13 = new WxMenuButton();
+			button13.setType(MenuButtonType.VIEW);
+			button13.setName("百度一下");
+			button13.setUrl("https://www.baidu.com");;
+			
+		button1.getSubButtons().add(button11);	
+		button1.getSubButtons().add(button12);
+		button1.getSubButtons().add(button13);
+		
 		WxMenuButton button2 = new WxMenuButton();
-		button2.setType(MenuButtonType.VIEW);
-		button2.setName("视频");
-		button2.setUrl("http://v.qq.com/");
+		button2.setType(MenuButtonType.CLICK);
+		button2.setName("飞叶");
+		button2.setKey(TodayFiredPetal.KEY);
 		menu.getButtons().add(button2);
 		
 		WxMenuButton button3 = new WxMenuButton();
@@ -66,8 +89,8 @@ public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 		button3.getSubButtons().add(button33);
 		
 		try {
-			String result = grasswort.getMenuService().menuCreate(menu);
-			this.logger.info("\n微信公众号【{}】菜单初始化成功！\n{}","grasswort",result);
+			grasswort.getMenuService().menuCreate(menu);
+			this.logger.info("\n微信公众号【{}】菜单初始化成功！","grasswort");
 		} catch (WxErrorException e) {
 			this.logger.error("\n微信公众号【{}】菜单初始化失败！","grasswort");
 			e.printStackTrace();

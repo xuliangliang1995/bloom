@@ -6,5 +6,7 @@ import com.bloom.dao.po.PetalInnerLink;
 public interface PetalInnerLinkExtDao extends PetalInnerLinkMapper {
 	
 	PetalInnerLink findByPetalId(int petalId);
+	
+	void deleteByPetalId(int petalId);
 
 }

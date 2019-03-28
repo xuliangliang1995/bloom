@@ -1,64 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop" 
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
        http://www.springframework.org/schema/context 
        http://www.springframework.org/schema/context/spring-context-4.0.xsd
-       http://www.springframework.org/schema/tx 
-       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
        http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
     
 	<!-- 自动扫描 -->
 	<context:component-scan base-package="com.bloom.advice"/> 
 	<context:component-scan base-package="com.bloom.aspect"/> 
-	<context:component-scan base-package="com.bloom.config"/> 
+	<context:component-scan base-package="com.bloom.config"/>
 	<context:component-scan base-package="com.bloom.domain"/> 
+	<context:component-scan base-package="com.bloom.task"/> 
 	
 	<!-- 开启aspect切面 -->
 	<aop:aspectj-autoproxy proxy-target-class="true" expose-proxy="true" />
-	
-	<!-- 引入外部properties文件 -->
-	<context:property-placeholder location="classpath:dbcp/jdbc.properties" ignore-unresolvable="true"/>
-	<context:property-placeholder location="classpath:dbcp/druid.properties" ignore-unresolvable="true"/>
-	
-	<!-- 配置数据源 -->
-	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
-		<property name="driverClassName" value="${jdbc.driverClassName}"/>
-		<property name="url" value="${jdbc.url}"/>
-		<property name="username" value="${jdbc.username}"/>
-		<property name="password" value="${jdbc.password}"/>
-		<property name="filters" value="${filters}" />
-
-	     <property name="maxActive" value="${maxActive}" />
-	     <property name="initialSize" value="${initialSize}" />
-	     <property name="maxWait" value="${maxWait}" />
-	     <property name="minIdle" value="${minIdle}" />
-	
-	     <property name="timeBetweenEvictionRunsMillis" value="${timeBetweenEvictionRunsMillis}" />
-	     <property name="minEvictableIdleTimeMillis" value="${minEvictableIdleTimeMillis}" />
-	
-	     <property name="testWhileIdle" value="${testWhileIdle}" />
-	     <property name="testOnBorrow" value="${testOnBorrow}" />
-	     <property name="testOnReturn" value="${testOnReturn}" />
-	
-	     <property name="poolPreparedStatements" value="${poolPreparedStatements}" />
-	     <property name="maxOpenPreparedStatements" value="${maxOpenPreparedStatements}" />
-	
-	     <property name="asyncInit" value="${asyncInit}" />
-	</bean> 
-	
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"/>
-	</bean>
-	
-	<!-- 开启事务注解驱动 -->
-	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
 	<!-- 导入mybatis配置文件 -->
 	<import resource="classpath:spring-mybatis.xml"/>
@@ -66,6 +26,4 @@
 	<import resource="classpath:spring-redis.xml"/>
 	<!-- 引入quartz配置文件 -->
 	<import resource="classpath:spring-quartz.xml"/>
-	<!-- 导入wechat配置文件 -->
-	<import resource="classpath:spring-wechat.xml"/>
 </beans>

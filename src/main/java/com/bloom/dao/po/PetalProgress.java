@@ -1,65 +1,29 @@
 package com.bloom.dao.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class PetalProgress {
-    private Long id;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import lombok.Data;
+
+@Data
+public class PetalProgress implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     private Integer petalId;
 
     private Integer gardenerId;
 
     private Integer retentionCurveId;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm",timezone="GMT+8")
     private Date fireTime;
 
+    private Byte fire;
+    
     private Date ct;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getPetalId() {
-        return petalId;
-    }
-
-    public void setPetalId(Integer petalId) {
-        this.petalId = petalId;
-    }
-
-    public Integer getGardenerId() {
-        return gardenerId;
-    }
-
-    public void setGardenerId(Integer gardenerId) {
-        this.gardenerId = gardenerId;
-    }
-
-    public Integer getRetentionCurveId() {
-        return retentionCurveId;
-    }
-
-    public void setRetentionCurveId(Integer retentionCurveId) {
-        this.retentionCurveId = retentionCurveId;
-    }
-
-    public Date getFireTime() {
-        return fireTime;
-    }
-
-    public void setFireTime(Date fireTime) {
-        this.fireTime = fireTime;
-    }
-
-    public Date getCt() {
-        return ct;
-    }
-
-    public void setCt(Date ct) {
-        this.ct = ct;
-    }
+    
 }

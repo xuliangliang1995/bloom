@@ -13,5 +13,7 @@ public interface PetalInnerLinkService {
 	PetalInnerLink addPetalLink(Petal petal, String link);
 	
 	PetalInnerLink findByPetalId(int petalId);
+	
+	void deletePetalInnerLink(int petalId);
 
 }

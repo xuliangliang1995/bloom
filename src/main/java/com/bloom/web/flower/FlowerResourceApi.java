@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bloom.dao.po.Flower;
+import com.bloom.domain.PageResources;
 import com.bloom.domain.flower.FlowerService;
-import com.bloom.exception.FlowBreakException;
+import com.bloom.exception.ServiceException;
+import com.bloom.util.mybatis.Page;
 import com.bloom.web.flower.resource.FlowerResource;
 import com.bloom.web.flower.resource.FlowerResourceAssembler;
 import com.bloom.web.flower.vo.CreateFlowerForm;
@@ -37,17 +40,20 @@ public class FlowerResourceApi {
 	private FlowerService flowerServiceImpl;
 	
 	@GetMapping
-	public Resources<FlowerResource> readFlowers(@PathVariable Integer gardenerId){
-		return new Resources<FlowerResource>(
-				new FlowerResourceAssembler().toResources(flowerServiceImpl.findFlowerByGardener(gardenerId))
-				);
+	public Resources<FlowerResource> readFlowers(@PathVariable Integer gardenerId,
+			@RequestParam(value = "page_no", required = false, defaultValue = Page.DEFAULT_PAGE_NO_TEXT)Integer pageNo,
+			@RequestParam(value = "page_size", required = false, defaultValue = Page.DEFAULT_PAGE_SIZE_TEXT)Integer pageSize){
+		Page<Flower> page = new Page<>(pageNo, pageSize);
+		return new PageResources<FlowerResource>(
+				new FlowerResourceAssembler().toResources(flowerServiceImpl.findFlowerByGardener(gardenerId,page))
+				).withTotal(page.getTotalCount());
 	}
 	
 	@GetMapping("/{flowerId}")
 	public FlowerResource readFlower(@PathVariable Integer gardenerId, @PathVariable Integer flowerId) {
 		Flower flower = Optional.of(flowerServiceImpl.findById(flowerId))
 				.filter(sflower -> sflower.getGardenerId().equals(gardenerId))
-				.orElseThrow(() -> new FlowBreakException("资源不存在！"));
+				.orElseThrow(() -> new ServiceException("资源不存在！"));
 		return new FlowerResourceAssembler().toResource(flower);
 	}
 	
@@ -69,6 +75,6 @@ public class FlowerResourceApi {
 	@DeleteMapping("/{flowerId}")
 	public ResponseEntity<?> deleteFlower(@PathVariable Integer gardenerId, @PathVariable Integer flowerId){
 		flowerServiceImpl.deleteById(gardenerId, flowerId);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		return ResponseEntity.status(HttpStatus.OK).body("删除成功");
 	}
 }
