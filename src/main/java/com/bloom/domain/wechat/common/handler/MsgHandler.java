@@ -3,6 +3,7 @@ package com.bloom.domain.wechat.common.handler;
 import java.util.Map;
 import java.util.Optional;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,11 @@ public class MsgHandler extends AbstractHandler {
 	        .TRANSFER_CUSTOMER_SERVICE().fromUser(wxMessage.getToUser())
 	        .toUser(wxMessage.getFromUser()).build();
 	    }
-	    
+
+	    if (wxMessage.getMsgType().equals(WxConsts.MediaFileType.FILE)) {
+			System.out.println(JSONObject.toJSONString(wxMessage));
+		}
+
 	    //判断是否是命令消息
 	    String content = NotNull.of(wxMessage.getContent());
 	    if(content.indexOf(":")>0) {
@@ -61,7 +66,7 @@ public class MsgHandler extends AbstractHandler {
 	    	}
 	    }
 	    
-	    //TODO 组装回复消息
+
 	    String text = "倘若终究要痴，为花而痴，不也很美么。";
 	    return new TextBuilder().build(text, wxMessage, wxMpService);
 
