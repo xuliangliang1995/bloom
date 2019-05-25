@@ -1,29 +1,25 @@
 package com.bloom.domain.wechat.common.consumer.bean.bind;
 
-import static com.bloom.domain.wechat.common.consumer.AbstractTextConsumerBean.prefix;
-
-import java.util.Optional;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.bloom.dao.ext.GardenerExtDao;
 import com.bloom.dao.po.Gardener;
 import com.bloom.domain.gardener.GardenerWechatOpenIdService;
-import com.bloom.domain.gardener.SignService;
+import com.bloom.domain.wechat.common.constant.UsingCommand;
 import com.bloom.domain.wechat.common.consumer.AbstractEventConsumerBean;
 import com.bloom.domain.wechat.common.consumer.TextConsumerMap;
 import com.bloom.domain.wechat.common.consumer.WxMsgConsumer;
 import com.bloom.exception.ServiceException;
 import com.bloom.util.encrypt.GardenerEncrypt;
-
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import java.util.Optional;
+
+import static com.bloom.domain.wechat.common.consumer.AbstractTextConsumerBean.prefix;
 @Component
 public class BindGardenerReminder extends AbstractEventConsumerBean {
 	
@@ -32,9 +28,9 @@ public class BindGardenerReminder extends AbstractEventConsumerBean {
 	//绑定账号提醒Event KEY
 	public static final String KEY = "BIND_GARDENER";
 	//绑定账号消息模版
-	private static final String TEMPLATE = "001:%s#%s";
+	private static final String TEMPLATE = UsingCommand.COMMAND_001.concat(":%s#%s");
 	//命令编号
-	public static final String COMMAND = "001";
+	public static final String COMMAND = UsingCommand.COMMAND_001;
 	
 	@Autowired
 	private GardenerWechatOpenIdService gardenerWechatOpenIdServiceImpl;
