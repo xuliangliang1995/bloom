@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import com.bloom.domain.wechat.common.constant.UsingCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,9 @@ public class CreatePetalLinkReminder extends AbstractEventConsumerBean{
 	//绑定账号提醒Event KEY
 	public static final String KEY = "SAVE_PETAL_LINK";
 	//绑定账号消息模版
-	private static final String TEMPLATE = "002:%s#%s#%s";
+	private static final String TEMPLATE = UsingCommand.COMMAND_002.concat(":%s#%s#%s");
 	//命令编号
-	public static final String COMMAND = "002";
+	public static final String COMMAND = UsingCommand.COMMAND_002;
 	
 	@Autowired
 	private FlowerService flowerServiceImpl;

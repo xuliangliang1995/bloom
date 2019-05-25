@@ -2,6 +2,7 @@ package com.bloom.domain.wechat.common.service.impl;
 
 import javax.annotation.PostConstruct;
 
+import com.bloom.domain.wechat.common.consumer.bean.interesttip.InterestTipConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,10 +55,16 @@ public class GrasswortMenuInitiateBean implements WxMpMenuInitService{
 			button13.setType(MenuButtonType.VIEW);
 			button13.setName("百度一下");
 			button13.setUrl("https://www.baidu.com");;
+
+			WxMenuButton button14 = new WxMenuButton();
+			button14.setType(MenuButtonType.CLICK);
+			button14.setName("趣味提醒");
+			button14.setKey(InterestTipConfig.KEY);
 			
 		button1.getSubButtons().add(button11);	
 		button1.getSubButtons().add(button12);
 		button1.getSubButtons().add(button13);
+		button1.getSubButtons().add(button14);
 		
 		WxMenuButton button2 = new WxMenuButton();
 		button2.setType(MenuButtonType.CLICK);
