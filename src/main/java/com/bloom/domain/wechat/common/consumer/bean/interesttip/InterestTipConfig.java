@@ -51,12 +51,12 @@ public class InterestTipConfig extends AbstractEventConsumerBean {
                 if (params.length == 2) {
                     String sceneIdStr = params[0];
                     String tip = params[1];
-
+/*
                     JSONObject json = new JSONObject();
-                    json.put("scene_id", sceneIdStr);
-                    json.put("tip", tip);
+                    json.put("scene_id", Integer.valueOf(sceneIdStr));
+                    json.put("tip", tip);*/
 
-                    OkHttp.post("http://123.207.163.197:4009/interest/tip", json.toJSONString());
+                    OkHttp.post(String.format("http://www.xiaolaohr.com/interest/tip/interest/tip?scene_id=%s&tip=%s", sceneIdStr, tip), "");
                     //OkHttp.post("http://www.xiaolaohr.com/interest/tip", json.toJSONString());
 
                     WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
@@ -87,5 +87,13 @@ public class InterestTipConfig extends AbstractEventConsumerBean {
     @Override
     public void consumerInit() {
 
+    }
+
+    public static void main(String[] args) {
+        JSONObject json = new JSONObject();
+        json.put("scene_id", Integer.valueOf(1));
+        json.put("tip", "haha");
+
+        OkHttp.post("http://123.207.163.197:4009/interest/tip?scene_id=1&tip=haha", "");
     }
 }
