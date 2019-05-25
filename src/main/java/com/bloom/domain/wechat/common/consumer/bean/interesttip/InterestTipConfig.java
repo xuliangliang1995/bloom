@@ -56,11 +56,13 @@ public class InterestTipConfig extends AbstractEventConsumerBean {
                     json.put("scene_id", sceneIdStr);
                     json.put("tip", tip);
 
-                    OkHttp.post("http://123.207.163.197:4009/interest/tip", json.toJSONString());
+                    new Thread(() -> {
+                        OkHttp.post("http://123.207.163.197:4009/interest/tip", json.toJSONString());
+                    }).run();
                     //OkHttp.post("http://www.xiaolaohr.com/interest/tip", json.toJSONString());
 
                     WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
-                            .content("设置成功")
+                            .content("成功发送修改请求。")
                             .fromUser(ctx.getWxMessage().getToUser())
                             .toUser(ctx.getWxMessage().getFromUser())
                             .build();
