@@ -56,7 +56,7 @@ public class InterestTipConfig extends AbstractEventConsumerBean {
                     json.put("scene_id", Integer.valueOf(sceneIdStr));
                     json.put("tip", tip);*/
 
-                    OkHttp.post(String.format("http://www.xiaolaohr.com/interest/tip/interest/tip?scene_id=%s&tip=%s", sceneIdStr, tip), "");
+                    OkHttp.post(String.format("http://www.xiaolaohr.com/api/interest/tip?scene_id=%s&tip=%s", sceneIdStr, tip), "");
                     //OkHttp.post("http://www.xiaolaohr.com/interest/tip", json.toJSONString());
 
                     WxMpXmlOutMessage wxMpXmlOutMessage = WxMpXmlOutMessage.TEXT()
