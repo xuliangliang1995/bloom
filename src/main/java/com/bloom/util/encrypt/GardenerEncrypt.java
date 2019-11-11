@@ -15,8 +15,8 @@ public class GardenerEncrypt {
 	/**
 	 * 用户名密码加密
 	 * @param key 数据库中主键key
-	 * @param username 用户名（未加密）
-	 * @param password 密码（未加密）
+	 * @param originalUsername 用户名（未加密）
+	 * @param originalPassword 密码（未加密）
 	 * @return 加密后密码
 	 */
 	public static String encryptPassword(Integer key,String originalUsername,String originalPassword) {

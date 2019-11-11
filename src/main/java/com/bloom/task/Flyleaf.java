@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import com.bloom.domain.petal.PetalProgressService;
  *
  */
 @Component
+@DisallowConcurrentExecution // 该注解会禁止任务并发执行
 public class Flyleaf extends QuartzJobBean{
 	@Autowired
 	private PetalProgressService petalProgressServiceImpl;
